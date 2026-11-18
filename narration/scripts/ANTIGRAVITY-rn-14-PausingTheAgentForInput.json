@@ -1,0 +1,33 @@
+{
+ "clip": "ANTIGRAVITY-rn-14-PausingTheAgentForInput",
+ "segments": [
+  {
+   "at": "doc",
+   "text": "Ok so this is the pausing the agent for input page for Google Antigravity on React Native, and I'm reporting a problem on this page."
+  },
+  {
+   "at": "evidence",
+   "text": "So this is the problem, the backend part says it's not available for Google Antigravity yet."
+  },
+  {
+   "at": "ide",
+   "text": "This is my project, I've implemented the exact code from the doc."
+  },
+  {
+   "at": "+",
+   "text": "The agent wasn't on the page, so umm, I wrote one myself."
+  },
+  {
+   "at": "demo",
+   "text": "Moving on to the demo. The picker does show up, but tapping tomorrow at nine doesn't continue the run."
+  },
+  {
+   "at": "notepad",
+   "text": "So basically, there's no Antigravity backend for this page, and even with one added, the choice never resumes the agent."
+  },
+  {
+   "at": "+",
+   "text": "So this needs a fix, kindly check it."
+  }
+ ]
+}

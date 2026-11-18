@@ -1,0 +1,29 @@
+{
+ "clip": "ANTIGRAVITY-rn-05-MultimodalAttachments",
+ "segments": [
+  {
+   "at": "doc",
+   "text": "Ok so this is the Multimodal Attachments page for Google Antigravity on React Native, and I'm reporting a problem on this page."
+  },
+  {
+   "at": "evidence",
+   "text": "So this is the problem, umm, the quick start leaves the message list as a comment, so there's nowhere for the answer to show."
+  },
+  {
+   "at": "ide",
+   "text": "This is my project, I've implemented the exact code from the doc."
+  },
+  {
+   "at": "demo",
+   "text": "Moving on to the demo. Tapping attach should open a file picker, but nothing opens, and there's a red text error on load."
+  },
+  {
+   "at": "notepad",
+   "text": "So basically, you should be able to attach a photo and get an answer, but the picker never opens, and the quick start has no message list anyway."
+  },
+  {
+   "at": "+",
+   "text": "So yeah, this is the issue, kindly fix it."
+  }
+ ]
+}
