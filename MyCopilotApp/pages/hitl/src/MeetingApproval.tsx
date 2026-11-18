@@ -15,7 +15,7 @@ export function useMeetingApproval() {
       topic: z.string(),
       attendee: z.string(),
     }),
-    render: ({ args, respond, result }) => (
+    render: ({ args, respond, result, status }: any) => (console.log("QADBG", status, typeof respond, String(result)), 
       <View style={{ padding: 12, borderRadius: 12, backgroundColor: "#f4f4f8", gap: 8 }}>
         <Text style={{ fontWeight: "600" }}>
           Pick a time for {args.topic ?? "the meeting"}

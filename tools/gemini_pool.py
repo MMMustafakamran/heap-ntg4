@@ -25,7 +25,7 @@ from starlette.routing import Route
 UPSTREAM = "https://generativelanguage.googleapis.com"
 FALLBACK = [m.strip() for m in os.getenv(
     "GEMINI_POOL_FALLBACK", "gemini-3.8-flash,gemini-3-flash-preview,gemini-3.5-flash-lite").split(",") if m.strip()]
-RETRY = {429, 503}
+RETRY = {402, 429, 503}  # HARNESS 2026-11-18: 402 = prepaid credits depleted on a key -> next key/model, then OpenAI
 
 
 def load_keys():
@@ -91,7 +91,7 @@ async def proxy(request: Request):
                     await r.aclose()
                     last = (r.status_code, data)
                     d = DELAY_RE.search(data)
-                    wait = float(d.group(1)) if d else (60 if r.status_code == 429 else 10)
+                    wait = float(d.group(1)) if d else (3600 if r.status_code == 402 else 60 if r.status_code == 429 else 10)
                     cool[(ki, model)] = time.time() + min(wait, 3600)
                     log(f"{r.status_code} model={model} key#{ki + 1} cool {wait:.0f}s -> next")
                     continue
