@@ -203,11 +203,12 @@ export async function runAndroidChat(page: Page, config: PageRecordConfig, root:
         screen = dump();
         const label = cfg.tap!;
         const btn = byLabel(screen.nodes, label) ?? byLabel(screen.nodes, label === 'Send' ? '↑' : 'Send');
+        // Baseline = screen before sending: a fast reply can land within the 2 s below.
+        afterSend = texts(screen.nodes);
         if (btn) await tapNode(page, btn, `send (${label})`, w, h);
         else { sh('input keyevent 66'); logAction('key', 'enter (no send button)'); }
         sentAt = Date.now();
         await sleep(2000);
-        afterSend = texts(dump().nodes);
       }
     } else if (cfg.tap && cfg.noInput) {
       const btn = byLabel(screen.nodes, cfg.tap);
