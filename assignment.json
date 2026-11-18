@@ -109,7 +109,7 @@
     {
      "text": null,
      "clip": "ANTIGRAVITY-rn-01-Quickstart",
-     "loom": "https://www.loom.com/share/bf84100b85d64c93aae68a0f9f6bb784",
+     "loom": "https://www.loom.com/share/bba1fb46198d48bab2e934f9ec046216",
      "filmed": "2026-11-18"
     }
    ]
@@ -141,7 +141,7 @@
     {
      "text": null,
      "clip": "ANTIGRAVITY-rn-02-PrebuiltComponents",
-     "loom": null,
+     "loom": "https://www.loom.com/share/8159b738435b473380cf64879a5ee88c",
      "filmed": "2026-11-18"
     }
    ]
@@ -242,6 +242,14 @@
    "added": "2026-11-18",
    "notes": [
     "Note: the agent step reuses the chart agent prompt and never mentions filter_tasks (still works)."
+   ],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-06-FrontendTools",
+     "loom": "https://www.loom.com/share/eca35433a5db4f8986c1ca3331b93f25",
+     "filmed": "2026-11-18"
+    }
    ]
   },
   {
@@ -290,7 +298,7 @@
     {
      "text": null,
      "clip": "ANTIGRAVITY-rn-08-ComponentsAsTools",
-     "loom": null,
+     "loom": "https://www.loom.com/share/9c7aae40755648b4ae83a201ad661439",
      "filmed": "2026-11-18"
     }
    ]
@@ -340,7 +348,7 @@
     {
      "text": null,
      "clip": "ANTIGRAVITY-rn-10-SharedState",
-     "loom": null,
+     "loom": "https://www.loom.com/share/62e188a2a18c4707a8a15883abcb0b3b",
      "filmed": "2026-11-18"
     }
    ]
@@ -383,7 +391,15 @@
     "by": null
    },
    "added": "2026-11-18",
-   "notes": []
+   "notes": [],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-12-AgentReadOnlyContext",
+     "loom": "https://www.loom.com/share/6ad98d61ca1c472db95e7b8611733a50",
+     "filmed": "2026-11-18"
+    }
+   ]
   },
   {
    "id": "hitl",
