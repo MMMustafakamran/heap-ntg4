@@ -1,0 +1,126 @@
+{
+ "root": "react-native/google-antigravity",
+ "savedAt": "2026-11-18",
+ "pages": [
+  {
+   "url": "/react-native/google-antigravity",
+   "name": "Quickstart",
+   "group": "Search⌘K"
+  },
+  {
+   "url": "/react-native/google-antigravity/build-with-agents",
+   "name": "Build with agents",
+   "group": "Search⌘K"
+  },
+  {
+   "url": "/react-native/google-antigravity/intelligence/overview",
+   "name": "Intelligence",
+   "group": "Search⌘K"
+  },
+  {
+   "url": "/react-native/google-antigravity/frontend-tools",
+   "name": "Frontend Tools",
+   "group": "Basics > Chat"
+  },
+  {
+   "url": "/react-native/google-antigravity/generative-ui",
+   "name": "Overview",
+   "group": "Generative UI"
+  },
+  {
+   "url": "/react-native/google-antigravity/webmcp",
+   "name": "WebMCP",
+   "group": "Interactivity > Human-in-the-loop"
+  },
+  {
+   "url": "/react-native/google-antigravity/multi-agent/subagents",
+   "name": "Sub-agents",
+   "group": "Agent capabilities"
+  },
+  {
+   "url": "/react-native/google-antigravity/telemetry",
+   "name": "Open-source telemetry",
+   "group": "Other > Troubleshooting"
+  },
+  {
+   "url": "/react-native/google-antigravity/community-frameworks",
+   "name": "Community frameworks",
+   "group": "Other > Troubleshooting"
+  },
+  {
+   "url": "/react-native/google-antigravity/prebuilt-components",
+   "name": "Prebuilt Components",
+   "group": "Basics > Chat"
+  },
+  {
+   "url": "/react-native/google-antigravity/multimodal-attachments",
+   "name": "Multimodal Attachments",
+   "group": "Basics > Custom Look and Feel"
+  },
+  {
+   "url": "/react-native/google-antigravity/custom-look-and-feel/markdown",
+   "name": "Markdown Rendering",
+   "group": "Basics > Custom Look and Feel"
+  },
+  {
+   "url": "/react-native/google-antigravity/custom-look-and-feel/headless-ui",
+   "name": "Headless UI",
+   "group": "Basics > Custom Look and Feel"
+  },
+  {
+   "url": "/react-native/google-antigravity/generative-ui/tool-based",
+   "name": "Components as Tools",
+   "group": "Generative UI > Controlled"
+  },
+  {
+   "url": "/react-native/google-antigravity/generative-ui/tool-rendering",
+   "name": "Tool Call Rendering",
+   "group": "Generative UI > Controlled"
+  },
+  {
+   "url": "/react-native/google-antigravity/shared-state",
+   "name": "Shared State",
+   "group": "Interactivity > Shared state"
+  },
+  {
+   "url": "/react-native/google-antigravity/shared-state/rendering-in-app",
+   "name": "Render agent state in your app",
+   "group": "Interactivity > Shared state"
+  },
+  {
+   "url": "/react-native/google-antigravity/shared-state/agent-readonly",
+   "name": "Agent Read-Only Context",
+   "group": "Interactivity > Shared state"
+  },
+  {
+   "url": "/react-native/google-antigravity/human-in-the-loop",
+   "name": "HITL Overview",
+   "group": "Interactivity > Human-in-the-loop"
+  },
+  {
+   "url": "/react-native/google-antigravity/human-in-the-loop/useInterrupt",
+   "name": "Pausing the Agent for Input",
+   "group": "Interactivity > Human-in-the-loop"
+  },
+  {
+   "url": "/react-native/google-antigravity/human-in-the-loop/headless",
+   "name": "Headless Interrupts",
+   "group": "Interactivity > Human-in-the-loop"
+  },
+  {
+   "url": "/react-native/google-antigravity/human-in-the-loop/governed-actions",
+   "name": "Governed Action Approval UI",
+   "group": "Interactivity > Human-in-the-loop"
+  },
+  {
+   "url": "/react-native/google-antigravity/inspector",
+   "name": "Inspector",
+   "group": "Backend > Debugging"
+  },
+  {
+   "url": "/react-native/google-antigravity/vs-code-extension",
+   "name": "VS Code Extension",
+   "group": "Backend > Debugging"
+  }
+ ]
+}

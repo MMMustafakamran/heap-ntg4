@@ -1,0 +1,423 @@
+{
+ "framework": "Google Antigravity",
+ "ui": "react-native",
+ "repo": "Antigravity-ReactNative",
+ "docBase": "https://docs.copilotkit.ai/react-native/google-antigravity/",
+ "versions": {},
+ "testedContext": {
+  "os": "Microsoft Windows 11 Pro",
+  "packageManager": "npm 11 (Node 26.7.0)",
+  "device": "Android emulator, API 36 x86_64 (Pixel 7)"
+ },
+ "report": {
+  "style": "status",
+  "h1": "Google Antigravity",
+  "title": "Google Antigravity (React Native) status",
+  "quickstartHeading": "Quickstart",
+  "quickstartHeader": [
+   "Frontend",
+   "Quickstart"
+  ],
+  "clipsToUpload": false,
+  "columns": [
+   "Page/Section",
+   "Results"
+  ],
+  "resultColumn": 1,
+  "guidesHeading": "Guides (React Native)"
+ },
+ "sections": [
+  {
+   "label": "Basics",
+   "cells": [
+    "Section"
+   ]
+  },
+  {
+   "label": "Chat",
+   "cells": [
+    "Sub section"
+   ]
+  },
+  {
+   "label": "Custom Look and Feel",
+   "cells": [
+    "Sub section"
+   ]
+  },
+  {
+   "label": "Generative UI",
+   "cells": [
+    "Section"
+   ]
+  },
+  {
+   "label": "Controlled",
+   "cells": [
+    "Sub section"
+   ]
+  },
+  {
+   "label": "Shared state",
+   "cells": [
+    "Section"
+   ]
+  },
+  {
+   "label": "Human-in-the-loop",
+   "cells": [
+    "Section"
+   ]
+  },
+  {
+   "label": "Debugging",
+   "cells": [
+    "Section"
+   ]
+  }
+ ],
+ "pages": [
+  {
+   "id": "quickstart",
+   "label": "React Native",
+   "kind": "quickstart",
+   "group": null,
+   "child": false,
+   "docPath": "",
+   "reachable": "sidebar",
+   "status": null,
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18"
+  },
+  {
+   "id": "prebuilt-components",
+   "label": "Prebuilt Components",
+   "kind": "guide",
+   "group": "Chat",
+   "child": true,
+   "docPath": "prebuilt-components",
+   "reachable": "sidebar",
+   "status": null,
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18"
+  },
+  {
+   "id": "markdown",
+   "label": "Markdown Rendering",
+   "kind": "guide",
+   "group": "Custom Look and Feel",
+   "child": true,
+   "docPath": "custom-look-and-feel/markdown",
+   "reachable": "sidebar",
+   "status": null,
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18"
+  },
+  {
+   "id": "headless-ui",
+   "label": "Headless UI",
+   "kind": "guide",
+   "group": "Custom Look and Feel",
+   "child": true,
+   "docPath": "custom-look-and-feel/headless-ui",
+   "reachable": "sidebar",
+   "status": null,
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18"
+  },
+  {
+   "id": "multimodal-attachments",
+   "label": "Multimodal Attachments",
+   "kind": "guide",
+   "group": "Chat",
+   "child": true,
+   "docPath": "multimodal-attachments",
+   "reachable": "sidebar",
+   "status": null,
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18"
+  },
+  {
+   "id": "frontend-tools",
+   "label": "Frontend Tools",
+   "kind": "guide",
+   "group": "Basics",
+   "child": false,
+   "docPath": "frontend-tools",
+   "reachable": "sidebar",
+   "status": null,
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18"
+  },
+  {
+   "id": "generative-ui",
+   "label": "Overview",
+   "kind": "guide",
+   "group": "Generative UI",
+   "child": false,
+   "docPath": "generative-ui",
+   "reachable": "sidebar",
+   "status": null,
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18"
+  },
+  {
+   "id": "tool-based",
+   "label": "Components as Tools",
+   "kind": "guide",
+   "group": "Controlled",
+   "child": true,
+   "docPath": "generative-ui/tool-based",
+   "reachable": "sidebar",
+   "status": null,
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18"
+  },
+  {
+   "id": "tool-rendering",
+   "label": "Tool Call Rendering",
+   "kind": "guide",
+   "group": "Controlled",
+   "child": true,
+   "docPath": "generative-ui/tool-rendering",
+   "reachable": "sidebar",
+   "status": null,
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18"
+  },
+  {
+   "id": "shared-state",
+   "label": "Shared State",
+   "kind": "guide",
+   "group": "Shared state",
+   "child": false,
+   "docPath": "shared-state",
+   "reachable": "sidebar",
+   "status": null,
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18"
+  },
+  {
+   "id": "shared-state-rendering",
+   "label": "Render agent state in your app",
+   "kind": "guide",
+   "group": "Shared state",
+   "child": true,
+   "docPath": "shared-state/rendering-in-app",
+   "reachable": "sidebar",
+   "status": null,
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18"
+  },
+  {
+   "id": "agent-readonly",
+   "label": "Agent Read-Only Context",
+   "kind": "guide",
+   "group": "Shared state",
+   "child": true,
+   "docPath": "shared-state/agent-readonly",
+   "reachable": "sidebar",
+   "status": null,
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18"
+  },
+  {
+   "id": "hitl",
+   "label": "HITL Overview",
+   "kind": "guide",
+   "group": "Human-in-the-loop",
+   "child": false,
+   "docPath": "human-in-the-loop",
+   "reachable": "sidebar",
+   "status": null,
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18"
+  },
+  {
+   "id": "use-interrupt",
+   "label": "Pausing the Agent for Input",
+   "kind": "guide",
+   "group": "Human-in-the-loop",
+   "child": true,
+   "docPath": "human-in-the-loop/useInterrupt",
+   "reachable": "sidebar",
+   "status": null,
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18"
+  },
+  {
+   "id": "hitl-headless",
+   "label": "Headless Interrupts",
+   "kind": "guide",
+   "group": "Human-in-the-loop",
+   "child": true,
+   "docPath": "human-in-the-loop/headless",
+   "reachable": "sidebar",
+   "status": null,
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18"
+  },
+  {
+   "id": "governed-actions",
+   "label": "Governed Action Approval UI",
+   "kind": "guide",
+   "group": "Human-in-the-loop",
+   "child": true,
+   "docPath": "human-in-the-loop/governed-actions",
+   "reachable": "sidebar",
+   "status": null,
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18"
+  },
+  {
+   "id": "webmcp",
+   "label": "WebMCP",
+   "kind": "guide",
+   "group": null,
+   "child": false,
+   "docPath": "webmcp",
+   "reachable": "sidebar",
+   "status": null,
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18"
+  },
+  {
+   "id": "subagents",
+   "label": "Sub-agents",
+   "kind": "guide",
+   "group": null,
+   "child": false,
+   "docPath": "multi-agent/subagents",
+   "reachable": "sidebar",
+   "status": null,
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18"
+  },
+  {
+   "id": "inspector",
+   "label": "Inspector",
+   "kind": "guide",
+   "group": "Debugging",
+   "child": false,
+   "docPath": "inspector",
+   "reachable": "sidebar",
+   "status": null,
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18"
+  }
+ ]
+}

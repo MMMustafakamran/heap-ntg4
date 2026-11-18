@@ -1,0 +1,114 @@
+{
+ "root": "react-native/google-antigravity",
+ "savedAt": "2026-11-18",
+ "pages": {
+  "/react-native/google-antigravity": [
+   "/react-native/google-antigravity/backend/copilot-runtime",
+   "/react-native/google-antigravity/build-with-agents",
+   "/react-native/google-antigravity/cli",
+   "/react-native/google-antigravity/inspector"
+  ],
+  "/react-native/google-antigravity/multi-agent/subagents": [
+   "/react-native/google-antigravity/shared-state",
+   "/react-native/google-antigravity/shared-state/streaming"
+  ],
+  "/react-native/google-antigravity/frontend-tools": [
+   "/react-native/google-antigravity/generative-ui/tool-based",
+   "/react-native/google-antigravity/generative-ui/tool-rendering",
+   "/react-native/google-antigravity/human-in-the-loop",
+   "/react-native/google-antigravity/quickstart"
+  ],
+  "/react-native/google-antigravity/build-with-agents": [],
+  "/react-native/google-antigravity/generative-ui": [
+   "/react-native/google-antigravity/custom-look-and-feel/headless-ui",
+   "/react-native/google-antigravity/generative-ui/state-rendering",
+   "/react-native/google-antigravity/generative-ui/tool-based",
+   "/react-native/google-antigravity/generative-ui/tool-rendering",
+   "/react-native/google-antigravity/human-in-the-loop"
+  ],
+  "/react-native/google-antigravity/webmcp": [
+   "/react-native/google-antigravity/frontend-tools"
+  ],
+  "/react-native/google-antigravity/telemetry": [],
+  "/react-native/google-antigravity/prebuilt-components": [
+   "/react-native/google-antigravity/custom-look-and-feel/headless-ui",
+   "/react-native/google-antigravity/human-in-the-loop/useInterrupt",
+   "/react-native/google-antigravity/multimodal-attachments",
+   "/react-native/google-antigravity/quickstart"
+  ],
+  "/react-native/google-antigravity/custom-look-and-feel/headless-ui": [
+   "/react-native/google-antigravity/custom-look-and-feel/markdown",
+   "/react-native/google-antigravity/generative-ui/tool-rendering",
+   "/react-native/google-antigravity/human-in-the-loop/headless",
+   "/react-native/google-antigravity/prebuilt-components",
+   "/react-native/google-antigravity/programmatic-control",
+   "/react-native/google-antigravity/quickstart"
+  ],
+  "/react-native/google-antigravity/community-frameworks": [],
+  "/react-native/google-antigravity/multimodal-attachments": [],
+  "/react-native/google-antigravity/custom-look-and-feel/markdown": [
+   "/react-native/google-antigravity/generative-ui/tool-rendering",
+   "/react-native/google-antigravity/quickstart"
+  ],
+  "/react-native/google-antigravity/generative-ui/tool-rendering": [
+   "/react-native/google-antigravity/custom-look-and-feel/headless-ui",
+   "/react-native/google-antigravity/frontend-tools"
+  ],
+  "/react-native/google-antigravity/generative-ui/tool-based": [
+   "/react-native/google-antigravity/custom-look-and-feel/headless-ui",
+   "/react-native/google-antigravity/generative-ui/tool-rendering",
+   "/react-native/google-antigravity/human-in-the-loop"
+  ],
+  "/react-native/google-antigravity/shared-state/rendering-in-app": [
+   "/react-native/google-antigravity/shared-state",
+   "/react-native/google-antigravity/shared-state/agent-readonly",
+   "/react-native/google-antigravity/shared-state/streaming"
+  ],
+  "/react-native/google-antigravity/shared-state": [
+   "/react-native/google-antigravity/programmatic-control",
+   "/react-native/google-antigravity/shared-state/agent-readonly",
+   "/react-native/google-antigravity/shared-state/rendering-in-app",
+   "/react-native/google-antigravity/shared-state/streaming"
+  ],
+  "/react-native/google-antigravity/human-in-the-loop": [
+   "/react-native/google-antigravity/custom-look-and-feel/headless-ui",
+   "/react-native/google-antigravity/human-in-the-loop/headless",
+   "/react-native/google-antigravity/human-in-the-loop/useInterrupt"
+  ],
+  "/react-native/google-antigravity/shared-state/agent-readonly": [
+   "/react-native/google-antigravity/shared-state",
+   "/react-native/google-antigravity/shared-state/streaming"
+  ],
+  "/react-native/google-antigravity/human-in-the-loop/headless": [
+   "/react-native/google-antigravity/human-in-the-loop",
+   "/react-native/google-antigravity/human-in-the-loop/useInterrupt"
+  ],
+  "/react-native/google-antigravity/human-in-the-loop/useInterrupt": [
+   "/react-native/google-antigravity/human-in-the-loop"
+  ],
+  "/react-native/google-antigravity/human-in-the-loop/governed-actions": [
+   "/react-native/google-antigravity/custom-look-and-feel/headless-ui",
+   "/react-native/google-antigravity/frontend-tools",
+   "/react-native/google-antigravity/human-in-the-loop",
+   "/react-native/google-antigravity/human-in-the-loop/useInterrupt"
+  ],
+  "/react-native/google-antigravity/inspector": [
+   "/react-native/google-antigravity/AG-UI-Streams",
+   "/react-native/google-antigravity/agent-config",
+   "/react-native/google-antigravity/backend/copilot-runtime",
+   "/react-native/google-antigravity/backend/runtime-endpoints",
+   "/react-native/google-antigravity/frontend-tools",
+   "/react-native/google-antigravity/intelligence/overview",
+   "/react-native/google-antigravity/intelligence/quickstart",
+   "/react-native/google-antigravity/learning",
+   "/react-native/google-antigravity/quickstart",
+   "/react-native/google-antigravity/shared-state",
+   "/react-native/google-antigravity/shared-state/agent-readonly",
+   "/react-native/google-antigravity/troubleshooting/debug-mode",
+   "/react-native/google-antigravity/vs-code-extension"
+  ],
+  "/react-native/google-antigravity/vs-code-extension": [
+   "/react-native/google-antigravity/troubleshooting/event-inspector"
+  ]
+ }
+}
