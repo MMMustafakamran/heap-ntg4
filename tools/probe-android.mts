@@ -68,6 +68,10 @@ async function probe(id: string) {
   const prompt = opt("prompt", cfg.prompt);
   const tapLabel = opt("tap", cfg.tap ?? "Send");
   let before = dump();
+  // first open of a page builds its bundle and renders slowly: wait up to 45 s for the input
+  for (let i = 0; prompt && !flag("no-input") && i < 13 && !before.nodes.some((n) => n.cls.endsWith("EditText")); i++) {
+    await sleep(3000); before = dump();
+  }
   if (prompt && !flag("no-input")) {
     const input = before.nodes.find((n) => n.cls.endsWith("EditText"));
     if (!input) { res.errors.push("no text input on screen"); step("no EditText found"); }
