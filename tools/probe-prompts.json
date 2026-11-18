@@ -45,6 +45,10 @@
   "input": "last",
   "before": [
    {
+    "waitfor": "Ask the assistant",
+    "timeout": 90
+   },
+   {
     "tap": "Ask the assistant"
    },
    {
@@ -88,6 +92,9 @@
     "waitfor": "Tue 9 AM"
    },
    {
+    "wait": 8
+   },
+   {
     "tap": "Tue 9 AM"
    },
    {
@@ -101,6 +108,9 @@
   "then": [
    {
     "waitfor": "Tomorrow at 09:00"
+   },
+   {
+    "wait": 8
    },
    {
     "tap": "Tomorrow at 09:00"
@@ -130,7 +140,26 @@
   "tap": "↑",
   "then": [
    {
-    "waitfor": "REJECT"
+    "waitfor": "User approval required",
+    "timeout": 90
+   },
+   {
+    "wait": 6
+   },
+   {
+    "swipe": [
+     540,
+     1700,
+     540,
+     700
+    ]
+   },
+   {
+    "wait": 2
+   },
+   {
+    "waitfor": "REJECT",
+    "timeout": 20
    },
    {
     "tap": "REJECT"

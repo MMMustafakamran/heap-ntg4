@@ -243,6 +243,7 @@ export const PAGES = definePages([
     startLine: 1,
     endLine: 13,
     extraTabs: [
+      { filePath: 'backend/agents/rn_use_interrupt.py', startLine: 1, endLine: 21, addedText: '# HARNESS: instructions written by the tester (page gives none).' },
       { filePath: 'MyCopilotApp/pages/use-interrupt/runtime.ts', startLine: 1, endLine: 13 },
       { filePath: 'MyCopilotApp/pages/use-interrupt/src/MeetingChat.tsx', startLine: 1, endLine: 25 },
     ],
@@ -276,6 +277,7 @@ export const PAGES = definePages([
     startLine: 1,
     endLine: 25,
     extraTabs: [
+      { filePath: 'backend/agents/rn_governed_actions.py', startLine: 1, endLine: 60, addedText: '# HARNESS: tester-written instructions (page gives no Antigravity agent).' },
       { filePath: 'MyCopilotApp/pages/governed-actions/runtime.ts', startLine: 1, endLine: 13 },
       { filePath: 'MyCopilotApp/pages/governed-actions/src/GovernedActionApproval.tsx', startLine: 1, endLine: 40 },
       { filePath: 'MyCopilotApp/pages/governed-actions/src/GovernedActionCard.tsx', startLine: 1, endLine: 56 },
