@@ -35,7 +35,12 @@ fi
 if [ -z "$NO_EMU" ]; then
   "$ADB" wait-for-device
   until [ "$("$ADB" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = "1" ]; do sleep 3; done
-  (cd MyCopilotApp && npx react-native run-android --port 8150 --no-packager > ../logs/run-android.log 2>&1)
-  echo "app launched (logs/run-android.log)"
+  # HARNESS: the APK is built from a short-path copy (C:nb, see tools/build-apk.sh): the repo path is
+  # past Windows' 260-char limit for the worklets CMake build. JS still comes from this repo via Metro.
+  for s in window_animation_scale transition_animation_scale animator_duration_scale; do "$ADB" shell settings put global $s 0; done
+  until "$ADB" install -r /c/rnb/android/app/build/outputs/apk/debug/app-debug.apk 2>&1 | grep -q Success; do sleep 10; done
+  # HARNESS: the APK was built with the default Metro port; point its dev server at 10.0.2.2:8150
+  "$ADB" shell "run-as com.mycopilotapp sh -c 'mkdir -p shared_prefs && echo \"<?xml version=\\\"1.0\\\" encoding=\\\"utf-8\\\" standalone=\\\"yes\\\" ?><map><string name=\\\"debug_http_host\\\">10.0.2.2:8150</string></map>\" > shared_prefs/com.mycopilotapp_preferences.xml'"
+  echo "app installed; open a page: adb shell am start -a android.intent.action.VIEW -d copilotqa://page/<id> com.mycopilotapp"
 fi
 wait
