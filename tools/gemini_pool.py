@@ -86,6 +86,18 @@ async def proxy(request: Request):
                     log(f"{type(e).__name__} model={model} key#{ki + 1} -> next")
                     cool[(ki, model)] = time.time() + 20
                     continue
+                if r.status_code == 404:
+                    # HARNESS 2026-11-18: Google answers 404 "model ... is no longer available to new users" on newer
+                    # keys only (the owner's older key still serves it): try the next key/model, as for quota.
+                    data = await r.aread()
+                    await r.aclose()
+                    if b"no longer available" in data:
+                        last = (404, data)
+                        cool[(ki, model)] = time.time() + 3600
+                        log(f"404 (model retired for this key) model={model} key#{ki + 1} -> next")
+                        continue
+                    log(f"404 model={model} key#{ki + 1}")
+                    return Response(data, status_code=404, media_type="application/json")
                 if r.status_code in RETRY:
                     data = await r.aread()
                     await r.aclose()
