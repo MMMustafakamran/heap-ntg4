@@ -111,4 +111,17 @@ async function probe(id: string) {
 
 if (!ids.length) { console.error("usage: npx tsx tools/probe-android.mts <page-id>... [--prompt ..]"); process.exit(2); }
 if (!spawnSync(ADB, ["-s", SERIAL, "get-state"]).stdout?.toString().includes("device")) { console.error(`no device ${SERIAL}`); process.exit(2); }
-for (const id of ids) await probe(id); // one device: pages run one after another
+// One device, several callers (2 probe agents share one emulator: RAM limit): a lock dir makes them
+// take turns per page. mkdir is atomic; a lock older than 10 min is stale and is taken over.
+const LOCK = path.join("out", `.lock-${SERIAL}`);
+async function withLock(fn: () => Promise<void>) {
+  fs.mkdirSync("out", { recursive: true });
+  for (;;) {
+    try { fs.mkdirSync(LOCK); break; } catch {
+      try { if (Date.now() - fs.statSync(LOCK).mtimeMs > 600_000) { fs.rmSync(LOCK, { recursive: true, force: true }); continue; } } catch {}
+      await sleep(2000);
+    }
+  }
+  try { await fn(); } finally { fs.rmSync(LOCK, { recursive: true, force: true }); }
+}
+for (const id of ids) await withLock(() => probe(id)); // pages run one after another
