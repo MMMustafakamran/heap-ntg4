@@ -96,7 +96,23 @@ const SEND_LABEL: Record<string, string> = {
   quickstart: 'Send', 'headless-ui': 'Send', markdown: 'Send', 'multimodal-attachments': 'Send',
 };
 
-type PromptCfg = { prompt?: string; tap?: string; settle?: number; timeout?: number; noInput?: boolean };
+/** Steps after the reply settles: tap a node by its text, wait N seconds, or wait until a text shows up. */
+type ThenStep = { tap?: string; wait?: number; waitfor?: string; timeout?: number };
+type PromptCfg = { prompt?: string; tap?: string; settle?: number; timeout?: number; noInput?: boolean; then?: ThenStep[] };
+
+/** First node whose text/desc equals the label, else the first one containing it (case-insensitive). */
+function findText(nodes: UiNode[], label: string): UiNode | undefined {
+  const l = label.trim().toLowerCase();
+  return byLabel(nodes, label) ?? nodes.find((n) => (n.text || n.desc).toLowerCase().includes(l) && n.bounds[2] > n.bounds[0]);
+}
+async function waitForText(label: string, timeoutS: number): Promise<UiNode | undefined> {
+  const end = Date.now() + timeoutS * 1000;
+  for (;;) {
+    const n = findText(dump().nodes, label);
+    if (n || Date.now() > end) return n;
+    await sleep(1500);
+  }
+}
 /** tools/probe-prompts.json (main session keeps it), read per take so edits apply without a restart. */
 function promptFor(root: string, config: PageRecordConfig): PromptCfg {
   const file = join(root, 'tools', 'probe-prompts.json');
@@ -162,6 +178,14 @@ export async function runAndroidChat(page: Page, config: PageRecordConfig, root:
     await sleep(6000);
 
     let screen = dump();
+    // The dev build loads its JS bundle from Metro first: wait (up to 60 s) for the page's composer to appear.
+    if (cfg.prompt && !cfg.noInput) {
+      const until = Date.now() + 60_000;
+      while (!screen.nodes.some((n) => n.cls.endsWith('EditText')) && Date.now() < until) {
+        await sleep(2000);
+        screen = dump();
+      }
+    }
     const { w, h } = deviceSize(screen.nodes);
     let sentAt = 0;
     let afterSend: string[] = [];
@@ -198,6 +222,22 @@ export async function runAndroidChat(page: Page, config: PageRecordConfig, root:
       const now = JSON.stringify(texts(dump().nodes));
       if (now !== last) { last = now; stableSince = Date.now(); }
       else if (Date.now() - stableSince >= settleMs) break;
+    }
+
+    // Optional follow-up steps (tools/probe-prompts.json `then`), each tap a glide-click on the mirror.
+    for (const step of cfg.then ?? []) {
+      if (step.waitfor) {
+        const n = await waitForText(step.waitfor, step.timeout ?? 60);
+        logAction('waitfor', step.waitfor, n ? 'ok' : 'timeout');
+        if (!n) ctx.warn(`"${step.waitfor}" never showed up on screen`);
+      }
+      if (step.tap) {
+        const n = await waitForText(step.tap, step.timeout ?? 10);
+        if (n) { const d = deviceSize(dump().nodes); await tapNode(page, n, step.tap, d.w, d.h); }
+        else ctx.warn(`No "${step.tap}" on screen to tap`);
+        await sleep(1500);
+      }
+      if (step.wait) await sleep(step.wait * 1000);
     }
 
     const finalTexts = texts(dump().nodes);
