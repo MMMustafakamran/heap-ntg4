@@ -23,7 +23,7 @@
    "Frontend",
    "Quickstart"
   ],
-  "clipsToUpload": false,
+  "clipsToUpload": true,
   "columns": [
    "Page/Section",
    "Results"
@@ -104,6 +104,14 @@
    "added": "2026-11-18",
    "notes": [
     "Issue: the Antigravity quickstart only registers a built-in OpenAI agent; it never shows how to serve or connect the Antigravity agent."
+   ],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-01-Quickstart",
+     "loom": "https://www.loom.com/share/bf84100b85d64c93aae68a0f9f6bb784",
+     "filmed": "2026-11-18"
+    }
    ]
   },
   {
@@ -128,6 +136,14 @@
    "added": "2026-11-18",
    "notes": [
     "Note: no install command for the chat's native peers, and streamdown's Bundle Mode setup is only linked; without it every reply crashes."
+   ],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-02-PrebuiltComponents",
+     "loom": null,
+     "filmed": "2026-11-18"
+    }
    ]
   },
   {
@@ -152,6 +168,14 @@
    "added": "2026-11-18",
    "notes": [
     "Note: same native peers / Bundle Mode setup gap as Prebuilt Components."
+   ],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-03-MarkdownRendering",
+     "loom": null,
+     "filmed": "2026-11-18"
+    }
    ]
   },
   {
@@ -261,7 +285,15 @@
     "by": null
    },
    "added": "2026-11-18",
-   "notes": []
+   "notes": [],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-08-ComponentsAsTools",
+     "loom": null,
+     "filmed": "2026-11-18"
+    }
+   ]
   },
   {
    "id": "tool-rendering",
@@ -303,7 +335,15 @@
     "by": null
    },
    "added": "2026-11-18",
-   "notes": []
+   "notes": [],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-10-SharedState",
+     "loom": null,
+     "filmed": "2026-11-18"
+    }
+   ]
   },
   {
    "id": "shared-state-rendering",
