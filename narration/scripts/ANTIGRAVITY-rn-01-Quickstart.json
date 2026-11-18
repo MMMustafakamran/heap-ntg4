@@ -1,0 +1,11 @@
+{
+ "clip": "ANTIGRAVITY-rn-01-Quickstart",
+ "segments": [
+  {"at": "doc", "text": "Ok so this is the React Native quickstart for Google Antigravity, and I'm reporting a problem on this page."},
+  {"at": "evidence", "text": "So this is the problem, umm, the runtime only registers a built-in OpenAI agent, there's no Antigravity agent anywhere on the page."},
+  {"at": "ide", "text": "This is my project, I've implemented the exact code from the doc."},
+  {"at": "demo", "text": "Moving on to the demo. The chat does reply, but uh, it's the OpenAI agent answering, not Antigravity."},
+  {"at": "notepad", "text": "So basically, this should get you a chat on Antigravity, but you get OpenAI instead, and the page never shows how to serve the Antigravity agent or connect it."},
+  {"at": "+", "text": "So kindly look into it."}
+ ]
+}

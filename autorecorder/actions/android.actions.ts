@@ -23,8 +23,26 @@ import {
 } from './adb';
 
 /** Finding clips (❌/⚠️, level 1): doc highlight before the IDE, Notepad after the demo. Filled per page. */
-export const FINDING_NOTES: Record<string, string> = {};
-export const FINDING_EVIDENCE: Record<string, DocEvidence[]> = {};
+export const FINDING_NOTES: Record<string, string> = {
+  quickstart: `this is the antigravity react native quickstart, it should give u a chat running on an antigravity agent
+but the runtime only registers a built in openai agent, model openai gpt 6 luna
+the chat works but its not antigravity at all
+page never shows how to serve the antigravity agent or hook it into the runtime
+had to guess the backend and an httpagent from ag-ui client which no install step names`,
+  'tool-rendering': `page says the agent exposes get_weather and a few more tools so the cards render
+but TOOLS has search_flights get_stock_price roll_d20 and SYSTEM_PROMPT and build that are never shown
+so the agent file fails on import, nameerror, server never starts
+build comes from agents _common which isnt published anywhere
+only works after copying the missing tools and prompt from somewhere else`,
+};
+export const FINDING_EVIDENCE: Record<string, DocEvidence[]> = {
+  quickstart: [
+    { text: 'model: "openai:gpt-6-luna",', caption: 'Only a built-in OpenAI agent; no Antigravity agent (FINDINGS.md #1)' },
+  ],
+  'tool-rendering': [
+    { text: 'TOOLS = [get_weather, search_flights, get_stock_price, roll_d20]', caption: 'Three tools, SYSTEM_PROMPT and build never defined (FINDINGS.md #2)' },
+  ],
+};
 /** Level 2 (already reported): clip ends after the demo. */
 export const KNOWN_ISSUE = new Set<string>([]);
 registerDocEvidence(FINDING_EVIDENCE, { skip: KNOWN_ISSUE });

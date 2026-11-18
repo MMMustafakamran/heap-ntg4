@@ -3,7 +3,12 @@
  "ui": "react-native",
  "repo": "Antigravity-ReactNative",
  "docBase": "https://docs.copilotkit.ai/react-native/google-antigravity/",
- "versions": {},
+ "versions": {
+  "@copilotkit/react-native": "1.89.0",
+  "@copilotkit/runtime": "1.89.0",
+  "react-native": "0.88.1",
+  "zod": "3.25.76"
+ },
  "testedContext": {
   "os": "Microsoft Windows 11 Pro",
   "packageManager": "npm 11 (Node 26.7.0)",
@@ -85,15 +90,21 @@
    "child": false,
    "docPath": "",
    "reachable": "sidebar",
-   "status": null,
-   "findings": [],
+   "status": "❌",
+   "findings": [
+    1,
+    3
+   ],
    "block": null,
    "review": {
     "verdict": null,
     "approvedAt": null,
     "by": null
    },
-   "added": "2026-11-18"
+   "added": "2026-11-18",
+   "notes": [
+    "Issue: the Antigravity quickstart only registers a built-in OpenAI agent; it never shows how to serve or connect the Antigravity agent."
+   ]
   },
   {
    "id": "prebuilt-components",
@@ -103,15 +114,21 @@
    "child": true,
    "docPath": "prebuilt-components",
    "reachable": "sidebar",
-   "status": null,
-   "findings": [],
+   "status": "✅",
+   "findings": [
+    4,
+    5
+   ],
    "block": null,
    "review": {
     "verdict": null,
     "approvedAt": null,
     "by": null
    },
-   "added": "2026-11-18"
+   "added": "2026-11-18",
+   "notes": [
+    "Note: no install command for the chat's native peers, and streamdown's Bundle Mode setup is only linked; without it every reply crashes."
+   ]
   },
   {
    "id": "markdown",
@@ -121,15 +138,21 @@
    "child": true,
    "docPath": "custom-look-and-feel/markdown",
    "reachable": "sidebar",
-   "status": null,
-   "findings": [],
+   "status": "✅",
+   "findings": [
+    4,
+    5
+   ],
    "block": null,
    "review": {
     "verdict": null,
     "approvedAt": null,
     "by": null
    },
-   "added": "2026-11-18"
+   "added": "2026-11-18",
+   "notes": [
+    "Note: same native peers / Bundle Mode setup gap as Prebuilt Components."
+   ]
   },
   {
    "id": "headless-ui",
@@ -139,7 +162,7 @@
    "child": true,
    "docPath": "custom-look-and-feel/headless-ui",
    "reachable": "sidebar",
-   "status": null,
+   "status": "✅",
    "findings": [],
    "block": null,
    "review": {
@@ -147,7 +170,8 @@
     "approvedAt": null,
     "by": null
    },
-   "added": "2026-11-18"
+   "added": "2026-11-18",
+   "notes": []
   },
   {
    "id": "multimodal-attachments",
@@ -175,15 +199,21 @@
    "child": false,
    "docPath": "frontend-tools",
    "reachable": "sidebar",
-   "status": null,
-   "findings": [],
+   "status": "✅",
+   "findings": [
+    4,
+    6
+   ],
    "block": null,
    "review": {
     "verdict": null,
     "approvedAt": null,
     "by": null
    },
-   "added": "2026-11-18"
+   "added": "2026-11-18",
+   "notes": [
+    "Note: the agent step reuses the chart agent prompt and never mentions filter_tasks (still works)."
+   ]
   },
   {
    "id": "generative-ui",
@@ -193,7 +223,7 @@
    "child": false,
    "docPath": "generative-ui",
    "reachable": "sidebar",
-   "status": null,
+   "status": "N/A",
    "findings": [],
    "block": null,
    "review": {
@@ -201,7 +231,10 @@
     "approvedAt": null,
     "by": null
    },
-   "added": "2026-11-18"
+   "added": "2026-11-18",
+   "notes": [
+    "Note: overview page, no code to run."
+   ]
   },
   {
    "id": "tool-based",
@@ -211,15 +244,19 @@
    "child": true,
    "docPath": "generative-ui/tool-based",
    "reachable": "sidebar",
-   "status": null,
-   "findings": [],
+   "status": "✅",
+   "findings": [
+    4,
+    7
+   ],
    "block": null,
    "review": {
     "verdict": null,
     "approvedAt": null,
     "by": null
    },
-   "added": "2026-11-18"
+   "added": "2026-11-18",
+   "notes": []
   },
   {
    "id": "tool-rendering",
@@ -229,15 +266,20 @@
    "child": true,
    "docPath": "generative-ui/tool-rendering",
    "reachable": "sidebar",
-   "status": null,
-   "findings": [],
+   "status": "❌",
+   "findings": [
+    2
+   ],
    "block": null,
    "review": {
     "verdict": null,
     "approvedAt": null,
     "by": null
    },
-   "added": "2026-11-18"
+   "added": "2026-11-18",
+   "notes": [
+    "Issue: the agent uses search_flights, get_stock_price, roll_d20, SYSTEM_PROMPT and build, none of them shown; the server fails on import."
+   ]
   },
   {
    "id": "shared-state",
@@ -247,7 +289,7 @@
    "child": false,
    "docPath": "shared-state",
    "reachable": "sidebar",
-   "status": null,
+   "status": "✅",
    "findings": [],
    "block": null,
    "review": {
@@ -255,7 +297,8 @@
     "approvedAt": null,
     "by": null
    },
-   "added": "2026-11-18"
+   "added": "2026-11-18",
+   "notes": []
   },
   {
    "id": "shared-state-rendering",
@@ -265,15 +308,18 @@
    "child": true,
    "docPath": "shared-state/rendering-in-app",
    "reachable": "sidebar",
-   "status": null,
-   "findings": [],
+   "status": "✅",
+   "findings": [
+    4
+   ],
    "block": null,
    "review": {
     "verdict": null,
     "approvedAt": null,
     "by": null
    },
-   "added": "2026-11-18"
+   "added": "2026-11-18",
+   "notes": []
   },
   {
    "id": "agent-readonly",
@@ -283,7 +329,7 @@
    "child": true,
    "docPath": "shared-state/agent-readonly",
    "reachable": "sidebar",
-   "status": null,
+   "status": "✅",
    "findings": [],
    "block": null,
    "review": {
@@ -291,7 +337,8 @@
     "approvedAt": null,
     "by": null
    },
-   "added": "2026-11-18"
+   "added": "2026-11-18",
+   "notes": []
   },
   {
    "id": "hitl",
@@ -373,15 +420,20 @@
    "child": false,
    "docPath": "webmcp",
    "reachable": "sidebar",
-   "status": null,
-   "findings": [],
+   "status": "N/A",
+   "findings": [
+    8
+   ],
    "block": null,
    "review": {
     "verdict": null,
     "approvedAt": null,
     "by": null
    },
-   "added": "2026-11-18"
+   "added": "2026-11-18",
+   "notes": [
+    "Note: the page says WebMCP registration is a no-op on React Native."
+   ]
   },
   {
    "id": "subagents",
@@ -409,7 +461,7 @@
    "child": false,
    "docPath": "inspector",
    "reachable": "sidebar",
-   "status": null,
+   "status": "N/A",
    "findings": [],
    "block": null,
    "review": {
@@ -417,7 +469,10 @@
     "approvedAt": null,
     "by": null
    },
-   "added": "2026-11-18"
+   "added": "2026-11-18",
+   "notes": [
+    "Note: the page says there is no React Native build of Inspector."
+   ]
   }
  ]
 }
