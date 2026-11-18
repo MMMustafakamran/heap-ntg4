@@ -18,10 +18,21 @@ mkdir -p logs
 # bundles with "Failed to get the SHA-1" (react-native-streamdown README, Bundle Mode step 3: "reload the app a
 # few times"). Warm the bundle here until Metro serves it (HTTP 200), so the app opens on the first page.
 BUNDLE_URL="http://localhost:8150/index.bundle?platform=android&dev=true&lazy=true&minify=false&app=com.mycopilotapp&modulesOnly=false&runModule=true"
+fails=0
 for i in $(seq 1 15); do
   code=$(curl -s -o /tmp/bundle.js -w '%{http_code}' --max-time 300 "$BUNDLE_URL")
   echo "bundle warm attempt $i: HTTP $code ($(wc -c < /tmp/bundle.js) bytes)"
   [ "$code" = "200" ] && break
+  echo "--- body (first 600 bytes) ---"; head -c 600 /tmp/bundle.js; echo; echo "---"
+  fails=$((fails + 1))
+  if [ "$fails" -ge 3 ]; then
+    # HARNESS fallback: a fresh Metro indexes the .worklets/ files written so far (README: "reload a few times").
+    echo "3 failed warm attempts in a row: restarting Metro on :8150"
+    pkill -f "react-native start --port 8150" || true; sleep 3
+    (cd MyCopilotApp && nohup npx react-native start --port 8150 >> ../logs/metro-8150.log 2>&1 &)
+    for j in $(seq 1 60); do curl -s -o /dev/null http://localhost:8150/status && break; sleep 2; done
+    fails=0
+  fi
   sleep 3
 done
 adb logcat -v time > logs/logcat.log 2>&1 &

@@ -436,6 +436,9 @@ jobs:
         # The doc's main.py hardcodes workspaces=["/srv/agents/w1"]; /srv needs root on Linux.
         run: sudo mkdir -p /srv/agents/w1 && sudo chown -R "$USER" /srv/agents
 
+      - name: Patch Metro for synchronous worklet indexing (HARNESS, CI copy of node_modules only)
+        run: bash tools/ci/patch-metro-worklets.sh
+
       - name: Start servers (NO_EMU=1 start-all.sh)
         run: |
           set -euo pipefail
