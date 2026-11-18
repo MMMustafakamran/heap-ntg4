@@ -1,0 +1,614 @@
+name: Daily QA run
+
+# Daily doc-QA run for Antigravity React Native (heap-ntg4), from the Antigravity-react workflow.
+#   plan    -> doc drift (held pages, DRIFT.md), evidence check, versions a new reader gets today
+#              (CopilotKit + AG-UI latest), page list split into shards balanced by page durations
+#   build   -> debug APK (x86_64) from MyCopilotApp/ with today's lockfiles, uploaded as an artifact
+#   record  -> one runner per shard: own servers (NO_EMU=1 start-all.sh), Android emulator (KVM),
+#              APK installed, dev server host = Metro on the host, records its pages
+#   report  -> narration fit/mix (saved audio only), clip checks, summary, ONE artifact run-<date>
+# No LLM, no Fish key, no voice sample in CI. Keys come from repo secrets, written to env files at
+# runtime and never printed. Harness ports only (8150-8159; never 3000/8000).
+
+on:
+  workflow_dispatch:   # manual only
+    inputs:
+      scope:
+        description: 'Pages to record when "pages" is empty: auto (all if a CopilotKit version changed vs the committed lockfile, else ❌ ⚠️ + stale ✅), all, failures (❌), or failures + partials (❌ ⚠️)'
+        required: false
+        type: choice
+        options: [auto, all, failures, failures-and-partials]
+        default: auto
+      pages:
+        description: 'Recorder page ids, comma-separated (empty = by scope)'
+        required: false
+        type: string
+        default: ''
+      shards:
+        description: 'Parallel emulator runners to split the pages across (1-20)'
+        required: false
+        type: number
+        default: 4
+      ignore_drift:
+        description: 'Record pages whose doc changed anyway (normally held for review, DRIFT.md)'
+        required: false
+        type: boolean
+        default: false
+      use_lockfile:
+        description: 'Install the committed lockfiles instead of what a new reader gets today'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: daily-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: write   # only to delete the temporary per-shard artifacts at the end
+
+env:
+  ISOLATE_PAGES: ''
+  PYTHONIOENCODING: utf-8
+  NODE_VERSION: '26'
+  ANDROID_API: '36'
+
+jobs:
+  plan:
+    name: Plan shards
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.m.outputs.matrix }}
+      date: ${{ steps.m.outputs.date }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+      - name: Install recorder (to read the page list)
+        run: npm ci --prefix autorecorder --no-audit --no-fund --ignore-scripts
+      - uses: actions/setup-python@v5
+        if: ${{ !inputs.use_lockfile }}
+        with:
+          python-version: '3.13'
+      - name: Install uv (PyPI)
+        if: ${{ !inputs.use_lockfile }}
+        run: |
+          for i in 1 2 3; do python3 -m pip install --user --quiet "uv==0.9.*" && break; echo "uv install attempt $i failed; retrying"; sleep 10; done
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Versions a new reader gets today (CopilotKit + AG-UI at latest, the rest within range)
+        if: ${{ !inputs.use_lockfile }}
+        env:
+          UV_PYTHON_DOWNLOADS: never
+        run: node .qa/tools/versions.mjs --npm=MyCopilotApp --uv=backend --out=plan-out || echo "::warning::versions step crashed; shards install the committed lockfiles"
+      - name: Restore page durations from earlier runs (shard balancing)
+        uses: actions/cache/restore@v4
+        with:
+          path: page-durations.json
+          key: page-durations-${{ github.run_id }}
+          restore-keys: page-durations-
+      - id: m
+        env:
+          PAGES: ${{ inputs.pages }}
+          SCOPE: ${{ inputs.scope || 'auto' }}
+          USE_LOCKFILE: ${{ inputs.use_lockfile || false }}
+          SHARDS: ${{ inputs.shards || 4 }}
+          IGNORE_DRIFT: ${{ inputs.ignore_drift || false }}
+        run: |
+          set -euo pipefail
+          (cd autorecorder && npx tsx -e "import('./config/pages.config.ts').then(m=>{const s=m.SKIP_RECORDING||{};console.log(JSON.stringify(m.PAGES.filter(p=>!s[p.id]).map(p=>({id:p.id,docPath:p.docPath??null}))))})" | tail -1) > recorder-pages.json
+          if [ -z "${PAGES// /}" ]; then
+            # Scope (QA-RULES section 9): only pages a reader reaches by clicking through the docs.
+            # Recorder pages are joined to assignment.json by docPath: reachable sidebar / in-content
+            # are recorded, none is skipped, a docPath assignment.json doesn't list is kept (warning).
+            # scope=auto (default): every page when a CopilotKit package (@copilotkit/* on npm, copilotkit
+            # on PyPI) resolves today to another version than the committed lockfile, else only ❌ ⚠️.
+            # use_lockfile = no change; versions.json missing or unreadable = all (safe side, warning).
+            if [ "$SCOPE" = "auto" ]; then
+              SCOPE=$(python3 - <<'PY'
+          import json, os, re, sys
+          CK = re.compile(r"^(@copilotkit/|copilotkit$)", re.I)
+          def say(line):
+              s = os.environ.get("GITHUB_STEP_SUMMARY")
+              if s:
+                  with open(s, "a", encoding="utf8") as f:
+                      f.write(line + "\n\n")
+              print(line, file=sys.stderr)
+          if os.environ.get("USE_LOCKFILE") == "true":
+              say("**Scope auto: failures-and-partials** (❌ ⚠️ only): use_lockfile=true, the committed lockfiles are installed, so no CopilotKit change.")
+              print("failures-and-partials"); sys.exit(0)
+          try:
+              d = json.load(open("plan-out/versions.json", encoding="utf8"))
+              rows = d["rows"]
+          except Exception as e:
+              print(f"::warning::scope auto: plan-out/versions.json missing or unreadable ({type(e).__name__}); recording every page", file=sys.stderr)
+              say("**Scope auto: all pages**: the versions check wrote no readable versions.json, so a CopilotKit change is unknown (safe side).")
+              print("all"); sys.exit(0)
+          ck = [r for r in rows if CK.match(r.get("name") or "")]
+          changed, seen = [], set()
+          for r in ck:
+              if r.get("committed") != r.get("today") and (r["name"], r.get("committed"), r.get("today")) not in seen:
+                  seen.add((r["name"], r.get("committed"), r.get("today")))
+                  changed.append(r)
+          notes = d.get("notes") or []
+          extra = (" Not re-resolved (committed lockfile used): " + "; ".join(n.split(":")[0] for n in notes) + ".") if notes else ""
+          if changed:
+              lst = ", ".join(f"{r['name']} {r.get('committed') or '-'} → {r.get('today')} ({r.get('dir')})" for r in changed[:6])
+              more = f" and {len(changed) - 6} more" if len(changed) > 6 else ""
+              say(f"**Scope auto: all pages**: CopilotKit changed since the committed lockfile: {lst}{more}.{extra}")
+              print("all")
+          else:
+              if not ck:
+                  print("::warning::scope auto: versions.json lists no CopilotKit package (a re-resolve failed?); treating it as no change", file=sys.stderr)
+              say(f"**Scope auto: failures-and-partials** (❌ ⚠️, plus ✅ pages last filmed 4+ days ago): no CopilotKit change since the committed lockfile ({len(ck)} CopilotKit rows checked).{extra}")
+              print("failures-and-partials")
+          PY
+              )
+              export SCOPE SCOPE_AUTO=1
+            fi
+            PAGES=$(python3 - <<'PY'
+          import json, sys, datetime
+          rec = json.load(open("recorder-pages.json"))
+          norm = lambda s: (s or "").strip("/").lower()
+          import os
+          scope = os.environ.get("SCOPE", "all")
+          want = {"failures": ("❌",), "failures-and-partials": ("❌", "⚠️")}.get(scope)
+          status = {norm(p.get("docPath")): p.get("status") for p in json.load(open("assignment.json", encoding="utf8"))["pages"]}
+          reach = {norm(p.get("docPath")): ("excluded" if p.get("excluded") else p.get("reachable")) for p in json.load(open("assignment.json", encoding="utf8"))["pages"]}
+          # Owner rule (WORKFLOW.md B2): when scope=auto found no CopilotKit change, also film every ✅ page whose
+          # newest clip (links[].filmed, YYYY-MM-DD) is missing or 4+ days before today, so working pages stay fresh.
+          stale = set()
+          if scope == "failures-and-partials" and os.environ.get("SCOPE_AUTO") == "1":
+              today = datetime.date.today()
+              for p in json.load(open("assignment.json", encoding="utf8"))["pages"]:
+                  if p.get("status") != "✅":
+                      continue
+                  ds = [l["filmed"] for l in p.get("links", []) if l.get("filmed")]
+                  if not ds or (today - datetime.date.fromisoformat(max(ds))).days >= 4:
+                      stale.add(norm(p.get("docPath")))
+          keep, fresh = [], []
+          for r in rec:
+              st = reach.get(norm(r["docPath"]))
+              if want and status.get(norm(r["docPath"])) not in want and norm(r["docPath"]) not in stale:
+                  continue
+              if norm(r["docPath"]) in stale and st in ("sidebar", "in-content"):
+                  fresh.append(r["id"])
+              if st in ("sidebar", "in-content"):
+                  keep.append(r["id"])
+              elif st is None:
+                  print(f"::warning::{r['id']} ({r['docPath']}) is not in assignment.json; recording it anyway", file=sys.stderr)
+                  keep.append(r["id"])
+              else:
+                  print(f"skip {r['id']} ({r['docPath']}): reachable={st}", file=sys.stderr)
+          if stale:
+              s = os.environ.get("GITHUB_STEP_SUMMARY")
+              line = f"**Working pages due for a new clip** (✅, last filmed 4+ days ago or never): {len(fresh)}" + (f": {', '.join(fresh)}" if fresh else "")
+              print(line, file=sys.stderr)
+              if s:
+                  with open(s, "a", encoding="utf8") as f:
+                      f.write(line + "\n\n")
+          print(",".join(keep))
+          PY
+          )
+          fi
+          echo "pages: $PAGES"
+          # Doc drift (DRIFT.md): pages whose doc changed since doc-snapshot/ are held, not recorded.
+          mkdir -p plan-out
+          if [ "$IGNORE_DRIFT" = "true" ]; then
+            node .qa/tools/drift.mjs --out=plan-out/drift --recorder=recorder-pages.json > plan-out-drift.log 2>&1 || true
+            echo "ignore_drift: held pages are recorded too"
+          elif node .qa/tools/drift.mjs --out=plan-out/drift --recorder=recorder-pages.json --pages="$PAGES" > plan-out-drift.log 2>&1 && [ -f plan-out/drift/keep.txt ]; then
+            PAGES=$(cat plan-out/drift/keep.txt)
+          else
+            echo "::warning::drift check crashed: drift unknown, recording every page"; tail -n 20 plan-out-drift.log || true
+          fi
+          if [ -f plan-out/drift/held.md ]; then cat plan-out/drift/held.md >> "$GITHUB_STEP_SUMMARY"; fi
+          echo "pages after drift: $PAGES"
+          # Evidence check: a finding clip whose FINDING_EVIDENCE text is not on the live doc page would
+          # film a skipped drag-select. Those pages are held like drift. A tool fault never blocks the run.
+          rm -f plan-out/evidence-keep.txt
+          node .qa/tools/evidence_check.mjs --pages="$PAGES" --out=plan-out --summary="$GITHUB_STEP_SUMMARY" > plan-out-evidence.log 2>&1 || true
+          cat plan-out-evidence.log
+          if [ -f plan-out/evidence-keep.txt ]; then PAGES=$(cat plan-out/evidence-keep.txt)
+          else echo "::warning::evidence check wrote no result: recording without it"; fi
+          echo "pages after evidence check: $PAGES"
+          python3 - "$PAGES" "$SHARDS" "$ISOLATE_PAGES" >> "$GITHUB_OUTPUT" <<'PY'
+          import json, sys, datetime
+          pages = [p.strip() for p in sys.argv[1].split(",") if p.strip()]
+          n = max(1, min(20, int(float(sys.argv[2] or 1))))
+          iso = {p.strip() for p in sys.argv[3].split(",") if p.strip()}
+          normal = [p for p in pages if p not in iso]
+          n = min(n, max(1, len(normal)))
+          # Balance by measured recording time (page-durations.json from the last run, if cached):
+          # longest page first onto the shard with the least total time. Unknown pages = median.
+          try:
+              dur = {k: float(v) for k, v in json.load(open("page-durations.json")).items()}
+          except Exception:
+              dur = {}
+          known = sorted(dur[p] for p in normal if p in dur)
+          default = known[len(known) // 2] if known else 150.0
+          bins = [[0.0, i, []] for i in range(n)]
+          for p in sorted(normal, key=lambda p: -dur.get(p, default)):
+              b = min(bins, key=lambda b: (b[0], b[1]))
+              b[0] += dur.get(p, default); b[2].append(p)
+          print("estimated shard seconds: " + ", ".join(str(round(b[0])) for b in bins), file=sys.stderr)
+          shards = [{"shard": str(b[1] + 1), "pages": ",".join(b[2]), "isolated": False} for b in bins]
+          shards = [s for s in shards if s["pages"]]
+          shards += [{"shard": p, "pages": p, "isolated": True} for p in pages if p in iso]
+          print("matrix=" + json.dumps({"include": shards}))
+          print("date=" + datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d"))
+          PY
+          cat "$GITHUB_OUTPUT"
+
+      - name: Upload plan (drift, today's lockfiles, versions)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: plan
+          path: plan-out/
+          if-no-files-found: ignore
+          retention-days: 1
+
+  build:
+    name: Build APK
+    needs: plan
+    if: contains(needs.plan.outputs.matrix, '"pages"')
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - name: Today's lockfiles from the plan job
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: plan
+          path: plan-out
+      - name: Use today's lockfiles (absent = the committed ones)
+        run: |
+          if [ -d plan-out/resolved ]; then cp -rv plan-out/resolved/. . ; else echo "no resolved lockfiles: installing the committed ones"; fi
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-37.0 build-tools;37.0.0 ndk;28.2.13676358 ndk;27.1.12297006'
+      - name: Cache MyCopilotApp node_modules
+        id: nm-app
+        uses: actions/cache@v4
+        with:
+          path: MyCopilotApp/node_modules
+          key: nm-app-${{ runner.os }}-node${{ env.NODE_VERSION }}-v1-${{ hashFiles('MyCopilotApp/package-lock.json') }}
+      - name: Install app dependencies
+        if: steps.nm-app.outputs.cache-hit != 'true'
+        run: npm ci --prefix MyCopilotApp --no-audit --no-fund
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-v1-${{ hashFiles('MyCopilotApp/android/**/*.gradle*', 'MyCopilotApp/android/gradle/wrapper/gradle-wrapper.properties', 'MyCopilotApp/package-lock.json') }}
+          restore-keys: gradle-${{ runner.os }}-v1-
+      - name: assembleDebug (x86_64, as in gradle.properties)
+        working-directory: MyCopilotApp/android
+        run: |
+          chmod +x gradlew
+          set -o pipefail
+          ./gradlew assembleDebug --no-daemon --stacktrace -PreactNativeArchitectures=x86_64 2>&1 | tee ../../gradle.log
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk
+          path: MyCopilotApp/android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 3
+      - name: Upload Gradle log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-log
+          path: gradle.log
+          retention-days: 7
+
+  record:
+    name: Record ${{ matrix.shard }}
+    needs: [plan, build]
+    if: contains(needs.plan.outputs.matrix, '"pages"') && needs.build.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 170
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      CPK_INTELLIGENCE_API_KEY: ${{ secrets.CPK_INTELLIGENCE_API_KEY }}
+      # HARNESS: Gemini key/model pool (tools/gemini_pool.py on :8159, started by start-all.sh).
+      GEMINI_POOL_KEYS: ${{ secrets.GEMINI_POOL_KEYS || secrets.GEMINI_API_KEY }}
+      GEMINI_POOL_OPENAI_KEY: ${{ secrets.OPENAI_API_KEY }}
+      # The agents' own overrides (backend/agents/_common.py): the defaults live under /data.
+      ANTIGRAVITY_WORKSPACE: /tmp/antigravity/ws
+      ANTIGRAVITY_SAVE_DIR: /tmp/antigravity/sessions
+    steps:
+      - uses: actions/checkout@v4
+      - name: Today's lockfiles from the plan job
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: plan
+          path: plan-out
+      - name: Use today's lockfiles (absent = the committed ones)
+        run: |
+          if [ -d plan-out/resolved ]; then cp -rv plan-out/resolved/. . ; else echo "no resolved lockfiles: installing the committed ones"; fi
+      - name: APK from the build job
+        uses: actions/download-artifact@v4
+        with:
+          name: apk
+          path: apk
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Install uv (PyPI)
+        run: |
+          for i in 1 2 3; do python3 -m pip install --user --quiet "uv==0.9.*" && break; echo "uv install attempt $i failed; retrying"; sleep 10; done
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Sync backend (uv, runner Python 3.13)
+        env:
+          UV_PYTHON_DOWNLOADS: never
+        run: cd backend && uv sync --python "$(command -v python3.13 || command -v python3)"
+
+      - name: Cache node_modules + Playwright browser
+        id: nm-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            MyCopilotApp/node_modules
+            autorecorder/node_modules
+            ~/.cache/ms-playwright
+          key: nm-rec-${{ runner.os }}-node${{ env.NODE_VERSION }}-v1-${{ hashFiles('MyCopilotApp/package-lock.json', 'autorecorder/package-lock.json') }}
+      - name: Install dependencies
+        timeout-minutes: 25
+        run: |
+          set -euo pipefail
+          for d in MyCopilotApp autorecorder; do
+            if [ "${{ steps.nm-cache.outputs.cache-hit }}" = "true" ] && [ -d "$d/node_modules" ]; then echo "$d: node_modules from cache"; continue; fi
+            if [ -f "$d/package-lock.json" ]; then npm ci --prefix "$d" --no-audit --no-fund
+            else npm install --prefix "$d" --no-audit --no-fund; fi
+          done
+          echo 'Acquire::Retries "3"; Acquire::http::Timeout "30"; Acquire::https::Timeout "30";' | sudo tee /etc/apt/apt.conf.d/99net-timeouts > /dev/null
+          # Doc tour / IDE / Notepad are filmed in Chromium (as in the React recorder); the device via adb.
+          for i in 1 2 3; do (cd autorecorder && timeout 300 npx playwright install --with-deps chromium) && break; echo "playwright install attempt $i failed; retrying"; sleep 10; done
+          command -v xvfb-run || sudo apt-get install -y xvfb
+          (cd autorecorder && node -e "require('node-pty'); console.log('node-pty ok')") || echo "::warning::node-pty not loadable: the failure terminal will not work"
+
+      - name: Write env files (secrets from repo settings, never logged)
+        run: |
+          set -eu
+          [ -n "${GEMINI_API_KEY:-}" ] || echo "::warning::secret GEMINI_API_KEY is not set; the doc agents will fail"
+          [ -n "${OPENAI_API_KEY:-}" ] || echo "::warning::secret OPENAI_API_KEY is not set; the Copilot Runtime will fail"
+          umask 077
+          # HARNESS: the real Gemini keys live in the pool on :8159; agents get a dummy key + base URL (doc code unchanged).
+          printf 'GEMINI_API_KEY=pool\nGOOGLE_GEMINI_BASE_URL=http://localhost:8159\n' > backend/.env
+          # Doc: export OPENAI_API_KEY before npx tsx server.ts; start-all.sh sources runtime.env.
+          printf 'OPENAI_API_KEY=%s\n' "$OPENAI_API_KEY" > runtime.env
+          if [ -n "${CPK_INTELLIGENCE_API_KEY:-}" ]; then printf 'CPK_INTELLIGENCE_API_KEY=%s\n' "$CPK_INTELLIGENCE_API_KEY" >> runtime.env; fi
+
+      - name: Make the doc's agent workspace path writable
+        # The doc's main.py hardcodes workspaces=["/srv/agents/w1"]; /srv needs root on Linux.
+        run: sudo mkdir -p /srv/agents/w1 && sudo chown -R "$USER" /srv/agents
+
+      - name: Start servers (NO_EMU=1 start-all.sh)
+        run: |
+          set -euo pipefail
+          mkdir -p logs
+          # NO_EMU skips every adb/emulator call (its ANDROID_HOME default is Windows-only).
+          NO_EMU=1 nohup bash start-all.sh > logs/start-all.log 2>&1 &
+          for hp in 8159/ 8152/ 8154/ 8155/ 8156/ 8157/ 8158/ 8151/ 8153/ 8150/status; do
+            port=${hp%%/*}; path=/${hp#*/}
+            ok=
+            for i in $(seq 1 60); do
+              curl -s -o /dev/null "http://localhost:$port$path" && ok=1 && break
+              sleep 5
+            done
+            if [ -z "$ok" ]; then
+              case "$port" in 8150) echo "::error::Metro :8150 did not come up"; tail -n 40 logs/*.log; exit 1 ;; esac
+              echo "::warning::server on :$port did not come up; pages that use it will show the error"; tail -n 40 logs/*.log
+              continue
+            fi
+            echo "up: :$port$path"
+          done
+          # Warm the bundle so the first page does not wait on Metro's cold transform.
+          curl -s -o /dev/null --max-time 600 "http://localhost:8150/index.bundle?platform=android&dev=true&minify=false" && echo "bundle warmed" || echo "::warning::bundle warm-up failed"
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Record on the emulator
+        id: rec
+        uses: reactivecircus/android-emulator-runner@v2
+        env:
+          PAGES: ${{ matrix.pages }}
+        with:
+          api-level: ${{ env.ANDROID_API }}
+          arch: x86_64
+          target: google_apis
+          ram-size: 4096M
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          emulator-boot-timeout: 900
+          script: bash tools/ci/emulator-record.sh
+
+      - uses: actions/setup-python@v5
+        if: always()
+        with:
+          python-version: '3.12'
+      - name: Cache static ffmpeg
+        if: always()
+        uses: actions/cache@v4
+        with:
+          path: ~/ffmpeg-static
+          key: ffmpeg-static-linux64-v1
+      - name: Clip checks for this shard (the report job reuses them)
+        if: always()
+        run: |
+          set +e
+          if [ ! -x ~/ffmpeg-static/ffmpeg ]; then
+            mkdir -p ~/ffmpeg-static
+            curl -fsSL --retry 3 https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz | tar -xJ --strip-components=1 -C ~/ffmpeg-static
+          fi
+          export PATH="$HOME/ffmpeg-static:$PATH"
+          python -m pip install -q numpy
+          python .qa/tools/ci_post.py --checks-only --videos autorecorder/videos --out out/run || echo "::warning::shard checks failed; the report job checks these clips itself"
+          exit 0
+
+      - name: Upload shard (temporary)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shard-${{ matrix.shard }}
+          path: |
+            autorecorder/videos/
+            logs/
+          if-no-files-found: ignore
+          retention-days: 1
+
+  report:
+    name: Report
+    needs: [plan, build, record]
+    if: always() && needs.plan.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Cache static ffmpeg
+        id: ffmpeg-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/ffmpeg-static
+          key: ffmpeg-static-linux64-v1
+      - name: Install ffmpeg (static build, cached) + numpy
+        run: |
+          set -euo pipefail
+          if [ ! -x ~/ffmpeg-static/ffmpeg ]; then
+            mkdir -p ~/ffmpeg-static
+            curl -fsSL --retry 3 https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz \
+              | tar -xJ --strip-components=1 -C ~/ffmpeg-static
+          fi
+          echo "$HOME/ffmpeg-static" >> "$GITHUB_PATH"
+          python -m pip install -q numpy
+          ~/ffmpeg-static/ffmpeg -version | head -1
+
+      - name: Drift and versions from the plan job
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: plan
+          path: out/run
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: shard-*
+          path: shards
+
+      - name: Merge shards
+        run: |
+          set -euo pipefail
+          mkdir -p autorecorder/videos out/run/logs
+          python - <<'PY'
+          import json, shutil
+          from pathlib import Path
+          dst = Path("autorecorder/videos"); merged = {"passed": 0, "failed": 0, "results": [], "shards": []}
+          for sh in sorted(Path("shards").glob("shard-*")):
+              v = sh / "autorecorder" / "videos"
+              if v.is_dir():
+                  for f in v.iterdir():
+                      if f.name == "RECORD_RESULTS.json":
+                          r = json.loads(f.read_text(encoding="utf-8"))
+                          merged["passed"] += r.get("passed", 0); merged["failed"] += r.get("failed", 0)
+                          merged["results"] += r.get("results", []); merged["shards"].append(sh.name)
+                      elif f.is_dir():
+                          shutil.copytree(f, dst / f.name, dirs_exist_ok=True)
+                      else:
+                          shutil.copy2(f, dst / f.name)
+              if (sh / "logs").is_dir():
+                  shutil.copytree(sh / "logs", Path("out/run/logs") / sh.name, dirs_exist_ok=True)
+          if merged["shards"]:
+              (dst / "RECORD_RESULTS.json").write_text(json.dumps(merged, indent=2, ensure_ascii=False), encoding="utf-8")
+          print(f"merged {len(merged['shards'])} shard(s): {merged['passed']} passed, {merged['failed']} failed")
+          PY
+
+      - name: Restore earlier page durations
+        uses: actions/cache/restore@v4
+        with:
+          path: page-durations.json
+          key: page-durations-${{ github.run_id }}
+          restore-keys: page-durations-
+      - name: Update page durations (recording seconds per page, for the next run's shard balancing)
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("page-durations.json")
+          d = json.loads(p.read_text()) if p.exists() else {}
+          r = Path("autorecorder/videos/RECORD_RESULTS.json")
+          for x in (json.loads(r.read_text(encoding="utf-8")).get("results", []) if r.exists() else []):
+              if x.get("id") and x.get("durationSec"):
+                  d[x["id"]] = x["durationSec"]
+          p.write_text(json.dumps(d, indent=1, sort_keys=True))
+          print(f"{len(d)} page durations")
+          PY
+      - name: Save page durations
+        uses: actions/cache/save@v4
+        with:
+          path: page-durations.json
+          key: page-durations-${{ github.run_id }}
+
+      - name: Narration fit/mix + clip checks + summary
+        run: |
+          python .qa/tools/ci_post.py --videos autorecorder/videos --out out/run \
+            --drift out/run/drift/drift.md --versions out/run/versions.md --title "${{ github.event.repository.name }} ${{ needs.plan.outputs.date }}"
+          cat out/run/summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Assemble run folder
+        if: always()
+        run: |
+          mkdir -p out/run/videos
+          [ -d autorecorder/videos ] && cp -r autorecorder/videos/. out/run/videos/ || true
+          du -sh out/run || true
+
+      - name: Upload run-${{ needs.plan.outputs.date }}
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: run-${{ needs.plan.outputs.date }}
+          path: out/run/
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 0   # webm/mp4/jpg are already compressed
+
+      - name: Delete temporary shard artifacts
+        if: always()
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: |
+            shard-*
+            plan
+            apk
+          failOnError: false

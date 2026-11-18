@@ -1,1 +1,11 @@
-{ "quickstart": { "prompt": "Say hello in one short sentence", "tap": "Send" } }
+{
+ "quickstart": { "prompt": "Say hello in one short sentence", "tap": "Send" },
+ "markdown": { "prompt": "Reply with a heading, a bulleted list, bold text and a link", "tap": "Send" },
+ "headless-ui": { "prompt": "Plan my day", "tap": "Send" },
+ "prebuilt-components": { "prompt": "What can you do?", "tap": "↑" },
+ "frontend-tools": { "prompt": "show only open tasks", "tap": "↑" },
+ "tool-based": { "prompt": "show me a bar chart of quarterly sales", "tap": "↑" },
+ "tool-rendering": { "prompt": "what's the weather in San Francisco", "tap": "↑" },
+ "webmcp": { "prompt": "hi", "tap": "Send" },
+ "inspector": { "prompt": "hi", "tap": "Send" }
+}

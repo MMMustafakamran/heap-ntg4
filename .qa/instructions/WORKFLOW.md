@@ -43,7 +43,7 @@ Agents may (owner, 2026-11-13): create both repos above, set the main repo's CI 
    | CopilotKit version changed since the committed lockfile | **every page** (✅ ⚠️ ❌) |
    | No version change | ❌ and ⚠️ pages, **plus every ✅ page whose last clip (`links[].filmed`) is 4 or more days old**: working pages never go more than 4–5 days without a new clip |
    | Any page with doc drift | **held** (not filmed) until step 3 |
-   | `quickstartBlocked` repo | only the quickstart ([QA-RULES.md](QA-RULES.md) §8b) |
+   | `quickstartBlocked` repo | every page, same as any repo (owner, 2026-11-18; [QA-RULES.md](QA-RULES.md) §8b) |
    CI installs npm `latest` CopilotKit / AG-UI and shows it in `VERSIONS.md` in the Quickstart IDE segment.
 3. **Apply drift first.** Read `drift/drift.md` and `versions.md` from the run. For every held page, working pages too: apply the doc change to the harness verbatim ([DRIFT.md](DRIFT.md) §3), probe, update status/finding if the result changed, `drift.mjs --sync=<docPath>`, commit, push, then film just those pages: `-f pages=<ids>`.
 4. **Download** that day's run(s) only, never an older run.
