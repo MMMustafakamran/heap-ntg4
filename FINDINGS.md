@@ -45,3 +45,54 @@ Stack: @copilotkit/react-native 1.89.0, @copilotkit/runtime 1.89.0, react-native
 
 **Build-only**
 - #8 The snippet calls `searchOrders(status)`, never defined (TS2304). The page itself says WebMCP is a no-op on React Native.
+
+### [Multimodal Attachments](https://docs.copilotkit.ai/react-native/google-antigravity/multimodal-attachments)
+
+**Dev blockers**
+
+**#9 The quick start can't attach a photo and has no place for the answer.**
+- **Doc:** `<CopilotChat agentId="default" attachments={{ enabled: true }}>` with `{/* Your message list goes here */}`.
+- **Result:** on load a red LogBox error "Text strings must be rendered within a <Text> component."; tapping **Attach** opens no picker (app stays in front, no log line); the composer is drawn under the status bar; there is no message list, so the agent's answer could never show. The page's own callout says the default reader fails on today's `expo-file-system` (58.0.14 installed) but the quick start never plugs in the legacy reader.
+
+### [HITL Overview](https://docs.copilotkit.ai/react-native/google-antigravity/human-in-the-loop)
+
+**Dev blockers**
+
+**#10 Picking a slot never completes: no confirmation, card stays open.**
+- **Doc:** "Tap a slot, and the agent confirms the time you picked."
+- **Result:** the card "Pick a time for Launch" with "Tue 9 AM" / "Wed 2 PM" / "None of these work" appears; tapping a slot sends the answer (a second `POST /hitl` reaches the agent, model replies 200) but the card never shows `Done:` and no assistant message appears. Consistent over 5 runs. The same backend works on the web Antigravity page, so this may be a `@copilotkit/react-native` bug rather than the text.
+- Minor: the agent prompt says "call the frontend-provided `book_call` tool" while the frontend registers `name: "schedule_meeting"` (the model still calls it).
+
+### [Pausing the Agent for Input](https://docs.copilotkit.ai/react-native/google-antigravity/human-in-the-loop/useInterrupt)
+
+**Dev blockers**
+
+**#11 No Antigravity backend, and the picker never resumes.**
+- **Doc:** "**Not available for Google Antigravity yet.** This sample comes from the showcase's `gen-ui-interrupt` demo, and Google Antigravity doesn't have it yet."; "Tap **Tomorrow at 09:00**, and the agent continues with your choice."
+- **Result:** with a harness agent the picker shows ("Tomorrow at 09:00" / "Cancel"); tapping it changes nothing (same as #10).
+
+### [Headless Interrupts](https://docs.copilotkit.ai/react-native/google-antigravity/human-in-the-loop/headless)
+
+**Dev blockers**
+
+**#12 Choosing a slot never resumes the run.**
+- **Doc:** "Tap a slot, and the agent continues with your choice."
+- **Result:** "Pick a slot for …" with "TUE 3 PM" / "WED 10 AM" / "NONE OF THESE WORK" shows above the chat; tapping a slot does nothing visible (same as #10).
+- Minor: `./src/ChatScreen` is imported but never shown.
+
+### [Governed Action Approval UI](https://docs.copilotkit.ai/react-native/google-antigravity/human-in-the-loop/governed-actions)
+
+**Dev blockers**
+
+**#13 The only agent is LangGraph, and Reject never completes.**
+- **Doc:** "In a LangGraph Python agent, the tool calls `interrupt()`…" plus a LangGraph `agent.py` (`deliver_email` undefined); "Tap **Reject**, and the agent replies that it did not send the email."
+- **Result:** with a harness Antigravity agent the card "User approval required" / "Tool: send_email" / "APPROVE AND RUN" / "REJECT" shows; tapping REJECT leaves the card and no reply (same as #10).
+
+### [Sub-agents](https://docs.copilotkit.ai/react-native/google-antigravity/multi-agent/subagents)
+
+**Dev blockers**
+
+**#14 No frontend for the delegation log, and the server needs an uninstalled package.**
+- **Doc:** "On the frontend, the delegation log is a reactive render of the `delegations` slot." (no snippet follows); install step `pip install ag-ui-antigravity google-antigravity`.
+- **Result:** the reader has to write the whole React Native UI; the agent module imports `httpx`, which the install step never names (same as the web page). With a harness log (`useAgent` + `agent.state.delegations`) and `httpx` added, 3 delegations complete (research, writing, critique).
+- Minor: text refers to "The LangGraph excerpt above" and "the Built-in Agent example", neither on the page.

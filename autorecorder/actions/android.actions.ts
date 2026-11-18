@@ -34,6 +34,32 @@ but TOOLS has search_flights get_stock_price roll_d20 and SYSTEM_PROMPT and buil
 so the agent file fails on import, nameerror, server never starts
 build comes from agents _common which isnt published anywhere
 only works after copying the missing tools and prompt from somewhere else`,
+  'multimodal-attachments': `page says attach a photo and the agent answers about it
+but tapping attach opens nothing, no picker at all
+and a red error shows on load, text strings must be rendered within a text component
+quick start has no message list either so the answer could never show
+the callout even says the default reader fails on todays expo file system`,
+  hitl: `page says tap a slot and the agent confirms the time u picked
+the card shows up fine, tue 9 am wed 2 pm none of these work
+but tapping a slot does nothing visible, no done line, no reply, card stays open
+the answer does reach the agent so its the react native side not finishing
+same backend works on the web page`,
+  'use-interrupt': `page says tap tomorrow at 09 00 and the agent continues
+but the backend section says not available for google antigravity yet
+so theres no agent to use, had to write one myself
+even then the picker shows and tapping it changes nothing`,
+  'hitl-headless': `page says tap a slot and the agent continues with ur choice
+slot buttons show above the chat fine
+tapping one does nothing, run never resumes
+also imports src chatscreen which is never shown on the page`,
+  'governed-actions': `page says tap reject and the agent replies it didnt send the email
+but the only agent code is langgraph, interrupt and deliver_email, nothing for antigravity
+with my own antigravity agent the approval card shows
+tapping reject leaves the card there and no reply comes`,
+  subagents: `page says the delegation log renders live as the supervisor calls sub agents
+but theres no react native code for the log at all, just one sentence
+had to write the whole frontend myself
+and the agent imports httpx which the install step never installs`,
 };
 export const FINDING_EVIDENCE: Record<string, DocEvidence[]> = {
   quickstart: [
@@ -41,6 +67,24 @@ export const FINDING_EVIDENCE: Record<string, DocEvidence[]> = {
   ],
   'tool-rendering': [
     { text: 'TOOLS = [get_weather, search_flights, get_stock_price, roll_d20]', caption: 'Three tools, SYSTEM_PROMPT and build never defined (FINDINGS.md #2)' },
+  ],
+  'multimodal-attachments': [
+    { text: 'Your message list goes here', caption: 'No message list; Attach opens nothing (FINDINGS.md #9)' },
+  ],
+  hitl: [
+    { text: 'Tap a slot, and the agent confirms the time you picked', caption: 'Tapping a slot never completes (FINDINGS.md #10)' },
+  ],
+  'use-interrupt': [
+    { text: 'Not available for Google Antigravity yet', caption: 'No Antigravity backend (FINDINGS.md #11)' },
+  ],
+  'hitl-headless': [
+    { text: 'Tap a slot, and the agent continues with your choice', caption: 'Run never resumes (FINDINGS.md #12)' },
+  ],
+  'governed-actions': [
+    { text: 'In a LangGraph Python agent, the tool calls', caption: 'LangGraph-only agent (FINDINGS.md #13)' },
+  ],
+  subagents: [
+    { text: 'On the frontend, the delegation log is a reactive render of the', caption: 'No frontend code for the log (FINDINGS.md #14)' },
   ],
 };
 /** Level 2 (already reported): clip ends after the demo. */

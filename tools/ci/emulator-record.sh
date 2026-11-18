@@ -14,6 +14,16 @@ adb shell "run-as com.mycopilotapp sh -c 'mkdir -p shared_prefs && echo \"<?xml 
 adb shell "run-as com.mycopilotapp cat shared_prefs/com.mycopilotapp_preferences.xml"; echo
 adb reverse tcp:8150 tcp:8150 || true   # belt and braces: localhost:8150 also reaches Metro
 mkdir -p logs
+# HARNESS: react-native-worklets Bundle Mode writes .worklets/<id>.js on the fly and Metro fails the first
+# bundles with "Failed to get the SHA-1" (react-native-streamdown README, Bundle Mode step 3: "reload the app a
+# few times"). Warm the bundle here until Metro serves it (HTTP 200), so the app opens on the first page.
+BUNDLE_URL="http://localhost:8150/index.bundle?platform=android&dev=true&lazy=true&minify=false&app=com.mycopilotapp&modulesOnly=false&runModule=true"
+for i in $(seq 1 15); do
+  code=$(curl -s -o /tmp/bundle.js -w '%{http_code}' --max-time 300 "$BUNDLE_URL")
+  echo "bundle warm attempt $i: HTTP $code ($(wc -c < /tmp/bundle.js) bytes)"
+  [ "$code" = "200" ] && break
+  sleep 3
+done
 adb logcat -v time > logs/logcat.log 2>&1 &
 node autorecorder/scripts/write-versions.mjs 2>/dev/null || echo "::warning::write-versions failed or missing"
 cd autorecorder

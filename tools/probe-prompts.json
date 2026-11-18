@@ -1,11 +1,128 @@
 {
- "quickstart": { "prompt": "Say hello in one short sentence", "tap": "Send" },
- "markdown": { "prompt": "Reply with a heading, a bulleted list, bold text and a link", "tap": "Send" },
- "headless-ui": { "prompt": "Plan my day", "tap": "Send" },
- "prebuilt-components": { "prompt": "What can you do?", "tap": "↑" },
- "frontend-tools": { "prompt": "show only open tasks", "tap": "↑" },
- "tool-based": { "prompt": "show me a bar chart of quarterly sales", "tap": "↑" },
- "tool-rendering": { "prompt": "what's the weather in San Francisco", "tap": "↑" },
- "webmcp": { "prompt": "hi", "tap": "Send" },
- "inspector": { "prompt": "hi", "tap": "Send" }
+ "quickstart": {
+  "prompt": "Say hello in one short sentence",
+  "tap": "Send"
+ },
+ "markdown": {
+  "prompt": "Reply with a heading, a bulleted list, bold text and a link",
+  "tap": "Send"
+ },
+ "headless-ui": {
+  "prompt": "Plan my day",
+  "tap": "Send"
+ },
+ "prebuilt-components": {
+  "prompt": "What can you do?",
+  "tap": "↑"
+ },
+ "frontend-tools": {
+  "prompt": "show only open tasks",
+  "tap": "↑"
+ },
+ "tool-based": {
+  "prompt": "show me a bar chart of quarterly sales",
+  "tap": "↑"
+ },
+ "tool-rendering": {
+  "prompt": "what's the weather in San Francisco",
+  "tap": "↑"
+ },
+ "webmcp": {
+  "prompt": "hi",
+  "tap": "Send"
+ },
+ "inspector": {
+  "prompt": "hi",
+  "tap": "Send"
+ },
+ "shared-state": {
+  "prompt": "Remember that I love hiking",
+  "tap": "↑"
+ },
+ "shared-state-rendering": {
+  "prompt": "Add a task called Write the launch post",
+  "tap": "↑"
+ },
+ "agent-readonly": {
+  "prompt": "What is my name?",
+  "tap": "↑"
+ },
+ "multimodal-attachments": {
+  "prompt": "what is in this image?",
+  "tap": "Send",
+  "then": [
+   {
+    "tap": "Attach"
+   },
+   {
+    "wait": 8
+   }
+  ]
+ },
+ "hitl": {
+  "prompt": "Book a meeting with Alex about the launch.",
+  "tap": "↑",
+  "then": [
+   {
+    "waitfor": "Tue 9 AM"
+   },
+   {
+    "tap": "Tue 9 AM"
+   },
+   {
+    "wait": 30
+   }
+  ]
+ },
+ "use-interrupt": {
+  "prompt": "Book a call with me.",
+  "tap": "↑",
+  "then": [
+   {
+    "waitfor": "Tomorrow at 09:00"
+   },
+   {
+    "tap": "Tomorrow at 09:00"
+   },
+   {
+    "wait": 30
+   }
+  ]
+ },
+ "hitl-headless": {
+  "prompt": "Book a call about onboarding.",
+  "tap": "Send",
+  "then": [
+   {
+    "waitfor": "TUE 3 PM"
+   },
+   {
+    "tap": "TUE 3 PM"
+   },
+   {
+    "wait": 30
+   }
+  ]
+ },
+ "governed-actions": {
+  "prompt": "Send an email to alex at example.com saying the launch is Friday.",
+  "tap": "↑",
+  "then": [
+   {
+    "waitfor": "REJECT"
+   },
+   {
+    "tap": "REJECT"
+   },
+   {
+    "wait": 30
+   }
+  ]
+ },
+ "subagents": {
+  "prompt": "Write a short paragraph about solar energy",
+  "tap": "↑",
+  "settle": 40,
+  "timeout": 240
+ }
 }

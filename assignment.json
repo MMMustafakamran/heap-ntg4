@@ -181,15 +181,20 @@
    "child": true,
    "docPath": "multimodal-attachments",
    "reachable": "sidebar",
-   "status": null,
-   "findings": [],
+   "status": "❌",
+   "findings": [
+    9
+   ],
    "block": null,
    "review": {
     "verdict": null,
     "approvedAt": null,
     "by": null
    },
-   "added": "2026-11-18"
+   "added": "2026-11-18",
+   "notes": [
+    "Issue: Attach opens no picker, a red \"Text strings must be rendered within a <Text>\" error shows on load, and the quick start has no message list for the answer."
+   ]
   },
   {
    "id": "frontend-tools",
@@ -348,15 +353,20 @@
    "child": false,
    "docPath": "human-in-the-loop",
    "reachable": "sidebar",
-   "status": null,
-   "findings": [],
+   "status": "❌",
+   "findings": [
+    10
+   ],
    "block": null,
    "review": {
     "verdict": null,
     "approvedAt": null,
     "by": null
    },
-   "added": "2026-11-18"
+   "added": "2026-11-18",
+   "notes": [
+    "Issue: the slot card shows, but tapping a slot never completes: no confirmation, the card stays open."
+   ]
   },
   {
    "id": "use-interrupt",
@@ -366,15 +376,20 @@
    "child": true,
    "docPath": "human-in-the-loop/useInterrupt",
    "reachable": "sidebar",
-   "status": null,
-   "findings": [],
+   "status": "❌",
+   "findings": [
+    11
+   ],
    "block": null,
    "review": {
     "verdict": null,
     "approvedAt": null,
     "by": null
    },
-   "added": "2026-11-18"
+   "added": "2026-11-18",
+   "notes": [
+    "Issue: the page says the backend is \"Not available for Google Antigravity yet\"; with a harness agent the picker never resumes."
+   ]
   },
   {
    "id": "hitl-headless",
@@ -384,15 +399,20 @@
    "child": true,
    "docPath": "human-in-the-loop/headless",
    "reachable": "sidebar",
-   "status": null,
-   "findings": [],
+   "status": "❌",
+   "findings": [
+    12
+   ],
    "block": null,
    "review": {
     "verdict": null,
     "approvedAt": null,
     "by": null
    },
-   "added": "2026-11-18"
+   "added": "2026-11-18",
+   "notes": [
+    "Issue: the slot buttons show, but choosing one never resumes the run."
+   ]
   },
   {
    "id": "governed-actions",
@@ -402,15 +422,20 @@
    "child": true,
    "docPath": "human-in-the-loop/governed-actions",
    "reachable": "sidebar",
-   "status": null,
-   "findings": [],
+   "status": "❌",
+   "findings": [
+    13
+   ],
    "block": null,
    "review": {
     "verdict": null,
     "approvedAt": null,
     "by": null
    },
-   "added": "2026-11-18"
+   "added": "2026-11-18",
+   "notes": [
+    "Issue: the only agent code is LangGraph; with an Antigravity agent the card shows but Reject never completes."
+   ]
   },
   {
    "id": "webmcp",
@@ -443,15 +468,20 @@
    "child": false,
    "docPath": "multi-agent/subagents",
    "reachable": "sidebar",
-   "status": null,
-   "findings": [],
+   "status": "❌",
+   "findings": [
+    14
+   ],
    "block": null,
    "review": {
     "verdict": null,
     "approvedAt": null,
     "by": null
    },
-   "added": "2026-11-18"
+   "added": "2026-11-18",
+   "notes": [
+    "Issue: no frontend code for the delegation log, and the agent imports httpx, which the install step never names."
+   ]
   },
   {
    "id": "inspector",
