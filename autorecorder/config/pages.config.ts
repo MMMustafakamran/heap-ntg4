@@ -162,6 +162,8 @@ export const PAGES = definePages([
       { filePath: 'MyCopilotApp/pages/tool-rendering/runtime.ts', startLine: 1, endLine: 14 },
       { filePath: 'MyCopilotApp/pages/tool-rendering/src/ToolCallCard.tsx', startLine: 1, endLine: 20 },
       { filePath: 'MyCopilotApp/pages/tool-rendering/src/WeatherCard.tsx', startLine: 1, endLine: 34 },
+      // HARNESS addition the finding is about: the tools, prompt and build import the page never shows
+      { filePath: 'backend/agents/rn_tool_rendering.py', startLine: 1, endLine: 40, addedText: 'from agents._common import build  # HARNESS: import never shown on the page' },
     ],
     // Overridden per take by tools/probe-prompts.json when it has this page.
     prompt: "Say hello in one short sentence",

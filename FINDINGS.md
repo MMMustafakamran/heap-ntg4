@@ -52,7 +52,7 @@ Stack: @copilotkit/react-native 1.89.0, @copilotkit/runtime 1.89.0, react-native
 
 **#9 The quick start can't attach a photo and has no place for the answer.**
 - **Doc:** `<CopilotChat agentId="default" attachments={{ enabled: true }}>` with `{/* Your message list goes here */}`.
-- **Result:** on load a red LogBox error "Text strings must be rendered within a <Text> component."; tapping **Attach** opens no picker (app stays in front, no log line); the composer is drawn under the status bar; there is no message list, so the agent's answer could never show. The page's own callout says the default reader fails on today's `expo-file-system` (58.0.14 installed) but the quick start never plugs in the legacy reader.
+- **Result:** on load a red LogBox error "Text strings must be rendered within a <Text> component."; there is no message list, so the agent's answer never shows on screen (sending a prompt clears the composer and nothing appears). Attach opens the Android picker; the composer is drawn under the status bar. The page's own callout says the default reader fails on today's `expo-file-system` (58.0.14 installed) but the quick start never plugs in the legacy reader.
 
 ### [HITL Overview](https://docs.copilotkit.ai/react-native/google-antigravity/human-in-the-loop)
 

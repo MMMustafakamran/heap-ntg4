@@ -1,12 +1,33 @@
 {
  "clip": "ANTIGRAVITY-rn-09-ToolCallRendering",
  "segments": [
-  {"at": "doc", "text": "Ok so this is the Tool Call Rendering page for Google Antigravity on React Native, and I'm reporting a problem on this page."},
-  {"at": "evidence", "text": "This is the problem, the tools list has three tools that are never shown, and the prompt and build helper are missing too."},
-  {"at": "ide", "text": "This is my project, I've implemented the exact code from the doc."},
-  {"at": "+", "text": "This part wasn't on the page, so umm, I added the missing tools and the prompt myself."},
-  {"at": "demo", "text": "Moving on to the demo. With those added, the weather card shows up, but as published the agent file just fails on import."},
-  {"at": "notepad", "text": "So basically, the agent should expose these tools so the cards render, but half of them aren't defined, so the server never starts as written."},
-  {"at": "+", "text": "That's the problem here, please have a look."}
+  {
+   "at": "doc",
+   "text": "Ok so this is the Tool Call Rendering page for Google Antigravity on React Native, and I'm reporting a problem on this page."
+  },
+  {
+   "at": "evidence",
+   "text": "This is the problem, the agent snippet here uses three tools that are never shown, and the prompt and build helper are missing too."
+  },
+  {
+   "at": "ide",
+   "text": "This is my project, I've implemented the exact code from the doc."
+  },
+  {
+   "at": "+",
+   "text": "This part wasn't on the page, so umm, I added the missing tools and the prompt myself."
+  },
+  {
+   "at": "demo",
+   "text": "Moving on to the demo. With those added, the weather card shows up, but as published the agent file just fails on import."
+  },
+  {
+   "at": "notepad",
+   "text": "So basically, the agent should expose these tools so the cards render, but half of them aren't defined, so the server never starts as written."
+  },
+  {
+   "at": "+",
+   "text": "That's the problem here, please have a look."
+  }
  ]
 }

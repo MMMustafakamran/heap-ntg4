@@ -193,7 +193,7 @@
    },
    "added": "2026-11-18",
    "notes": [
-    "Issue: Attach opens no picker, a red \"Text strings must be rendered within a <Text>\" error shows on load, and the quick start has no message list for the answer."
+    "Issue: the quick start has no message list, so the answer never shows, and a red \"Text strings must be rendered within a <Text>\" error appears on load."
    ]
   },
   {

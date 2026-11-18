@@ -126,8 +126,17 @@ export async function startMirror(port: number): Promise<void> {
   server = createServer((req, res) => {
     const url = new URL(req.url || '/', 'http://x');
     if (url.pathname === '/frame') {
+      const idle = Date.now() - lastPoll > 3000; // first poll of a new demo: the cached frame is the previous take's
       lastPoll = Date.now();
-      if (!latest) { res.writeHead(204).end(); return; }
+      if (!latest || idle || Date.now() - latest.at > 1500) {
+        // stale cache (previous page, or a still screen screenrecord didn't resend): grab a fresh still first
+        adbAsync('exec-out', 'screencap', '-p').then((b) => {
+          if (b.length > 1000) latest = { buf: b, type: 'image/png', at: Date.now() };
+          if (!latest || (idle && Date.now() - latest.at > 1500)) { res.writeHead(204).end(); return; }
+          res.writeHead(200, { 'content-type': latest.type, 'cache-control': 'no-store' }).end(latest.buf);
+        }).catch(() => { latest ? res.writeHead(200, { 'content-type': latest.type, 'cache-control': 'no-store' }).end(latest.buf) : res.writeHead(204).end(); });
+        return;
+      }
       res.writeHead(200, { 'content-type': latest.type, 'cache-control': 'no-store' }).end(latest.buf);
       return;
     }

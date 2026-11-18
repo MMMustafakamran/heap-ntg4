@@ -8,7 +8,7 @@
   "tap": "Send"
  },
  "headless-ui": {
-  "prompt": "Plan my day",
+  "prompt": "What can you help me with? Answer in two sentences.",
   "tap": "Send"
  },
  "prebuilt-components": {
@@ -24,7 +24,7 @@
   "tap": "↑"
  },
  "tool-rendering": {
-  "prompt": "what's the weather in San Francisco",
+  "prompt": "what is the weather in San Francisco",
   "tap": "↑"
  },
  "webmcp": {

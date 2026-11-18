@@ -15,11 +15,11 @@
   },
   {
    "at": "demo",
-   "text": "Moving on to the demo. Tapping attach should open a file picker, but nothing opens, and there's a red text error on load."
+   "text": "Moving on to the demo. After sending the prompt, the composer clears but nothing shows up, and there's a red text error on load."
   },
   {
    "at": "notepad",
-   "text": "So basically, you should be able to attach a photo and get an answer, but the picker never opens, and the quick start has no message list anyway."
+   "text": "So basically, you should get an answer about the photo, but the quick start has no message list, so nothing ever shows, plus that red error."
   },
   {
    "at": "+",

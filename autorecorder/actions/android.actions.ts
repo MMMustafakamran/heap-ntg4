@@ -35,9 +35,9 @@ so the agent file fails on import, nameerror, server never starts
 build comes from agents _common which isnt published anywhere
 only works after copying the missing tools and prompt from somewhere else`,
   'multimodal-attachments': `page says attach a photo and the agent answers about it
-but tapping attach opens nothing, no picker at all
+but the quick start has no message list, just a comment saying ur list goes here
+so after sending nothing shows up, the answer never appears
 and a red error shows on load, text strings must be rendered within a text component
-quick start has no message list either so the answer could never show
 the callout even says the default reader fails on todays expo file system`,
   hitl: `page says tap a slot and the agent confirms the time u picked
 the card shows up fine, tue 9 am wed 2 pm none of these work
@@ -66,7 +66,7 @@ export const FINDING_EVIDENCE: Record<string, DocEvidence[]> = {
     { text: 'model: "openai:gpt-6-luna",', caption: 'Only a built-in OpenAI agent; no Antigravity agent (FINDINGS.md #1)' },
   ],
   'tool-rendering': [
-    { text: 'TOOLS = [get_weather, search_flights, get_stock_price, roll_d20]', caption: 'Three tools, SYSTEM_PROMPT and build never defined (FINDINGS.md #2)' },
+    { text: 'Backend tools are plain Python functions. Pass them as', caption: 'Three tools, SYSTEM_PROMPT and build never defined (FINDINGS.md #2)' },
   ],
   'multimodal-attachments': [
     { text: 'Your message list goes here', caption: 'No message list; Attach opens nothing (FINDINGS.md #9)' },
