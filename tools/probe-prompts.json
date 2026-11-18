@@ -41,11 +41,32 @@
  },
  "shared-state-rendering": {
   "prompt": "Add a task called Write the launch post",
-  "tap": "↑"
+  "tap": "↑",
+  "input": "last",
+  "before": [
+   {
+    "tap": "Ask the assistant"
+   },
+   {
+    "wait": 3
+   },
+   {
+    "swipe": [
+     540,
+     1300,
+     540,
+     300
+    ]
+   },
+   {
+    "wait": 2
+   }
+  ]
  },
  "agent-readonly": {
   "prompt": "What is my name?",
-  "tap": "↑"
+  "tap": "↑",
+  "input": "last"
  },
  "multimodal-attachments": {
   "prompt": "what is in this image?",

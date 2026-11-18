@@ -97,8 +97,9 @@ const SEND_LABEL: Record<string, string> = {
 };
 
 /** Steps after the reply settles: tap a node by its text, wait N seconds, or wait until a text shows up. */
-type ThenStep = { tap?: string; wait?: number; waitfor?: string; timeout?: number };
-type PromptCfg = { prompt?: string; tap?: string; settle?: number; timeout?: number; noInput?: boolean; then?: ThenStep[] };
+type ThenStep = { tap?: string; wait?: number; waitfor?: string; timeout?: number; /** device px: x1,y1,x2,y2 */ swipe?: [number, number, number, number] };
+type PromptCfg = { prompt?: string; tap?: string; settle?: number; timeout?: number; noInput?: boolean; then?: ThenStep[];
+  /** steps before typing (e.g. open a modal) */ before?: ThenStep[]; /** which text field is the chat composer */ input?: 'first' | 'last' };
 
 /** First node whose text/desc equals the label, else the first one containing it (case-insensitive). */
 function findText(nodes: UiNode[], label: string): UiNode | undefined {
@@ -112,6 +113,22 @@ async function waitForText(label: string, timeoutS: number): Promise<UiNode | un
     if (n || Date.now() > end) return n;
     await sleep(1500);
   }
+}
+/** One before/then step: wait for a text, tap a node by its text (glide-click on the mirror), or wait. */
+async function runStep(page: Page, step: ThenStep, ctx: ActionContext): Promise<void> {
+  if (step.waitfor) {
+    const n = await waitForText(step.waitfor, step.timeout ?? 60);
+    logAction('waitfor', step.waitfor, n ? 'ok' : 'timeout');
+    if (!n) ctx.warn(`"${step.waitfor}" never showed up on screen`);
+  }
+  if (step.tap) {
+    const n = await waitForText(step.tap, step.timeout ?? 10);
+    if (n) { const d = deviceSize(dump().nodes); await tapNode(page, n, step.tap, d.w, d.h); }
+    else ctx.warn(`No "${step.tap}" on screen to tap`);
+    await sleep(1500);
+  }
+  if (step.swipe) { const [a, b, c, d] = step.swipe; sh(`input swipe ${a} ${b} ${c} ${d} 600`); logAction('swipe', step.swipe.join(',')); await sleep(1500); }
+  if (step.wait) await sleep(step.wait * 1000);
 }
 /** tools/probe-prompts.json (main session keeps it), read per take so edits apply without a restart. */
 function promptFor(root: string, config: PageRecordConfig): PromptCfg {
@@ -177,6 +194,9 @@ export async function runAndroidChat(page: Page, config: PageRecordConfig, root:
     logAction('deeplink', `copilotqa://page/${config.id}`);
     await sleep(6000);
 
+    // Optional steps before the prompt (tools/probe-prompts.json `before`), e.g. open a bottom sheet.
+    for (const step of cfg.before ?? []) await runStep(page, step, ctx);
+
     let screen = dump();
     // The dev build loads its JS bundle from Metro first: wait (up to 60 s) for the page's composer to appear.
     if (cfg.prompt && !cfg.noInput) {
@@ -191,7 +211,8 @@ export async function runAndroidChat(page: Page, config: PageRecordConfig, root:
     let afterSend: string[] = [];
 
     if (cfg.prompt && !cfg.noInput) {
-      const input = screen.nodes.find((n) => n.cls.endsWith('EditText'));
+      const inputs = screen.nodes.filter((n) => n.cls.endsWith('EditText'));
+      const input = cfg.input === 'last' ? inputs[inputs.length - 1] : inputs[0];
       if (!input) {
         ctx.fail('No text input on the app screen');
       } else {
@@ -226,20 +247,7 @@ export async function runAndroidChat(page: Page, config: PageRecordConfig, root:
     }
 
     // Optional follow-up steps (tools/probe-prompts.json `then`), each tap a glide-click on the mirror.
-    for (const step of cfg.then ?? []) {
-      if (step.waitfor) {
-        const n = await waitForText(step.waitfor, step.timeout ?? 60);
-        logAction('waitfor', step.waitfor, n ? 'ok' : 'timeout');
-        if (!n) ctx.warn(`"${step.waitfor}" never showed up on screen`);
-      }
-      if (step.tap) {
-        const n = await waitForText(step.tap, step.timeout ?? 10);
-        if (n) { const d = deviceSize(dump().nodes); await tapNode(page, n, step.tap, d.w, d.h); }
-        else ctx.warn(`No "${step.tap}" on screen to tap`);
-        await sleep(1500);
-      }
-      if (step.wait) await sleep(step.wait * 1000);
-    }
+    for (const step of cfg.then ?? []) await runStep(page, step, ctx);
 
     const finalTexts = texts(dump().nodes);
     const alive = appAlive();
