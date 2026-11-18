@@ -19,6 +19,13 @@ fi
 
 (cd backend && PORT=8159 uv run --with httpx --with starlette python ../tools/gemini_pool.py > ../logs/gemini-pool-8159.log 2>&1) &
 (cd backend && uv run --env-file .env uvicorn main:app --port 8152 > ../logs/backend-8152.log 2>&1) &
+# HARNESS: page agents, one file per page group, one path per page (/<page-id>)
+(cd backend && uv run --env-file .env uvicorn rn_chat_main:app --port 8154 > ../logs/backend-8154.log 2>&1) &
+(cd backend && uv run --env-file .env uvicorn rn_genui_main:app --port 8155 > ../logs/backend-8155.log 2>&1) &
+(cd backend && uv run --env-file .env uvicorn rn_state_main:app --port 8156 > ../logs/backend-8156.log 2>&1) &
+(cd backend && uv run --env-file .env uvicorn rn_hitl_main:app --port 8157 > ../logs/backend-8157.log 2>&1) &
+# Sub-agents: the page's agent imports httpx, which its install step never names (rides on --with)
+(cd backend && uv run --env-file .env --with httpx uvicorn rn_misc_main:app --port 8158 > ../logs/backend-8158.log 2>&1) &
 # Doc: `export OPENAI_API_KEY=sk-...` then `npx tsx server.ts`; the key comes from runtime.env (gitignored).
 (cd MyCopilotApp && set -a && . ../runtime.env && set +a && PORT=8151 npx tsx server.ts > ../logs/runtime-8151.log 2>&1) &
 # HARNESS: per-page runtimes (harness-runtime.ts) on :8153, at /api/<page-id>/copilotkit
