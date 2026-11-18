@@ -25,10 +25,10 @@ on:
         type: string
         default: ''
       shards:
-        description: 'Parallel emulator runners to split the pages across (1-20)'
+        description: 'Parallel emulator runners to split the pages across (1-20; empty = 4, or ceil(pages/3) when pages is set)'
         required: false
-        type: number
-        default: 4
+        type: string
+        default: ''
       ignore_drift:
         description: 'Record pages whose doc changed anyway (normally held for review, DRIFT.md)'
         required: false
@@ -41,7 +41,8 @@ on:
         default: false
 
 concurrency:
-  group: daily-${{ github.ref }}
+  # Full/auto runs go one at a time; a run with an explicit pages list never queues behind another.
+  group: daily-${{ github.ref }}${{ inputs.pages != '' && format('-pages-{0}', github.run_id) || '' }}
   cancel-in-progress: false
 
 permissions:
@@ -93,7 +94,8 @@ jobs:
           PAGES: ${{ inputs.pages }}
           SCOPE: ${{ inputs.scope || 'auto' }}
           USE_LOCKFILE: ${{ inputs.use_lockfile || false }}
-          SHARDS: ${{ inputs.shards || 4 }}
+          SHARDS: ${{ inputs.shards }}
+          PAGES_GIVEN: ${{ inputs.pages != '' && '1' || '' }}
           IGNORE_DRIFT: ${{ inputs.ignore_drift || false }}
         run: |
           set -euo pipefail
@@ -213,10 +215,16 @@ jobs:
           if [ -f plan-out/evidence-keep.txt ]; then PAGES=$(cat plan-out/evidence-keep.txt)
           else echo "::warning::evidence check wrote no result: recording without it"; fi
           echo "pages after evidence check: $PAGES"
-          python3 - "$PAGES" "$SHARDS" "$ISOLATE_PAGES" >> "$GITHUB_OUTPUT" <<'PY'
-          import json, sys, datetime
+          python3 - "$PAGES" "$SHARDS" "$ISOLATE_PAGES" "$PAGES_GIVEN" >> "$GITHUB_OUTPUT" <<'PY'
+          import json, sys, datetime, math
           pages = [p.strip() for p in sys.argv[1].split(",") if p.strip()]
-          n = max(1, min(20, int(float(sys.argv[2] or 1))))
+          if (sys.argv[2] or "").strip():
+              n = int(float(sys.argv[2]))
+          elif sys.argv[4]:
+              n = math.ceil(len(pages) / 3)   # small explicit run: ~3 pages per shard
+          else:
+              n = 4
+          n = max(1, min(20, n))
           iso = {p.strip() for p in sys.argv[3].split(",") if p.strip()}
           normal = [p for p in pages if p not in iso]
           n = min(n, max(1, len(normal)))
@@ -258,6 +266,9 @@ jobs:
     timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
+      - name: Hash of the committed lockfile (node_modules cache key)
+        id: lockhash
+        run: echo "app=$(sha256sum MyCopilotApp/package-lock.json | cut -c1-16)" >> "$GITHUB_OUTPUT"
       - name: Today's lockfiles from the plan job
         uses: actions/download-artifact@v4
         continue-on-error: true
@@ -267,26 +278,41 @@ jobs:
       - name: Use today's lockfiles (absent = the committed ones)
         run: |
           if [ -d plan-out/resolved ]; then cp -rv plan-out/resolved/. . ; else echo "no resolved lockfiles: installing the committed ones"; fi
+      # The APK key hashes the lockfile actually built (today's resolved one, copied above): a bumped
+      # native package changes it, so a stale native build is never reused.
+      - name: Cache built APK
+        id: apk-cache
+        uses: actions/cache@v4
+        with:
+          path: MyCopilotApp/android/app/build/outputs/apk/debug/app-debug.apk
+          key: apk-x86_64-v1-${{ hashFiles('MyCopilotApp/android/**', 'MyCopilotApp/package.json', 'MyCopilotApp/package-lock.json', 'MyCopilotApp/babel.config.js', 'MyCopilotApp/app.json') }}
       - uses: actions/setup-node@v4
+        if: steps.apk-cache.outputs.cache-hit != 'true'
         with:
           node-version: ${{ env.NODE_VERSION }}
       - uses: actions/setup-java@v4
+        if: steps.apk-cache.outputs.cache-hit != 'true'
         with:
           distribution: temurin
           java-version: '17'
       - uses: android-actions/setup-android@v3
+        if: steps.apk-cache.outputs.cache-hit != 'true'
         with:
           packages: 'platform-tools platforms;android-37.0 build-tools;37.0.0 ndk;28.2.13676358 ndk;27.1.12297006'
+      # Keyed on the COMMITTED lockfile (stable) with restore-keys; npm install then applies today's
+      # resolved lockfile on top, so the installed versions are the same as a fresh npm ci.
       - name: Cache MyCopilotApp node_modules
-        id: nm-app
+        if: steps.apk-cache.outputs.cache-hit != 'true'
         uses: actions/cache@v4
         with:
           path: MyCopilotApp/node_modules
-          key: nm-app-${{ runner.os }}-node${{ env.NODE_VERSION }}-v1-${{ hashFiles('MyCopilotApp/package-lock.json') }}
+          key: nm-app-${{ runner.os }}-node${{ env.NODE_VERSION }}-v2-${{ steps.lockhash.outputs.app }}
+          restore-keys: nm-app-${{ runner.os }}-node${{ env.NODE_VERSION }}-v2-
       - name: Install app dependencies
-        if: steps.nm-app.outputs.cache-hit != 'true'
-        run: npm ci --prefix MyCopilotApp --no-audit --no-fund
+        if: steps.apk-cache.outputs.cache-hit != 'true'
+        run: npm install --prefix MyCopilotApp --no-audit --no-fund
       - name: Cache Gradle
+        if: steps.apk-cache.outputs.cache-hit != 'true'
         uses: actions/cache@v4
         with:
           path: |
@@ -295,6 +321,7 @@ jobs:
           key: gradle-${{ runner.os }}-v1-${{ hashFiles('MyCopilotApp/android/**/*.gradle*', 'MyCopilotApp/android/gradle/wrapper/gradle-wrapper.properties', 'MyCopilotApp/package-lock.json') }}
           restore-keys: gradle-${{ runner.os }}-v1-
       - name: assembleDebug (x86_64, as in gradle.properties)
+        if: steps.apk-cache.outputs.cache-hit != 'true'
         working-directory: MyCopilotApp/android
         run: |
           chmod +x gradlew
@@ -335,6 +362,9 @@ jobs:
       ANTIGRAVITY_SAVE_DIR: /tmp/antigravity/sessions
     steps:
       - uses: actions/checkout@v4
+      - name: Hash of the committed lockfiles (node_modules cache key)
+        id: lockhash
+        run: echo "rec=$(cat MyCopilotApp/package-lock.json autorecorder/package-lock.json | sha256sum | cut -c1-16)" >> "$GITHUB_OUTPUT"
       - name: Today's lockfiles from the plan job
         uses: actions/download-artifact@v4
         continue-on-error: true
@@ -373,15 +403,16 @@ jobs:
             MyCopilotApp/node_modules
             autorecorder/node_modules
             ~/.cache/ms-playwright
-          key: nm-rec-${{ runner.os }}-node${{ env.NODE_VERSION }}-v1-${{ hashFiles('MyCopilotApp/package-lock.json', 'autorecorder/package-lock.json') }}
+          # Stable key on the COMMITTED lockfiles (the resolved one changes daily, so the old key never hit).
+          key: nm-rec-${{ runner.os }}-node${{ env.NODE_VERSION }}-v2-${{ steps.lockhash.outputs.rec }}
+          restore-keys: nm-rec-${{ runner.os }}-node${{ env.NODE_VERSION }}-v2-
       - name: Install dependencies
         timeout-minutes: 25
         run: |
           set -euo pipefail
           for d in MyCopilotApp autorecorder; do
-            if [ "${{ steps.nm-cache.outputs.cache-hit }}" = "true" ] && [ -d "$d/node_modules" ]; then echo "$d: node_modules from cache"; continue; fi
-            if [ -f "$d/package-lock.json" ]; then npm ci --prefix "$d" --no-audit --no-fund
-            else npm install --prefix "$d" --no-audit --no-fund; fi
+            # npm install on top of the cached tree applies today's lockfile (same versions as npm ci, faster).
+            npm install --prefix "$d" --no-audit --no-fund
           done
           echo 'Acquire::Retries "3"; Acquire::http::Timeout "30"; Acquire::https::Timeout "30";' | sudo tee /etc/apt/apt.conf.d/99net-timeouts > /dev/null
           # Doc tour / IDE / Notepad are filmed in Chromium (as in the React recorder); the device via adb.
@@ -434,6 +465,28 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      - name: Cache AVD snapshot
+        id: avd-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-api${{ env.ANDROID_API }}-google_apis-x86_64-ram4096-v1
+      - name: Create AVD snapshot (cache miss only)
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ env.ANDROID_API }}
+          arch: x86_64
+          target: google_apis
+          ram-size: 4096M
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          emulator-boot-timeout: 900
+          script: echo "Generated AVD snapshot for caching."
+
       - name: Record on the emulator
         id: rec
         uses: reactivecircus/android-emulator-runner@v2
@@ -444,7 +497,8 @@ jobs:
           arch: x86_64
           target: google_apis
           ram-size: 4096M
-          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           emulator-boot-timeout: 900
           script: bash tools/ci/emulator-record.sh
