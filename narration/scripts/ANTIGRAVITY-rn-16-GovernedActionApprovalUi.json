@@ -19,11 +19,11 @@
   },
   {
    "at": "demo",
-   "text": "Moving on to the demo. The approval card shows, but after tapping reject, the card stays and no reply comes."
+   "text": "Moving on to the demo. With my own agent the approval card shows, and reject works, the agent says the email wasn't sent."
   },
   {
    "at": "notepad",
-   "text": "So basically, reject should get a reply saying the email wasn't sent, but the agent is LangGraph only, and the reject never completes."
+   "text": "So basically, the page only gives you a LangGraph agent, so for Antigravity you have to write the whole agent yourself."
   },
   {
    "at": "+",

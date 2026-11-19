@@ -99,6 +99,8 @@ def to_openai(g: dict) -> tuple[dict, list[str]]:
                 m["tool_calls"] = calls
             if m["content"] or calls:
                 msgs.append(m)
+            # HARNESS 2026-11-19: Antigravity sends a backend tool's functionResponse under role "model"
+            msgs.extend(results)
         else:
             msgs.extend(results)
             if images:

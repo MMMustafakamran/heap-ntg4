@@ -48,14 +48,10 @@ same backend works on the web page`,
 but the backend section says not available for google antigravity yet
 so theres no agent to use, had to write one myself
 even then the picker shows and tapping it changes nothing`,
-  'hitl-headless': `page says tap a slot and the agent continues with ur choice
-slot buttons show above the chat fine
-tapping one does nothing, run never resumes
-also imports src chatscreen which is never shown on the page`,
   'governed-actions': `page says tap reject and the agent replies it didnt send the email
 but the only agent code is langgraph, interrupt and deliver_email, nothing for antigravity
-with my own antigravity agent the approval card shows
-tapping reject leaves the card there and no reply comes`,
+so for antigravity u have to write the whole agent urself
+with my own agent the card shows and reject works,but thats not from the page`,
   subagents: `page says the delegation log renders live as the supervisor calls sub agents
 but theres no react native code for the log at all, just one sentence
 had to write the whole frontend myself
@@ -77,9 +73,6 @@ export const FINDING_EVIDENCE: Record<string, DocEvidence[]> = {
   'use-interrupt': [
     { text: 'Not available for Google Antigravity yet', caption: 'No Antigravity backend (FINDINGS.md #11)' },
   ],
-  'hitl-headless': [
-    { text: 'Tap a slot, and the agent continues with your choice', caption: 'Run never resumes (FINDINGS.md #12)' },
-  ],
   'governed-actions': [
     { text: 'In a LangGraph Python agent, the tool calls', caption: 'LangGraph-only agent (FINDINGS.md #13)' },
   ],
@@ -97,7 +90,8 @@ const SEND_LABEL: Record<string, string> = {
 };
 
 /** Steps after the reply settles: tap a node by its text, wait N seconds, or wait until a text shows up. */
-type ThenStep = { tap?: string; wait?: number; waitfor?: string; timeout?: number; /** device px: x1,y1,x2,y2 */ swipe?: [number, number, number, number] };
+type ThenStep = { tap?: string; wait?: number; waitfor?: string; timeout?: number; /** device px: x1,y1,x2,y2 */ swipe?: [number, number, number, number];
+  /** HARNESS: press Back only while the soft keyboard is up (it covered the swipe area) */ hideKeyboard?: boolean };
 type PromptCfg = { prompt?: string; tap?: string; settle?: number; timeout?: number; noInput?: boolean; then?: ThenStep[];
   /** steps before typing (e.g. open a modal) */ before?: ThenStep[]; /** which text field is the chat composer */ input?: 'first' | 'last' };
 
@@ -127,6 +121,7 @@ async function runStep(page: Page, step: ThenStep, ctx: ActionContext): Promise<
     else ctx.warn(`No "${step.tap}" on screen to tap`);
     await sleep(1500);
   }
+  if (step.hideKeyboard && /mInputShown=true/.test(sh('dumpsys input_method'))) { sh('input keyevent 4'); logAction('key', 'back (hide keyboard)'); await sleep(1000); }
   if (step.swipe) { const [a, b, c, d] = step.swipe; sh(`input swipe ${a} ${b} ${c} ${d} 600`); logAction('swipe', step.swipe.join(',')); await sleep(1500); }
   if (step.wait) await sleep(step.wait * 1000);
 }

@@ -73,20 +73,17 @@ Stack: @copilotkit/react-native 1.89.0, @copilotkit/runtime 1.89.0, react-native
 
 ### [Headless Interrupts](https://docs.copilotkit.ai/react-native/google-antigravity/human-in-the-loop/headless)
 
-**Dev blockers**
-
-**#12 Choosing a slot never resumes the run.**
-- **Doc:** "Tap a slot, and the agent continues with your choice."
-- **Result:** "Pick a slot for …" with "TUE 3 PM" / "WED 10 AM" / "NONE OF THESE WORK" shows above the chat; tapping a slot does nothing visible (same as #10).
-- Minor: `./src/ChatScreen` is imported but never shown.
+**Minor notes**
+- #12 `./src/ChatScreen` is imported but never shown.
 
 ### [Governed Action Approval UI](https://docs.copilotkit.ai/react-native/google-antigravity/human-in-the-loop/governed-actions)
 
 **Dev blockers**
 
-**#13 The only agent is LangGraph, and Reject never completes.**
+**#13 The only agent is LangGraph; there is no Antigravity agent.**
 - **Doc:** "In a LangGraph Python agent, the tool calls `interrupt()`…" plus a LangGraph `agent.py` (`deliver_email` undefined); "Tap **Reject**, and the agent replies that it did not send the email."
-- **Result:** with a harness Antigravity agent the card "User approval required" / "Tool: send_email" / "APPROVE AND RUN" / "REJECT" shows; tapping REJECT leaves the card and no reply (same as #10).
+- **Result:** a Google Antigravity reader gets no agent to run and has to write one.
+- **Confirmed by harness:** with a harness Antigravity agent (`backend/agents/rn_governed_actions.py`) the card "User approval required" / "Tool: send_email" shows and REJECT gets "The email was not sent because approval was not granted."
 
 ### [Sub-agents](https://docs.copilotkit.ai/react-native/google-antigravity/multi-agent/subagents)
 

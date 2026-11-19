@@ -140,6 +140,11 @@ async def via_openai(body: bytes, asked, stream: bool):
     except json.JSONDecodeError:
         return Response(b'{"error":"bad request body"}', status_code=400, media_type="application/json")
     req, notes = openai_bridge.to_openai(g)
+    if notes and os.getenv("GEMINI_POOL_DUMP"):  # HARNESS debug: keep the request that needed a bridge fix
+        with open(os.getenv("GEMINI_POOL_DUMP"), "a", encoding="utf-8") as f:
+            f.write(json.dumps({"notes": notes, "contents": [{"role": c.get("role"), "parts": [
+                {k: (v if k != "inlineData" else "...") for k, v in pt.items() if k != "thoughtSignature"} for pt in c.get("parts", [])]}
+                for c in g.get("contents", [])]}) + "\n")
     try:
         r = await oa_client.post(openai_bridge.OPENAI_URL, json=req,
                                  headers={"Authorization": f"Bearer {OPENAI_KEY}"})

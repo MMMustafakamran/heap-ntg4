@@ -455,10 +455,8 @@
    "child": true,
    "docPath": "human-in-the-loop/headless",
    "reachable": "sidebar",
-   "status": "❌",
-   "findings": [
-    12
-   ],
+   "status": "✅",
+   "findings": [],
    "block": null,
    "review": {
     "verdict": null,
@@ -467,7 +465,7 @@
    },
    "added": "2026-11-18",
    "notes": [
-    "Issue: the slot buttons show, but choosing one never resumes the run."
+    "Note: the code imports `./src/ChatScreen`, which the page never shows."
    ]
   },
   {
@@ -490,7 +488,7 @@
    },
    "added": "2026-11-18",
    "notes": [
-    "Issue: the only agent code is LangGraph; with an Antigravity agent the card shows but Reject never completes."
+    "Issue: the only agent code is LangGraph (`interrupt()`, `deliver_email` undefined); there is no Antigravity agent, so the reader has to write one."
    ]
   },
   {

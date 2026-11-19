@@ -101,6 +101,9 @@ export const PROJECT: ProjectConfig = {
 
   // The runtimes are separate servers the app calls from the device; nothing to warm in the browser.
   runtimeWarmPath: '',
+
+  // HARNESS: docs.copilotkit.ai answers in 20-40 s from this network (2026-11-18); 25 s cut the doc segment.
+  timeouts: { docNavMs: 90_000 },
 };
 
 /** Absolute doc URL for a page's `docPath`. */

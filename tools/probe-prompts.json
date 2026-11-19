@@ -49,21 +49,24 @@
     "timeout": 90
    },
    {
+    "wait": 5
+   },
+   {
     "tap": "Ask the assistant"
    },
    {
-    "wait": 3
+    "wait": 4
    },
    {
     "swipe": [
      540,
-     1300,
+     1890,
      540,
      300
     ]
    },
    {
-    "wait": 2
+    "wait": 3
    }
   ]
  },
@@ -125,10 +128,13 @@
   "tap": "Send",
   "then": [
    {
-    "waitfor": "TUE 3 PM"
+    "waitfor": "WED 10 AM"
    },
    {
-    "tap": "TUE 3 PM"
+    "hideKeyboard": true
+   },
+   {
+    "tap": "WED 10 AM"
    },
    {
     "wait": 30
@@ -147,11 +153,14 @@
     "wait": 6
    },
    {
+    "hideKeyboard": true
+   },
+   {
     "swipe": [
      540,
-     1700,
+     1500,
      540,
-     700
+     600
     ]
    },
    {
