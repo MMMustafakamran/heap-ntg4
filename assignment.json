@@ -195,7 +195,15 @@
     "by": null
    },
    "added": "2026-11-18",
-   "notes": []
+   "notes": [],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-04-HeadlessUi",
+     "loom": null,
+     "filmed": "2026-11-18"
+    }
+   ]
   },
   {
    "id": "multimodal-attachments",
@@ -218,6 +226,14 @@
    "added": "2026-11-18",
    "notes": [
     "Issue: the quick start has no message list, so the answer never shows, and a red \"Text strings must be rendered within a <Text>\" error appears on load."
+   ],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-05-MultimodalAttachments",
+     "loom": null,
+     "filmed": "2026-11-18"
+    }
    ]
   },
   {
@@ -324,6 +340,14 @@
    "added": "2026-11-18",
    "notes": [
     "Issue: the agent uses search_flights, get_stock_price, roll_d20, SYSTEM_PROMPT and build, none of them shown; the server fails on import."
+   ],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-09-ToolCallRendering",
+     "loom": null,
+     "filmed": "2026-11-19"
+    }
    ]
   },
   {
@@ -372,7 +396,15 @@
     "by": null
    },
    "added": "2026-11-18",
-   "notes": []
+   "notes": [],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-11-RenderAgentStateInYourApp",
+     "loom": null,
+     "filmed": "2026-11-19"
+    }
+   ]
   },
   {
    "id": "agent-readonly",
@@ -422,6 +454,14 @@
    "added": "2026-11-18",
    "notes": [
     "Issue: the slot card shows, but tapping a slot never completes: no confirmation, the card stays open."
+   ],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-13-HitlOverview",
+     "loom": null,
+     "filmed": "2026-11-18"
+    }
    ]
   },
   {
@@ -445,6 +485,14 @@
    "added": "2026-11-18",
    "notes": [
     "Issue: the page says the backend is \"Not available for Google Antigravity yet\"; with a harness agent the picker never resumes."
+   ],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-14-PausingTheAgentForInput",
+     "loom": null,
+     "filmed": "2026-11-18"
+    }
    ]
   },
   {
@@ -466,6 +514,14 @@
    "added": "2026-11-18",
    "notes": [
     "Note: the code imports `./src/ChatScreen`, which the page never shows."
+   ],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-15-HeadlessInterrupts",
+     "loom": null,
+     "filmed": "2026-11-19"
+    }
    ]
   },
   {
@@ -489,6 +545,14 @@
    "added": "2026-11-18",
    "notes": [
     "Issue: the only agent code is LangGraph (`interrupt()`, `deliver_email` undefined); there is no Antigravity agent, so the reader has to write one."
+   ],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-16-GovernedActionApprovalUi",
+     "loom": null,
+     "filmed": "2026-11-19"
+    }
    ]
   },
   {
@@ -535,6 +599,14 @@
    "added": "2026-11-18",
    "notes": [
     "Issue: no frontend code for the delegation log, and the agent imports httpx, which the install step never names."
+   ],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-18-SubAgents",
+     "loom": null,
+     "filmed": "2026-11-18"
+    }
    ]
   },
   {
