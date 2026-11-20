@@ -1,5 +1,6 @@
 {
   "framework": "Google Antigravity",
+  "quickstartBlocked": "quickstart only registers a built-in OpenAI agent; no Antigravity agent server is given",
   "ui": "react-native",
   "repo": "Antigravity-ReactNative",
   "docBase": "https://docs.copilotkit.ai/react-native/google-antigravity/",
@@ -213,7 +214,7 @@
       "child": true,
       "docPath": "multimodal-attachments",
       "reachable": "sidebar",
-      "status": "❌",
+      "status": "✅",
       "findings": [
         9
       ],
@@ -225,7 +226,7 @@
       },
       "added": "2026-11-18",
       "notes": [
-        "Issue: no message list so answers never show, red <Text> error on load."
+        "Note: message list is a placeholder, reuse the quickstart chat list."
       ],
       "links": [
         {
@@ -327,7 +328,7 @@
       "child": true,
       "docPath": "generative-ui/tool-rendering",
       "reachable": "sidebar",
-      "status": "❌",
+      "status": "✅",
       "findings": [
         2
       ],
@@ -339,7 +340,7 @@
       },
       "added": "2026-11-18",
       "notes": [
-        "Issue: agent tools, SYSTEM_PROMPT and build never shown, server fails on import."
+        "Note: extra tools, SYSTEM_PROMPT and build not shown; weather card works."
       ],
       "links": [
         {
@@ -453,7 +454,7 @@
       },
       "added": "2026-11-18",
       "notes": [
-        "Issue: tapping a slot never completes, card stays open."
+        "Issue: tapping a slot does nothing, no resume request, card stays open."
       ],
       "links": [
         {
@@ -472,7 +473,7 @@
       "child": true,
       "docPath": "human-in-the-loop/useInterrupt",
       "reachable": "sidebar",
-      "status": "❌",
+      "status": "N/A",
       "findings": [
         11
       ],
@@ -484,16 +485,9 @@
       },
       "added": "2026-11-18",
       "notes": [
-        "Issue: backend not available for Antigravity, picker never resumes."
+        "Note: page says not available for Google Antigravity yet."
       ],
-      "links": [
-        {
-          "text": null,
-          "clip": "ANTIGRAVITY-rn-14-PausingTheAgentForInput",
-          "loom": "https://www.loom.com/share/651a788796b9474fa7430d5278429cc3",
-          "filmed": "2026-11-19"
-        }
-      ]
+      "links": []
     },
     {
       "id": "hitl-headless",
@@ -532,7 +526,7 @@
       "child": true,
       "docPath": "human-in-the-loop/governed-actions",
       "reachable": "sidebar",
-      "status": "❌",
+      "status": "✅",
       "findings": [
         13
       ],
@@ -544,7 +538,7 @@
       },
       "added": "2026-11-18",
       "notes": [
-        "Issue: only LangGraph agent code, no Antigravity agent."
+        "Note: no Antigravity agent shown; quickstart agent naming the tool works."
       ],
       "links": [
         {
@@ -598,7 +592,7 @@
       },
       "added": "2026-11-18",
       "notes": [
-        "Issue: no delegation log frontend, httpx install not mentioned."
+        "Issue: delegation log is React web code only, httpx install not mentioned."
       ],
       "links": [
         {

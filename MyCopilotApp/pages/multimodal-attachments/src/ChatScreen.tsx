@@ -1,6 +1,50 @@
 import { useState } from "react";
-import { Image, Pressable, Text, TextInput, View } from "react-native";
+import { FlatList, Image, Pressable, Text, TextInput, View } from "react-native"; // HARNESS: FlatList for the message list below
 import { CopilotChat, useCopilotChatContext } from "@copilotkit/react-native";
+import type { NativeFileInput } from "@copilotkit/react-native";
+import { useAgent } from "@copilotkit/react-native/headless"; // HARNESS: message list below
+import * as FileSystem from "expo-file-system/legacy";
+
+// Doc callout "expo-file-system 19 and later: pass your own reader" (58.0.14 installed), verbatim:
+const attachments = {
+  enabled: true,
+  onUpload: async (file: NativeFileInput) => ({
+    type: "data" as const,
+    value: await FileSystem.readAsStringAsync(file.uri, {
+      encoding: FileSystem.EncodingType.Base64,
+    }),
+    mimeType: file.mimeType,
+  }),
+};
+
+// HARNESS: the page says "Your message list goes here" and shows none; this is the quickstart's
+// FlatList (src/ChatScreen.tsx) message rendering, reused as is.
+function MessageList() {
+  const { agent } = useAgent({ agentId: "default" });
+  const messages = agent?.messages ?? [];
+  const chatMessages = messages.flatMap((message) => {
+    if (
+      (message.role === "user" || message.role === "assistant") &&
+      typeof message.content === "string" &&
+      message.content.length > 0
+    ) {
+      return [{ id: message.id, content: message.content }];
+    }
+    return [];
+  });
+  return (
+    <FlatList
+      style={{ flex: 1 }}
+      data={chatMessages}
+      renderItem={({ item }) => (
+        <View style={{ padding: 12, maxWidth: "80%" }}>
+          <Text>{item.content}</Text>
+        </View>
+      )}
+      keyExtractor={(item, i) => item.id ?? String(i)}
+    />
+  );
+}
 
 function Composer() {
   const { attachments, openPicker, removeAttachment, submitMessage, isRunning } =
@@ -49,8 +93,12 @@ function Composer() {
 
 export function ChatScreen() {
   return (
-    <CopilotChat agentId="default" attachments={{ enabled: true }}> {/* [!code highlight] */}
+    // HARNESS: `{/* [!code highlight] */}` after this tag was a .md-export leak (not on the rendered
+    // page) that caused "Text strings must be rendered within a <Text>"; removed. `attachments` is the
+    // callout's object ("Pass this object as the attachments prop in the samples below").
+    <CopilotChat agentId="default" attachments={attachments}>
       {/* Your message list goes here. */}
+      <MessageList />
       <Composer />
     </CopilotChat>
   );

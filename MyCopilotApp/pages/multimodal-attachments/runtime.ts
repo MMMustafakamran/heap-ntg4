@@ -6,7 +6,7 @@ import { CopilotRuntime } from "@copilotkit/runtime/v2";
 
 const runtime = new CopilotRuntime({
   agents: {
-    default: new HttpAgent({ url: "http://localhost:8154/multimodal-attachments" }),
+    default: new HttpAgent({ url: "http://127.0.0.1:8154/multimodal-attachments" }), // HARNESS: 127.0.0.1, another app on this laptop also binds 0.0.0.0:8154
   },
 });
 

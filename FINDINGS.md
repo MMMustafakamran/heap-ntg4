@@ -8,9 +8,9 @@ Stack: @copilotkit/react-native 1.89.0, @copilotkit/runtime 1.89.0, react-native
 
 **Dev blockers**
 
-**#1 The Antigravity quickstart never connects an Antigravity agent.** The page sits under Google Antigravity, but its only runtime registers a built-in OpenAI agent; nothing on the page (or linked from its steps) shows how to serve the Antigravity agent or register it in the runtime.
+**#1 The Antigravity quickstart never gives an Antigravity agent server.** The page sits under Google Antigravity, but its only runtime registers a built-in OpenAI agent, and no step shows how to serve the Antigravity agent.
 - **Doc:** `default: new BuiltInAgent({ model: "openai:gpt-6-luna", ... })` in `server.ts`; "The runtime from the quickstart hosts a `BuiltInAgent`".
-- **Result:** following the page gives a working chat on OpenAI (reply "Hello!" on the emulator), not on Antigravity. To use Antigravity a reader has to guess the backend (`create_antigravity_app`) and the runtime wiring (`HttpAgent` from `@ag-ui/client`, a package no install step names).
+- **Result:** following the page gives a working chat on OpenAI (reply "Hello!" on the emulator), not on Antigravity. The runtime side (`HttpAgent` wiring) is in the Copilot Runtime guide; the missing piece is the Antigravity agent server (`create_antigravity_app`), which the reader has to guess.
 - **Confirmed by harness:** every other page runs on `HttpAgent({ url: "http://localhost:815x/<page>" })` in a HARNESS runtime (`MyCopilotApp/pages/<id>/runtime.ts`) plus `backend/rn_*_main.py`.
 
 **Minor notes**
@@ -18,12 +18,8 @@ Stack: @copilotkit/react-native 1.89.0, @copilotkit/runtime 1.89.0, react-native
 
 ### [Tool Call Rendering](https://docs.copilotkit.ai/react-native/google-antigravity/generative-ui/tool-rendering)
 
-**Dev blockers**
-
-**#2 The agent snippet uses three tools, a prompt and a builder it never defines.**
-- **Doc:** `TOOLS = [get_weather, search_flights, get_stock_price, roll_d20]` and `return build(system_instructions=SYSTEM_PROMPT, tools=TOOLS)`; only `get_weather` is shown.
-- **Error:** run as published the module fails on import with `NameError` (`search_flights`, `get_stock_price`, `roll_d20`, `SYSTEM_PROMPT`, `build` undefined; `build` lives in the unpublished `agents._common`). The server never starts, so no tool card can render.
-- **Confirmed by harness:** with the three tools and `SYSTEM_PROMPT` copied from the web harness and `build` from `agents._common` (`backend/agents/rn_tool_rendering.py`, HARNESS), the weather card renders ("San Francisco", "68°").
+**Minor notes**
+- #2 The agent snippet lists `search_flights`, `get_stock_price`, `roll_d20`, `SYSTEM_PROMPT` and `build` but shows only `get_weather`; with those filled in (`backend/agents/rn_tool_rendering.py`, HARNESS) the weather card renders ("San Francisco", "68°").
 
 ### [Prebuilt Components](https://docs.copilotkit.ai/react-native/google-antigravity/prebuilt-components)
 
@@ -48,28 +44,22 @@ Stack: @copilotkit/react-native 1.89.0, @copilotkit/runtime 1.89.0, react-native
 
 ### [Multimodal Attachments](https://docs.copilotkit.ai/react-native/google-antigravity/multimodal-attachments)
 
-**Dev blockers**
-
-**#9 The quick start can't attach a photo and has no place for the answer.**
-- **Doc:** `<CopilotChat agentId="default" attachments={{ enabled: true }}>` with `{/* Your message list goes here */}`.
-- **Result:** on load a red LogBox error "Text strings must be rendered within a <Text> component."; there is no message list, so the agent's answer never shows on screen (sending a prompt clears the composer and nothing appears). Attach opens the Android picker; the composer is drawn under the status bar. The page's own callout says the default reader fails on today's `expo-file-system` (58.0.14 installed) but the quick start never plugs in the legacy reader.
+**Minor notes**
+- #9 The quick start leaves `{/* Your message list goes here */}` with no list, so answers don't show until the reader adds one (harness reuses the quickstart FlatList); on `expo-file-system` 19+ the callout's legacy `onUpload` reader is needed. With both, a picked image gets "The image displays a red circle on a white background."
 
 ### [HITL Overview](https://docs.copilotkit.ai/react-native/google-antigravity/human-in-the-loop)
 
 **Dev blockers**
 
-**#10 Picking a slot never completes: no confirmation, card stays open.**
+**#10 Tapping a slot does nothing: no confirmation, card stays open.**
 - **Doc:** "Tap a slot, and the agent confirms the time you picked."
-- **Result:** the card "Pick a time for Launch" with "Tue 9 AM" / "Wed 2 PM" / "None of these work" appears; tapping a slot sends the answer (a second `POST /hitl` reaches the agent, model replies 200) but the card never shows `Done:` and no assistant message appears. Consistent over 5 runs. The same backend works on the web Antigravity page, so this may be a `@copilotkit/react-native` bug rather than the text.
-- Minor: the agent prompt says "call the frontend-provided `book_call` tool" while the frontend registers `name: "schedule_meeting"` (the model still calls it).
+- **Result:** the card "Pick a time for Launch" with "Tue 9 AM" / "Wed 2 PM" / "None of these work" appears; tapping a slot sends no follow-up request to the agent (only the first `POST /hitl` in the backend log), the card never shows `Done:` and no assistant message appears. Probed 2026-11-20 after the bridge fix: 1/1 with the page's agent (`agents._common.build`), 2/2 with a plain `AntigravityAgent` and the same prompt. The same `useHumanInTheLoop` pattern resolves on Governed Actions, so the gap is in this page's sample on React Native.
+- Minor: `agents._common` is never shown; the agent prompt says `book_call` while the frontend registers `schedule_meeting` (the model still calls it).
 
 ### [Pausing the Agent for Input](https://docs.copilotkit.ai/react-native/google-antigravity/human-in-the-loop/useInterrupt)
 
-**Dev blockers**
-
-**#11 No Antigravity backend, and the picker never resumes.**
-- **Doc:** "**Not available for Google Antigravity yet.** This sample comes from the showcase's `gen-ui-interrupt` demo, and Google Antigravity doesn't have it yet."; "Tap **Tomorrow at 09:00**, and the agent continues with your choice."
-- **Result:** with a harness agent the picker shows ("Tomorrow at 09:00" / "Cancel"); tapping it changes nothing (same as #10).
+**Minor notes**
+- #11 The page says "Not available for Google Antigravity yet."; reported N/A, not tested.
 
 ### [Headless Interrupts](https://docs.copilotkit.ai/react-native/google-antigravity/human-in-the-loop/headless)
 
@@ -78,18 +68,14 @@ Stack: @copilotkit/react-native 1.89.0, @copilotkit/runtime 1.89.0, react-native
 
 ### [Governed Action Approval UI](https://docs.copilotkit.ai/react-native/google-antigravity/human-in-the-loop/governed-actions)
 
-**Dev blockers**
-
-**#13 The only agent is LangGraph; there is no Antigravity agent.**
-- **Doc:** "In a LangGraph Python agent, the tool calls `interrupt()`…" plus a LangGraph `agent.py` (`deliver_email` undefined); "Tap **Reject**, and the agent replies that it did not send the email."
-- **Result:** a Google Antigravity reader gets no agent to run and has to write one.
-- **Confirmed by harness:** with a harness Antigravity agent (`backend/agents/rn_governed_actions.py`) the card "User approval required" / "Tool: send_email" shows and REJECT gets "The email was not sent because approval was not granted."
+**Minor notes**
+- #13 The only agent shown is LangGraph (`interrupt()`, `deliver_email` undefined); a quickstart-style Antigravity agent whose prompt names `approve_governed_action` (`backend/agents/rn_governed_actions.py`, HARNESS) works: REJECT gets "The email was not sent because approval was not granted."
 
 ### [Sub-agents](https://docs.copilotkit.ai/react-native/google-antigravity/multi-agent/subagents)
 
 **Dev blockers**
 
-**#14 No frontend for the delegation log, and the server needs an uninstalled package.**
+**#14 The delegation log frontend is React web code only, and the server needs an uninstalled package.**
 - **Doc:** "On the frontend, the delegation log is a reactive render of the `delegations` slot." (no snippet follows); install step `pip install ag-ui-antigravity google-antigravity`.
 - **Result:** the reader has to write the whole React Native UI; the agent module imports `httpx`, which the install step never names (same as the web page). With a harness log (`useAgent` + `agent.state.delegations`) and `httpx` added, 3 delegations complete (research, writing, critique).
 - Minor: text refers to "The LangGraph excerpt above" and "the Built-in Agent example", neither on the page.
