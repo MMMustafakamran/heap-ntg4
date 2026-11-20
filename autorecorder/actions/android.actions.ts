@@ -168,6 +168,17 @@ async function typeHuman(prompt: string): Promise<void> {
   }
 }
 
+/**
+ * Prompt entry on React Native (owner, 2026-11-20): pasted in one go (a single adb `input text`),
+ * no per-character typing effect. Set ANDROID_TYPE=human to get the old typeHuman pacing back.
+ */
+async function pastePrompt(prompt: string): Promise<void> {
+  if (process.env.ANDROID_TYPE === 'human') return typeHuman(prompt);
+  await sleep(300 + Math.random() * 300);
+  inputText(prompt);
+  await sleep(400);
+}
+
 /** Device size as the screenshots see it (uiautomator bounds use the same pixels). */
 function deviceSize(nodes: UiNode[]): { w: number; h: number } {
   const root = nodes[0]?.bounds;
@@ -214,7 +225,7 @@ export async function runAndroidChat(page: Page, config: PageRecordConfig, root:
         await tapNode(page, input, 'composer', w, h);
         await sleep(600);
         mark('action', `type: ${cfg.prompt}`);
-        await typeHuman(cfg.prompt);
+        await pastePrompt(cfg.prompt);
         await sleep(700);
         screen = dump();
         const label = cfg.tap!;
