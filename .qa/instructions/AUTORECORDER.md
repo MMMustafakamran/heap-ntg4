@@ -13,6 +13,9 @@ Two tools, two jobs:
 
 Never use a full humanized take to find out what a page does.
 
+- Probe runs the page's own checks through the recorder's fast mode (same checkpoints as a take, no tour, no humanizing); `--repeat N` runs each page N times; `--retry-fail 1` gives a failing page one more run (owner, 2026-11-19: working pages 1 run, failing pages 2).
+- A CI run with `mode=probe` (`--health --warm --repeat 1 --retry-fail 1`, `probe-summary.md` in the run) counts as probe evidence, same as a local probe (owner, 2026-11-18).
+
 ## 1. Clips must look hand-recorded
 
 - Scroll with the real mouse wheel. Move the cursor with the human glide helpers.

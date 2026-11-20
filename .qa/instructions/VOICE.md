@@ -20,7 +20,7 @@ Applies to every clip that reports a broken doc page: level 1 (blocker, full scr
 
 ## 3. Video
 
-- **No cuts.** The video stays exactly as recorded; the narration fits the real timing.
+- **Cuts only to remove a contradiction (owner, 2026-11-20).** Normally the video stays as recorded and the narration fits the real timing. When a clip's error differs from its note/narration, it may be trimmed or cut so the clip and the voice report the same, real error, only if it stays natural (few cuts) and the demo still shows the real error. Otherwise refilm ([WORKFLOW.md](WORKFLOW.md) A8).
 - **Silences are fine** (owner, 2026-11-08): no need to fill agent waits with talk. During a silence the room tone keeps playing, so it never sounds dead.
 - **No click or typing sounds** (owner, 2026-11-09): voice + room tone only (`narrate.py mix` adds clicks only with `--foley`).
 - **Background:** constant room tone (low fan hum + faint hiss), **steady at one fixed level for the whole clip** (no fades or ducking), slightly audible: ~20–24 dB below the voice. Gaps never sound digital.
@@ -30,9 +30,9 @@ Applies to every clip that reports a broken doc page: level 1 (blocker, full scr
 - Each script line is attached to a timeline mark label: `label` (first occurrence) or `label#n` (nth occurrence, 1-based), e.g. `doc`, `ide`, `demo`, `evidence#2`, `notepad`. Labels: [AUTORECORDER.md](AUTORECORDER.md) section 4. A second line in the same segment uses `at: "+"` (starts right after the previous line), never an invented label like `demo2`.
 - A line's slot runs from its mark to the next mark. Each line is generated separately and placed at the start of its slot.
 - `evidence` sits inside the `doc` segment, so the `doc` line's slot ends at the first `evidence` mark, not at `ide`. A `+` line shares its slot with the line before it.
-- **A line must fit its slot: never overlap the next segment.** If it would, shorten it.
+- The recorder waits for each line to finish before the next segment starts, so a line can't overlap it (owner, 2026-11-18). Still keep lines short: a long line only makes the clip wait.
 - Gaps between lines are allowed (the fit check reports them but never flags them).
-- Size each line at **~2.5 words/second** of slot length.
+- Size each line at **~2.5 words/second** of slot length (style, not a hard limit).
 
 Finding clip, which line goes where (full ❌/⚠️ clip; level 2 in §5a):
 

@@ -103,7 +103,7 @@
       },
       "added": "2026-11-18",
       "notes": [
-        "Issue: the Antigravity quickstart only registers a built-in OpenAI agent; it never shows how to serve or connect the Antigravity agent."
+        "Issue: only registers a built-in OpenAI agent, never connects the Antigravity agent."
       ],
       "links": [
         {
@@ -135,7 +135,7 @@
       },
       "added": "2026-11-18",
       "notes": [
-        "Note: no install command for the chat's native peers, and streamdown's Bundle Mode setup is only linked; without it every reply crashes."
+        "Note: native peers install and streamdown Bundle Mode setup not shown."
       ],
       "links": [
         {
@@ -167,7 +167,7 @@
       },
       "added": "2026-11-18",
       "notes": [
-        "Note: same native peers / Bundle Mode setup gap as Prebuilt Components."
+        "Note: same native peers / Bundle Mode gap as Prebuilt Components."
       ],
       "links": [
         {
@@ -225,7 +225,7 @@
       },
       "added": "2026-11-18",
       "notes": [
-        "Issue: the quick start has no message list, so the answer never shows, and a red \"Text strings must be rendered within a <Text>\" error appears on load."
+        "Issue: no message list so answers never show, red <Text> error on load."
       ],
       "links": [
         {
@@ -257,7 +257,7 @@
       },
       "added": "2026-11-18",
       "notes": [
-        "Note: the agent step reuses the chart agent prompt and never mentions filter_tasks (still works)."
+        "Note: agent prompt never mentions filter_tasks (still works)."
       ],
       "links": [
         {
@@ -339,7 +339,7 @@
       },
       "added": "2026-11-18",
       "notes": [
-        "Issue: the agent uses search_flights, get_stock_price, roll_d20, SYSTEM_PROMPT and build, none of them shown; the server fails on import."
+        "Issue: agent tools, SYSTEM_PROMPT and build never shown, server fails on import."
       ],
       "links": [
         {
@@ -453,7 +453,7 @@
       },
       "added": "2026-11-18",
       "notes": [
-        "Issue: the slot card shows, but tapping a slot never completes: no confirmation, the card stays open."
+        "Issue: tapping a slot never completes, card stays open."
       ],
       "links": [
         {
@@ -484,7 +484,7 @@
       },
       "added": "2026-11-18",
       "notes": [
-        "Issue: the page says the backend is \"Not available for Google Antigravity yet\"; with a harness agent the picker never resumes."
+        "Issue: backend not available for Antigravity, picker never resumes."
       ],
       "links": [
         {
@@ -513,7 +513,7 @@
       },
       "added": "2026-11-18",
       "notes": [
-        "Note: the code imports `./src/ChatScreen`, which the page never shows."
+        "Note: imports ./src/ChatScreen, never shown."
       ],
       "links": [
         {
@@ -544,7 +544,7 @@
       },
       "added": "2026-11-18",
       "notes": [
-        "Issue: the only agent code is LangGraph (`interrupt()`, `deliver_email` undefined); there is no Antigravity agent, so the reader has to write one."
+        "Issue: only LangGraph agent code, no Antigravity agent."
       ],
       "links": [
         {
@@ -575,7 +575,7 @@
       },
       "added": "2026-11-18",
       "notes": [
-        "Note: the page says WebMCP registration is a no-op on React Native."
+        "Note: WebMCP is a no-op on React Native."
       ]
     },
     {
@@ -598,7 +598,7 @@
       },
       "added": "2026-11-18",
       "notes": [
-        "Issue: no frontend code for the delegation log, and the agent imports httpx, which the install step never names."
+        "Issue: no delegation log frontend, httpx install not mentioned."
       ],
       "links": [
         {
@@ -627,7 +627,7 @@
       },
       "added": "2026-11-18",
       "notes": [
-        "Note: the page says there is no React Native build of Inspector."
+        "Note: no React Native build of Inspector."
       ]
     }
   ]
