@@ -29,29 +29,11 @@ but the runtime only registers a built in openai agent, model openai gpt 6 luna
 the chat works but its not antigravity at all
 page never shows how to serve the antigravity agent or hook it into the runtime
 had to guess the backend and an httpagent from ag-ui client which no install step names`,
-  'tool-rendering': `page says the agent exposes get_weather and a few more tools so the cards render
-but TOOLS has search_flights get_stock_price roll_d20 and SYSTEM_PROMPT and build that are never shown
-so the agent file fails on import, nameerror, server never starts
-build comes from agents _common which isnt published anywhere
-only works after copying the missing tools and prompt from somewhere else`,
-  'multimodal-attachments': `page says attach a photo and the agent answers about it
-but the quick start has no message list, just a comment saying ur list goes here
-so after sending nothing shows up, the answer never appears
-and a red error shows on load, text strings must be rendered within a text component
-the callout even says the default reader fails on todays expo file system`,
   hitl: `page says tap a slot and the agent confirms the time u picked
 the card shows up fine, tue 9 am wed 2 pm none of these work
 but tapping a slot does nothing visible, no done line, no reply, card stays open
-the answer does reach the agent so its the react native side not finishing
-same backend works on the web page`,
-  'use-interrupt': `page says tap tomorrow at 09 00 and the agent continues
-but the backend section says not available for google antigravity yet
-so theres no agent to use, had to write one myself
-even then the picker shows and tapping it changes nothing`,
-  'governed-actions': `page says tap reject and the agent replies it didnt send the email
-but the only agent code is langgraph, interrupt and deliver_email, nothing for antigravity
-so for antigravity u have to write the whole agent urself
-with my own agent the card shows and reject works,but thats not from the page`,
+the tap never sends anything back, no second request reaches the agent
+so the run just stays paused`,
   subagents: `page says the delegation log renders live as the supervisor calls sub agents
 but theres no react native code for the log at all, just one sentence
 had to write the whole frontend myself
@@ -61,20 +43,8 @@ export const FINDING_EVIDENCE: Record<string, DocEvidence[]> = {
   quickstart: [
     { text: 'model: "openai:gpt-6-luna",', caption: 'Only a built-in OpenAI agent; no Antigravity agent (FINDINGS.md #1)' },
   ],
-  'tool-rendering': [
-    { text: 'Backend tools are plain Python functions. Pass them as', caption: 'Three tools, SYSTEM_PROMPT and build never defined (FINDINGS.md #2)' },
-  ],
-  'multimodal-attachments': [
-    { text: 'Your message list goes here', caption: 'No message list; Attach opens nothing (FINDINGS.md #9)' },
-  ],
   hitl: [
     { text: 'Tap a slot, and the agent confirms the time you picked', caption: 'Tapping a slot never completes (FINDINGS.md #10)' },
-  ],
-  'use-interrupt': [
-    { text: 'Not available for Google Antigravity yet', caption: 'No Antigravity backend (FINDINGS.md #11)' },
-  ],
-  'governed-actions': [
-    { text: 'In a LangGraph Python agent, the tool calls', caption: 'LangGraph-only agent (FINDINGS.md #13)' },
   ],
   subagents: [
     { text: 'On the frontend, the delegation log is a reactive render of the', caption: 'No frontend code for the log (FINDINGS.md #14)' },

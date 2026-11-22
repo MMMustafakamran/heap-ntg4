@@ -1,0 +1,9 @@
+{
+ "text": "So basically, this should get you a chat on Antigravity, but you get OpenAI instead, and the page never shows how to serve the Antigravity agent or connect it.",
+ "model": "s2.1-pro-free",
+ "refSha256": "2c9d0ecf4608feacc07c88e869cd4dec601481306a939b7be92fc1bff521a727",
+ "duration": 11.331,
+ "file": "f1f2a3e168e3eeaf980db945d9ccf766.mp3",
+ "clip": "ANTIGRAVITY-rn-01-Quickstart",
+ "at": "notepad"
+}

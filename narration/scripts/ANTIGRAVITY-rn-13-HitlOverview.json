@@ -19,7 +19,7 @@
   },
   {
    "at": "notepad",
-   "text": "So basically, picking a slot should finish the flow, but the answer goes to the agent and nothing ever comes back on screen."
+   "text": "So basically, picking a slot should finish the flow, but the tap never sends the answer back to the agent, so nothing comes back on screen."
   },
   {
    "at": "+",

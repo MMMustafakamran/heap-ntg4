@@ -13,6 +13,8 @@ for i in 1 2 3 4 5; do adb install -r "$APK" 2>&1 | tee /tmp/install.log | grep 
 adb shell "run-as com.mycopilotapp sh -c 'mkdir -p shared_prefs && echo \"<?xml version=\\\"1.0\\\" encoding=\\\"utf-8\\\" standalone=\\\"yes\\\" ?><map><string name=\\\"debug_http_host\\\">10.0.2.2:8150</string></map>\" > shared_prefs/com.mycopilotapp_preferences.xml'"
 adb shell "run-as com.mycopilotapp cat shared_prefs/com.mycopilotapp_preferences.xml"; echo
 adb reverse tcp:8150 tcp:8150 || true   # belt and braces: localhost:8150 also reaches Metro
+# HARNESS: a photo on the device for the Multimodal page's Attach picker (the reader picks their own)
+adb push tools/attach-sample.png /sdcard/Download/attach-sample.png && adb shell am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d file:///sdcard/Download/attach-sample.png >/dev/null || true
 mkdir -p logs
 # HARNESS: react-native-worklets Bundle Mode writes .worklets/<id>.js on the fly and Metro fails the first
 # bundles with "Failed to get the SHA-1" (react-native-streamdown README, Bundle Mode step 3: "reload the app a

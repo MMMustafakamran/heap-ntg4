@@ -78,12 +78,26 @@
  "multimodal-attachments": {
   "prompt": "what is in this image?",
   "tap": "Send",
-  "then": [
+  "before": [
+   {
+    "waitfor": "Attach",
+    "timeout": 90
+   },
+   {
+    "wait": 3
+   },
    {
     "tap": "Attach"
    },
    {
-    "wait": 8
+    "waitfor": "attach-sample.png",
+    "timeout": 20
+   },
+   {
+    "tap": "attach-sample.png"
+   },
+   {
+    "wait": 5
    }
   ]
  },

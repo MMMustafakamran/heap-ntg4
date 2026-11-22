@@ -1,0 +1,9 @@
+{
+ "text": "So this is the problem, umm, the runtime only registers a built-in OpenAI agent, there's no Antigravity agent anywhere on the page.",
+ "model": "s2.1-pro-free",
+ "refSha256": "2c9d0ecf4608feacc07c88e869cd4dec601481306a939b7be92fc1bff521a727",
+ "duration": 10.542,
+ "file": "159bd3cb5f2318e18db12c310dcde51d.mp3",
+ "clip": "ANTIGRAVITY-rn-01-Quickstart",
+ "at": "evidence"
+}

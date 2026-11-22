@@ -1,0 +1,9 @@
+{
+ "text": "This is the problem, it says tap a slot and the agent confirms the time, but that never happens.",
+ "model": "s2.1-pro-free",
+ "refSha256": "2c9d0ecf4608feacc07c88e869cd4dec601481306a939b7be92fc1bff521a727",
+ "duration": 6.78,
+ "file": "bb3af10ea32fb010ba90192ce2bf08f0.mp3",
+ "clip": "ANTIGRAVITY-rn-13-HitlOverview",
+ "at": "evidence"
+}
