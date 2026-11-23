@@ -1,217 +1,201 @@
 {
- "quickstart": {
-  "prompt": "Say hello in one short sentence",
-  "tap": "Send"
- },
- "markdown": {
-  "prompt": "Reply with a heading, a bulleted list, bold text and a link",
-  "tap": "Send"
- },
- "headless-ui": {
-  "prompt": "What can you help me with? Answer in two sentences.",
-  "tap": "Send"
- },
- "prebuilt-components": {
-  "prompt": "What can you do?",
-  "tap": "↑"
- },
- "frontend-tools": {
-  "prompt": "show only open tasks",
-  "tap": "↑"
- },
- "tool-based": {
-  "prompt": "show me a bar chart of quarterly sales",
-  "tap": "↑"
- },
- "tool-rendering": {
-  "prompt": "what is the weather in San Francisco",
-  "tap": "↑"
- },
- "webmcp": {
-  "prompt": "hi",
-  "tap": "Send"
- },
- "inspector": {
-  "prompt": "hi",
-  "tap": "Send"
- },
- "shared-state": {
-  "prompt": "Remember that I love hiking",
-  "tap": "↑"
- },
- "shared-state-rendering": {
-  "prompt": "Add a task called Write the launch post",
-  "tap": "↑",
-  "input": "last",
-  "before": [
-   {
-    "waitfor": "Ask the assistant",
-    "timeout": 90
-   },
-   {
-    "wait": 5
-   },
-   {
-    "tap": "Ask the assistant"
-   },
-   {
-    "waitfor": "How can I help?",
-    "timeout": 30
-   },
-   {
-    "wait": 3
-   },
-   {
-    "swipe": [
-     540,
-     1890,
-     540,
-     300
+  "quickstart": {
+    "prompt": "Say hello in one short sentence",
+    "tap": "Send"
+  },
+  "markdown": {
+    "prompt": "Reply with a heading, a bulleted list, bold text and a link",
+    "tap": "Send"
+  },
+  "headless-ui": {
+    "prompt": "What can you help me with? Answer in two sentences.",
+    "tap": "Send"
+  },
+  "prebuilt-components": {
+    "prompt": "What can you do?",
+    "tap": "↑"
+  },
+  "frontend-tools": {
+    "prompt": "show only open tasks",
+    "tap": "↑"
+  },
+  "tool-based": {
+    "prompt": "show me a bar chart of quarterly sales",
+    "tap": "↑"
+  },
+  "tool-rendering": {
+    "prompt": "what is the weather in San Francisco",
+    "tap": "↑"
+  },
+  "webmcp": {
+    "prompt": "hi",
+    "tap": "Send"
+  },
+  "inspector": {
+    "prompt": "hi",
+    "tap": "Send"
+  },
+  "shared-state": {
+    "prompt": "Remember that I love hiking",
+    "tap": "↑"
+  },
+  "shared-state-rendering": {
+    "prompt": "Add a task called Write the launch post",
+    "tap": "↑",
+    "input": "last",
+    "before": [
+      {
+        "waitfor": "Ask the assistant",
+        "timeout": 90
+      },
+      {
+        "wait": 5
+      },
+      {
+        "tap": "Ask the assistant"
+      },
+      {
+        "waitfor": "How can I help?",
+        "timeout": 45
+      },
+      {
+        "wait": 3
+      },
+      {
+        "revealInput": 5
+      },
+      {
+        "wait": 2
+      }
     ]
-   },
-   {
-    "waitfor": "Type a message",
-    "timeout": 15
-   },
-   {
-    "swipe": [
-     540,
-     1890,
-     540,
-     300
+  },
+  "agent-readonly": {
+    "prompt": "What is my name?",
+    "tap": "↑",
+    "input": "last"
+  },
+  "multimodal-attachments": {
+    "prompt": "what is in this image?",
+    "tap": "Send",
+    "before": [
+      {
+        "waitfor": "Attach",
+        "timeout": 90
+      },
+      {
+        "wait": 3
+      },
+      {
+        "tap": "Attach"
+      },
+      {
+        "waitfor": "attach-sample.png",
+        "timeout": 20
+      },
+      {
+        "tap": "attach-sample.png"
+      },
+      {
+        "wait": 5
+      }
+    ],
+    "hideKeyboardBeforeSend": true
+  },
+  "hitl": {
+    "prompt": "Book a meeting with Alex about the launch.",
+    "tap": "↑",
+    "then": [
+      {
+        "waitfor": "Tue 9 AM"
+      },
+      {
+        "wait": 8
+      },
+      {
+        "tap": "Tue 9 AM"
+      },
+      {
+        "wait": 30
+      }
     ]
-   },
-   {
-    "wait": 3
-   }
-  ]
- },
- "agent-readonly": {
-  "prompt": "What is my name?",
-  "tap": "↑",
-  "input": "last"
- },
- "multimodal-attachments": {
-  "prompt": "what is in this image?",
-  "tap": "Send",
-  "before": [
-   {
-    "waitfor": "Attach",
-    "timeout": 90
-   },
-   {
-    "wait": 3
-   },
-   {
-    "tap": "Attach"
-   },
-   {
-    "waitfor": "attach-sample.png",
-    "timeout": 20
-   },
-   {
-    "tap": "attach-sample.png"
-   },
-   {
-    "wait": 5
-   }
-  ]
- },
- "hitl": {
-  "prompt": "Book a meeting with Alex about the launch.",
-  "tap": "↑",
-  "then": [
-   {
-    "waitfor": "Tue 9 AM"
-   },
-   {
-    "wait": 8
-   },
-   {
-    "tap": "Tue 9 AM"
-   },
-   {
-    "wait": 30
-   }
-  ]
- },
- "use-interrupt": {
-  "prompt": "Book a call with me.",
-  "tap": "↑",
-  "then": [
-   {
-    "waitfor": "Tomorrow at 09:00"
-   },
-   {
-    "wait": 8
-   },
-   {
-    "tap": "Tomorrow at 09:00"
-   },
-   {
-    "wait": 30
-   }
-  ]
- },
- "hitl-headless": {
-  "prompt": "Book a call about onboarding.",
-  "tap": "Send",
-  "then": [
-   {
-    "waitfor": "WED 10 AM"
-   },
-   {
-    "hideKeyboard": true
-   },
-   {
-    "tap": "WED 10 AM"
-   },
-   {
-    "wait": 30
-   }
-  ]
- },
- "governed-actions": {
-  "prompt": "Send an email to alex at example.com saying the launch is Friday.",
-  "tap": "↑",
-  "then": [
-   {
-    "waitfor": "User approval required",
-    "timeout": 90
-   },
-   {
-    "wait": 6
-   },
-   {
-    "hideKeyboard": true
-   },
-   {
-    "swipe": [
-     540,
-     1500,
-     540,
-     600
+  },
+  "use-interrupt": {
+    "prompt": "Book a call with me.",
+    "tap": "↑",
+    "then": [
+      {
+        "waitfor": "Tomorrow at 09:00"
+      },
+      {
+        "wait": 8
+      },
+      {
+        "tap": "Tomorrow at 09:00"
+      },
+      {
+        "wait": 30
+      }
     ]
-   },
-   {
-    "wait": 2
-   },
-   {
-    "waitfor": "REJECT",
-    "timeout": 20
-   },
-   {
-    "tap": "REJECT"
-   },
-   {
-    "wait": 30
-   }
-  ]
- },
- "subagents": {
-  "prompt": "Write a short paragraph about solar energy",
-  "tap": "↑",
-  "settle": 40,
-  "timeout": 240
- }
+  },
+  "hitl-headless": {
+    "prompt": "Book a call about onboarding.",
+    "tap": "Send",
+    "then": [
+      {
+        "waitfor": "WED 10 AM"
+      },
+      {
+        "hideKeyboard": true
+      },
+      {
+        "tap": "WED 10 AM"
+      },
+      {
+        "wait": 30
+      }
+    ]
+  },
+  "governed-actions": {
+    "prompt": "Send an email to alex at example.com saying the launch is Friday.",
+    "tap": "↑",
+    "then": [
+      {
+        "waitfor": "User approval required",
+        "timeout": 90
+      },
+      {
+        "wait": 6
+      },
+      {
+        "hideKeyboard": true
+      },
+      {
+        "swipe": [
+          540,
+          1500,
+          540,
+          600
+        ]
+      },
+      {
+        "wait": 2
+      },
+      {
+        "waitfor": "REJECT",
+        "timeout": 20
+      },
+      {
+        "tap": "REJECT"
+      },
+      {
+        "wait": 30
+      }
+    ]
+  },
+  "subagents": {
+    "prompt": "Write a short paragraph about solar energy",
+    "tap": "↑",
+    "settle": 40,
+    "timeout": 240
+  }
 }

@@ -61,9 +61,11 @@ const SEND_LABEL: Record<string, string> = {
 
 /** Steps after the reply settles: tap a node by its text, wait N seconds, or wait until a text shows up. */
 type ThenStep = { tap?: string; wait?: number; waitfor?: string; timeout?: number; /** device px: x1,y1,x2,y2 */ swipe?: [number, number, number, number];
-  /** HARNESS: press Back only while the soft keyboard is up (it covered the swipe area) */ hideKeyboard?: boolean };
+  /** HARNESS: press Back only while the soft keyboard is up (it covered the swipe area) */ hideKeyboard?: boolean;
+  /** HARNESS: swipe the sheet up (up to N times) until a text field shows; CI's emulator is slower and smaller than the local one */ revealInput?: number };
 type PromptCfg = { prompt?: string; tap?: string; settle?: number; timeout?: number; noInput?: boolean; then?: ThenStep[];
-  /** steps before typing (e.g. open a modal) */ before?: ThenStep[]; /** which text field is the chat composer */ input?: 'first' | 'last' };
+  /** steps before typing (e.g. open a modal) */ before?: ThenStep[]; /** which text field is the chat composer */ input?: 'first' | 'last';
+  /** HARNESS: hide the soft keyboard before tapping Send (the doc's composer sits under the keyboard; a person closes it first) */ hideKeyboardBeforeSend?: boolean };
 
 /** First node whose text/desc equals the label, else the first one containing it (case-insensitive). */
 function findText(nodes: UiNode[], label: string): UiNode | undefined {
@@ -92,8 +94,21 @@ async function runStep(page: Page, step: ThenStep, ctx: ActionContext): Promise<
     await sleep(1500);
   }
   if (step.hideKeyboard && /mInputShown=true/.test(sh('dumpsys input_method'))) { sh('input keyevent 4'); logAction('key', 'back (hide keyboard)'); await sleep(1000); }
-  if (step.swipe) { const [a, b, c, d] = step.swipe; sh(`input swipe ${a} ${b} ${c} ${d} 600`); logAction('swipe', step.swipe.join(',')); await sleep(1500); }
+  if (step.swipe) { const [a, b, c, d] = toDevicePx(step.swipe); sh(`input swipe ${a} ${b} ${c} ${d} 600`); logAction('swipe', `${a},${b},${c},${d}`); await sleep(1500); }
+  if (step.revealInput) {
+    // HARNESS: the sheet opens half-way and its composer can sit below the fold; swipe up until a text field shows.
+    for (let i = 0; i < step.revealInput && !dump().nodes.some((n) => n.cls.endsWith('EditText')); i++) {
+      const [a, b, c, d] = toDevicePx([0.5, 0.8, 0.5, 0.15]);
+      sh(`input swipe ${a} ${b} ${c} ${d} 600`); logAction('swipe', `reveal input ${i + 1}`); await sleep(2500);
+    }
+  }
   if (step.wait) await sleep(step.wait * 1000);
+}
+/** Swipe coords: values <= 1 are fractions of the device screen (CI's emulator is 320x640, the local one 1080x2400). */
+function toDevicePx(v: [number, number, number, number]): [number, number, number, number] {
+  if (v.some((x) => x > 1)) return v;
+  const { w, h } = deviceSize(dump().nodes);
+  return [Math.round(v[0] * w), Math.round(v[1] * h), Math.round(v[2] * w), Math.round(v[3] * h)];
 }
 /** tools/probe-prompts.json (main session keeps it), read per take so edits apply without a restart. */
 function promptFor(root: string, config: PageRecordConfig): PromptCfg {
@@ -197,6 +212,9 @@ export async function runAndroidChat(page: Page, config: PageRecordConfig, root:
         mark('action', `type: ${cfg.prompt}`);
         await pastePrompt(cfg.prompt);
         await sleep(700);
+        if (cfg.hideKeyboardBeforeSend && /mInputShown=true/.test(sh('dumpsys input_method'))) {
+          sh('input keyevent 4'); logAction('key', 'back (hide keyboard before send)'); await sleep(1200);
+        }
         screen = dump();
         const label = cfg.tap!;
         const btn = byLabel(screen.nodes, label) ?? byLabel(screen.nodes, label === 'Send' ? '↑' : 'Send');
