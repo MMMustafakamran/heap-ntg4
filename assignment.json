@@ -1,631 +1,631 @@
 {
-  "framework": "Google Antigravity",
-  "quickstartBlocked": "quickstart only registers a built-in OpenAI agent; no Antigravity agent server is given",
-  "ui": "react-native",
-  "repo": "Antigravity-ReactNative",
-  "docBase": "https://docs.copilotkit.ai/react-native/google-antigravity/",
-  "versions": {
-    "@copilotkit/react-native": "1.89.0",
-    "@copilotkit/runtime": "1.89.0",
-    "react-native": "0.88.1",
-    "zod": "3.25.76",
-    "ag-ui-antigravity": "0.2.1",
-    "google-antigravity": "0.1.24",
-    "google-genai": "3.6.1"
-  },
-  "testedContext": {
-    "os": "Microsoft Windows 11 Pro",
-    "packageManager": "npm 11 (Node 26.7.0)",
-    "device": "Android emulator, API 36 x86_64 (Pixel 7)"
-  },
-  "report": {
-    "style": "status",
-    "h1": "Google Antigravity",
-    "title": "Google Antigravity (React Native) status",
-    "quickstartHeading": "Quickstart",
-    "quickstartHeader": [
-      "Frontend",
-      "Quickstart"
-    ],
-    "clipsToUpload": true,
-    "columns": [
-      "Page/Section",
-      "Results"
-    ],
-    "resultColumn": 1,
-    "guidesHeading": "Guides (React Native)"
-  },
-  "sections": [
-    {
-      "label": "Basics",
-      "cells": [
-        "Section"
-      ]
-    },
-    {
-      "label": "Chat",
-      "cells": [
-        "Sub section"
-      ]
-    },
-    {
-      "label": "Custom Look and Feel",
-      "cells": [
-        "Sub section"
-      ]
-    },
-    {
-      "label": "Generative UI",
-      "cells": [
-        "Section"
-      ]
-    },
-    {
-      "label": "Controlled",
-      "cells": [
-        "Sub section"
-      ]
-    },
-    {
-      "label": "Shared state",
-      "cells": [
-        "Section"
-      ]
-    },
-    {
-      "label": "Human-in-the-loop",
-      "cells": [
-        "Section"
-      ]
-    },
-    {
-      "label": "Debugging",
-      "cells": [
-        "Section"
-      ]
-    }
+ "framework": "Google Antigravity",
+ "quickstartBlocked": "quickstart only registers a built-in OpenAI agent; no Antigravity agent server is given",
+ "ui": "react-native",
+ "repo": "Antigravity-ReactNative",
+ "docBase": "https://docs.copilotkit.ai/react-native/google-antigravity/",
+ "versions": {
+  "@copilotkit/react-native": "1.89.0",
+  "@copilotkit/runtime": "1.89.0",
+  "react-native": "0.88.1",
+  "zod": "3.25.76",
+  "ag-ui-antigravity": "0.2.1",
+  "google-antigravity": "0.1.24",
+  "google-genai": "3.6.1"
+ },
+ "testedContext": {
+  "os": "Microsoft Windows 11 Pro",
+  "packageManager": "npm 11 (Node 26.7.0)",
+  "device": "Android emulator, API 36 x86_64 (Pixel 7)"
+ },
+ "report": {
+  "style": "status",
+  "h1": "Google Antigravity",
+  "title": "Google Antigravity (React Native) status",
+  "quickstartHeading": "Quickstart",
+  "quickstartHeader": [
+   "Frontend",
+   "Quickstart"
   ],
-  "pages": [
+  "clipsToUpload": true,
+  "columns": [
+   "Page/Section",
+   "Results"
+  ],
+  "resultColumn": 1,
+  "guidesHeading": "Guides (React Native)"
+ },
+ "sections": [
+  {
+   "label": "Basics",
+   "cells": [
+    "Section"
+   ]
+  },
+  {
+   "label": "Chat",
+   "cells": [
+    "Sub section"
+   ]
+  },
+  {
+   "label": "Custom Look and Feel",
+   "cells": [
+    "Sub section"
+   ]
+  },
+  {
+   "label": "Generative UI",
+   "cells": [
+    "Section"
+   ]
+  },
+  {
+   "label": "Controlled",
+   "cells": [
+    "Sub section"
+   ]
+  },
+  {
+   "label": "Shared state",
+   "cells": [
+    "Section"
+   ]
+  },
+  {
+   "label": "Human-in-the-loop",
+   "cells": [
+    "Section"
+   ]
+  },
+  {
+   "label": "Debugging",
+   "cells": [
+    "Section"
+   ]
+  }
+ ],
+ "pages": [
+  {
+   "id": "quickstart",
+   "label": "React Native",
+   "kind": "quickstart",
+   "group": null,
+   "child": false,
+   "docPath": "",
+   "reachable": "sidebar",
+   "status": "❌",
+   "findings": [
+    1,
+    3
+   ],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18",
+   "notes": [
+    "Issue: only registers a built-in OpenAI agent, never connects the Antigravity agent."
+   ],
+   "links": [
     {
-      "id": "quickstart",
-      "label": "React Native",
-      "kind": "quickstart",
-      "group": null,
-      "child": false,
-      "docPath": "",
-      "reachable": "sidebar",
-      "status": "❌",
-      "findings": [
-        1,
-        3
-      ],
-      "block": null,
-      "review": {
-        "verdict": null,
-        "approvedAt": null,
-        "by": null
-      },
-      "added": "2026-11-18",
-      "notes": [
-        "Issue: only registers a built-in OpenAI agent, never connects the Antigravity agent."
-      ],
-      "links": [
-        {
-          "text": null,
-          "clip": "ANTIGRAVITY-rn-01-Quickstart",
-          "loom": "https://www.loom.com/share/a6f3b41573994d9496f49fb2636187b4",
-          "filmed": "2026-11-19"
-        }
-      ]
-    },
-    {
-      "id": "prebuilt-components",
-      "label": "Prebuilt Components",
-      "kind": "guide",
-      "group": "Chat",
-      "child": true,
-      "docPath": "prebuilt-components",
-      "reachable": "sidebar",
-      "status": "✅",
-      "findings": [
-        4,
-        5
-      ],
-      "block": null,
-      "review": {
-        "verdict": null,
-        "approvedAt": null,
-        "by": null
-      },
-      "added": "2026-11-18",
-      "notes": [
-        "Note: native peers install and streamdown Bundle Mode setup not shown."
-      ],
-      "links": [
-        {
-          "text": null,
-          "clip": "ANTIGRAVITY-rn-02-PrebuiltComponents",
-          "loom": "https://www.loom.com/share/8159b738435b473380cf64879a5ee88c",
-          "filmed": "2026-11-18"
-        }
-      ]
-    },
-    {
-      "id": "markdown",
-      "label": "Markdown Rendering",
-      "kind": "guide",
-      "group": "Custom Look and Feel",
-      "child": true,
-      "docPath": "custom-look-and-feel/markdown",
-      "reachable": "sidebar",
-      "status": "✅",
-      "findings": [
-        4,
-        5
-      ],
-      "block": null,
-      "review": {
-        "verdict": null,
-        "approvedAt": null,
-        "by": null
-      },
-      "added": "2026-11-18",
-      "notes": [
-        "Note: same native peers / Bundle Mode gap as Prebuilt Components."
-      ],
-      "links": [
-        {
-          "text": null,
-          "clip": "ANTIGRAVITY-rn-03-MarkdownRendering",
-          "loom": "https://www.loom.com/share/93e49b3e005740e986a6f487801d1da8",
-          "filmed": "2026-11-19"
-        }
-      ]
-    },
-    {
-      "id": "headless-ui",
-      "label": "Headless UI",
-      "kind": "guide",
-      "group": "Custom Look and Feel",
-      "child": true,
-      "docPath": "custom-look-and-feel/headless-ui",
-      "reachable": "sidebar",
-      "status": "✅",
-      "findings": [],
-      "block": null,
-      "review": {
-        "verdict": null,
-        "approvedAt": null,
-        "by": null
-      },
-      "added": "2026-11-18",
-      "notes": [],
-      "links": [
-        {
-          "text": null,
-          "clip": "ANTIGRAVITY-rn-04-HeadlessUi",
-          "loom": "https://www.loom.com/share/8c498be98c9e41e8b0f7e81e2c523cbc",
-          "filmed": "2026-11-19"
-        }
-      ]
-    },
-    {
-      "id": "multimodal-attachments",
-      "label": "Multimodal Attachments",
-      "kind": "guide",
-      "group": "Chat",
-      "child": true,
-      "docPath": "multimodal-attachments",
-      "reachable": "sidebar",
-      "status": "✅",
-      "findings": [
-        9
-      ],
-      "block": null,
-      "review": {
-        "verdict": null,
-        "approvedAt": null,
-        "by": null
-      },
-      "added": "2026-11-18",
-      "notes": [
-        "Note: message list is a placeholder, reuse the quickstart chat list."
-      ],
-      "links": [
-        {
-          "text": null,
-          "clip": "ANTIGRAVITY-rn-05-MultimodalAttachments",
-          "loom": "https://www.loom.com/share/f80a5a98eba3445db0adaed315c02afa",
-          "filmed": "2026-11-19"
-        }
-      ]
-    },
-    {
-      "id": "frontend-tools",
-      "label": "Frontend Tools",
-      "kind": "guide",
-      "group": "Basics",
-      "child": false,
-      "docPath": "frontend-tools",
-      "reachable": "sidebar",
-      "status": "✅",
-      "findings": [
-        4,
-        6
-      ],
-      "block": null,
-      "review": {
-        "verdict": null,
-        "approvedAt": null,
-        "by": null
-      },
-      "added": "2026-11-18",
-      "notes": [
-        "Note: agent prompt never mentions filter_tasks (still works)."
-      ],
-      "links": [
-        {
-          "text": null,
-          "clip": "ANTIGRAVITY-rn-06-FrontendTools",
-          "loom": "https://www.loom.com/share/eca35433a5db4f8986c1ca3331b93f25",
-          "filmed": "2026-11-18"
-        }
-      ]
-    },
-    {
-      "id": "generative-ui",
-      "label": "Overview",
-      "kind": "guide",
-      "group": "Generative UI",
-      "child": false,
-      "docPath": "generative-ui",
-      "reachable": "sidebar",
-      "status": "N/A",
-      "findings": [],
-      "block": null,
-      "review": {
-        "verdict": null,
-        "approvedAt": null,
-        "by": null
-      },
-      "added": "2026-11-18",
-      "notes": [
-        "Note: overview page, no code to run."
-      ]
-    },
-    {
-      "id": "tool-based",
-      "label": "Components as Tools",
-      "kind": "guide",
-      "group": "Controlled",
-      "child": true,
-      "docPath": "generative-ui/tool-based",
-      "reachable": "sidebar",
-      "status": "✅",
-      "findings": [
-        4,
-        7
-      ],
-      "block": null,
-      "review": {
-        "verdict": null,
-        "approvedAt": null,
-        "by": null
-      },
-      "added": "2026-11-18",
-      "notes": [],
-      "links": [
-        {
-          "text": null,
-          "clip": "ANTIGRAVITY-rn-08-ComponentsAsTools",
-          "loom": "https://www.loom.com/share/9c7aae40755648b4ae83a201ad661439",
-          "filmed": "2026-11-18"
-        }
-      ]
-    },
-    {
-      "id": "tool-rendering",
-      "label": "Tool Call Rendering",
-      "kind": "guide",
-      "group": "Controlled",
-      "child": true,
-      "docPath": "generative-ui/tool-rendering",
-      "reachable": "sidebar",
-      "status": "✅",
-      "findings": [
-        2
-      ],
-      "block": null,
-      "review": {
-        "verdict": null,
-        "approvedAt": null,
-        "by": null
-      },
-      "added": "2026-11-18",
-      "notes": [
-        "Note: extra tools, SYSTEM_PROMPT and build not shown; weather card works."
-      ],
-      "links": [
-        {
-          "text": null,
-          "clip": "ANTIGRAVITY-rn-09-ToolCallRendering",
-          "loom": "https://www.loom.com/share/5fb608ffddb446b0b7bf569e6e707d41",
-          "filmed": "2026-11-19"
-        }
-      ]
-    },
-    {
-      "id": "shared-state",
-      "label": "Shared State",
-      "kind": "guide",
-      "group": "Shared state",
-      "child": false,
-      "docPath": "shared-state",
-      "reachable": "sidebar",
-      "status": "✅",
-      "findings": [],
-      "block": null,
-      "review": {
-        "verdict": null,
-        "approvedAt": null,
-        "by": null
-      },
-      "added": "2026-11-18",
-      "notes": [],
-      "links": [
-        {
-          "text": null,
-          "clip": "ANTIGRAVITY-rn-10-SharedState",
-          "loom": "https://www.loom.com/share/62e188a2a18c4707a8a15883abcb0b3b",
-          "filmed": "2026-11-18"
-        }
-      ]
-    },
-    {
-      "id": "shared-state-rendering",
-      "label": "Render agent state in your app",
-      "kind": "guide",
-      "group": "Shared state",
-      "child": true,
-      "docPath": "shared-state/rendering-in-app",
-      "reachable": "sidebar",
-      "status": "✅",
-      "findings": [
-        4
-      ],
-      "block": null,
-      "review": {
-        "verdict": null,
-        "approvedAt": null,
-        "by": null
-      },
-      "added": "2026-11-18",
-      "notes": [],
-      "links": [
-        {
-          "text": null,
-          "clip": "ANTIGRAVITY-rn-11-RenderAgentStateInYourApp",
-          "loom": "https://www.loom.com/share/e3907e6edab04609b85f738c76dd0ae7",
-          "filmed": "2026-11-19"
-        }
-      ]
-    },
-    {
-      "id": "agent-readonly",
-      "label": "Agent Read-Only Context",
-      "kind": "guide",
-      "group": "Shared state",
-      "child": true,
-      "docPath": "shared-state/agent-readonly",
-      "reachable": "sidebar",
-      "status": "✅",
-      "findings": [],
-      "block": null,
-      "review": {
-        "verdict": null,
-        "approvedAt": null,
-        "by": null
-      },
-      "added": "2026-11-18",
-      "notes": [],
-      "links": [
-        {
-          "text": null,
-          "clip": "ANTIGRAVITY-rn-12-AgentReadOnlyContext",
-          "loom": "https://www.loom.com/share/6ad98d61ca1c472db95e7b8611733a50",
-          "filmed": "2026-11-18"
-        }
-      ]
-    },
-    {
-      "id": "hitl",
-      "label": "HITL Overview",
-      "kind": "guide",
-      "group": "Human-in-the-loop",
-      "child": false,
-      "docPath": "human-in-the-loop",
-      "reachable": "sidebar",
-      "status": "❌",
-      "findings": [
-        10
-      ],
-      "block": null,
-      "review": {
-        "verdict": null,
-        "approvedAt": null,
-        "by": null
-      },
-      "added": "2026-11-18",
-      "notes": [
-        "Issue: tapping a slot does nothing, no resume request, card stays open."
-      ],
-      "links": [
-        {
-          "text": null,
-          "clip": "ANTIGRAVITY-rn-13-HitlOverview",
-          "loom": "https://www.loom.com/share/2678eb3511664faeb551b9aedcf07dae",
-          "filmed": "2026-11-19"
-        }
-      ]
-    },
-    {
-      "id": "use-interrupt",
-      "label": "Pausing the Agent for Input",
-      "kind": "guide",
-      "group": "Human-in-the-loop",
-      "child": true,
-      "docPath": "human-in-the-loop/useInterrupt",
-      "reachable": "sidebar",
-      "status": "N/A",
-      "findings": [
-        11
-      ],
-      "block": null,
-      "review": {
-        "verdict": null,
-        "approvedAt": null,
-        "by": null
-      },
-      "added": "2026-11-18",
-      "notes": [
-        "Note: page says not available for Google Antigravity yet."
-      ],
-      "links": []
-    },
-    {
-      "id": "hitl-headless",
-      "label": "Headless Interrupts",
-      "kind": "guide",
-      "group": "Human-in-the-loop",
-      "child": true,
-      "docPath": "human-in-the-loop/headless",
-      "reachable": "sidebar",
-      "status": "✅",
-      "findings": [],
-      "block": null,
-      "review": {
-        "verdict": null,
-        "approvedAt": null,
-        "by": null
-      },
-      "added": "2026-11-18",
-      "notes": [
-        "Note: imports ./src/ChatScreen, never shown."
-      ],
-      "links": [
-        {
-          "text": null,
-          "clip": "ANTIGRAVITY-rn-15-HeadlessInterrupts",
-          "loom": "https://www.loom.com/share/83e85edcff914847aabe700d87cedf20",
-          "filmed": "2026-11-19"
-        }
-      ]
-    },
-    {
-      "id": "governed-actions",
-      "label": "Governed Action Approval UI",
-      "kind": "guide",
-      "group": "Human-in-the-loop",
-      "child": true,
-      "docPath": "human-in-the-loop/governed-actions",
-      "reachable": "sidebar",
-      "status": "✅",
-      "findings": [
-        13
-      ],
-      "block": null,
-      "review": {
-        "verdict": null,
-        "approvedAt": null,
-        "by": null
-      },
-      "added": "2026-11-18",
-      "notes": [
-        "Note: no Antigravity agent shown; quickstart agent naming the tool works."
-      ],
-      "links": [
-        {
-          "text": null,
-          "clip": "ANTIGRAVITY-rn-16-GovernedActionApprovalUi",
-          "loom": "https://www.loom.com/share/c353af8dc07040b7a074d94f2922ea31",
-          "filmed": "2026-11-19"
-        }
-      ]
-    },
-    {
-      "id": "webmcp",
-      "label": "WebMCP",
-      "kind": "guide",
-      "group": null,
-      "child": false,
-      "docPath": "webmcp",
-      "reachable": "sidebar",
-      "status": "N/A",
-      "findings": [
-        8
-      ],
-      "block": null,
-      "review": {
-        "verdict": null,
-        "approvedAt": null,
-        "by": null
-      },
-      "added": "2026-11-18",
-      "notes": [
-        "Note: WebMCP is a no-op on React Native."
-      ]
-    },
-    {
-      "id": "subagents",
-      "label": "Sub-agents",
-      "kind": "guide",
-      "group": null,
-      "child": false,
-      "docPath": "multi-agent/subagents",
-      "reachable": "sidebar",
-      "status": "❌",
-      "findings": [
-        14
-      ],
-      "block": null,
-      "review": {
-        "verdict": null,
-        "approvedAt": null,
-        "by": null
-      },
-      "added": "2026-11-18",
-      "notes": [
-        "Issue: delegation log is React web code only, httpx install not mentioned."
-      ],
-      "links": [
-        {
-          "text": null,
-          "clip": "ANTIGRAVITY-rn-18-SubAgents",
-          "loom": "https://www.loom.com/share/1b2d0d916e10478d9667d1668309400b",
-          "filmed": "2026-11-19"
-        }
-      ]
-    },
-    {
-      "id": "inspector",
-      "label": "Inspector",
-      "kind": "guide",
-      "group": "Debugging",
-      "child": false,
-      "docPath": "inspector",
-      "reachable": "sidebar",
-      "status": "N/A",
-      "findings": [],
-      "block": null,
-      "review": {
-        "verdict": null,
-        "approvedAt": null,
-        "by": null
-      },
-      "added": "2026-11-18",
-      "notes": [
-        "Note: no React Native build of Inspector."
-      ]
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-01-Quickstart",
+     "loom": "https://www.loom.com/share/b9c2d61e17bc4067b930c6b0de3ef7ab",
+     "filmed": "2026-11-23"
     }
-  ]
+   ]
+  },
+  {
+   "id": "prebuilt-components",
+   "label": "Prebuilt Components",
+   "kind": "guide",
+   "group": "Chat",
+   "child": true,
+   "docPath": "prebuilt-components",
+   "reachable": "sidebar",
+   "status": "✅",
+   "findings": [
+    4,
+    5
+   ],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18",
+   "notes": [
+    "Note: native peers install and streamdown Bundle Mode setup not shown."
+   ],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-02-PrebuiltComponents",
+     "loom": "https://www.loom.com/share/7f8c9aace3b3448080c3243e917299e6",
+     "filmed": "2026-11-23"
+    }
+   ]
+  },
+  {
+   "id": "markdown",
+   "label": "Markdown Rendering",
+   "kind": "guide",
+   "group": "Custom Look and Feel",
+   "child": true,
+   "docPath": "custom-look-and-feel/markdown",
+   "reachable": "sidebar",
+   "status": "✅",
+   "findings": [
+    4,
+    5
+   ],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18",
+   "notes": [
+    "Note: same native peers / Bundle Mode gap as Prebuilt Components."
+   ],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-03-MarkdownRendering",
+     "loom": "https://www.loom.com/share/a9adc427ae25433a8d73fb2642517325",
+     "filmed": "2026-11-23"
+    }
+   ]
+  },
+  {
+   "id": "headless-ui",
+   "label": "Headless UI",
+   "kind": "guide",
+   "group": "Custom Look and Feel",
+   "child": true,
+   "docPath": "custom-look-and-feel/headless-ui",
+   "reachable": "sidebar",
+   "status": "✅",
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18",
+   "notes": [],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-04-HeadlessUi",
+     "loom": "https://www.loom.com/share/c66269be50a7424abd0f5a743b7378fd",
+     "filmed": "2026-11-23"
+    }
+   ]
+  },
+  {
+   "id": "multimodal-attachments",
+   "label": "Multimodal Attachments",
+   "kind": "guide",
+   "group": "Chat",
+   "child": true,
+   "docPath": "multimodal-attachments",
+   "reachable": "sidebar",
+   "status": "✅",
+   "findings": [
+    9
+   ],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18",
+   "notes": [
+    "Note: message list is a placeholder, reuse the quickstart chat list."
+   ],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-05-MultimodalAttachments",
+     "loom": "https://www.loom.com/share/f80a5a98eba3445db0adaed315c02afa",
+     "filmed": "2026-11-19"
+    }
+   ]
+  },
+  {
+   "id": "frontend-tools",
+   "label": "Frontend Tools",
+   "kind": "guide",
+   "group": "Basics",
+   "child": false,
+   "docPath": "frontend-tools",
+   "reachable": "sidebar",
+   "status": "✅",
+   "findings": [
+    4,
+    6
+   ],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18",
+   "notes": [
+    "Note: agent prompt never mentions filter_tasks (still works)."
+   ],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-06-FrontendTools",
+     "loom": "https://www.loom.com/share/2b1b0383629e4f45ad73826eb9902e7c",
+     "filmed": "2026-11-23"
+    }
+   ]
+  },
+  {
+   "id": "generative-ui",
+   "label": "Overview",
+   "kind": "guide",
+   "group": "Generative UI",
+   "child": false,
+   "docPath": "generative-ui",
+   "reachable": "sidebar",
+   "status": "N/A",
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18",
+   "notes": [
+    "Note: overview page, no code to run."
+   ]
+  },
+  {
+   "id": "tool-based",
+   "label": "Components as Tools",
+   "kind": "guide",
+   "group": "Controlled",
+   "child": true,
+   "docPath": "generative-ui/tool-based",
+   "reachable": "sidebar",
+   "status": "✅",
+   "findings": [
+    4,
+    7
+   ],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18",
+   "notes": [],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-08-ComponentsAsTools",
+     "loom": "https://www.loom.com/share/a8fdea2cb4c9450bb15139304ed00b53",
+     "filmed": "2026-11-23"
+    }
+   ]
+  },
+  {
+   "id": "tool-rendering",
+   "label": "Tool Call Rendering",
+   "kind": "guide",
+   "group": "Controlled",
+   "child": true,
+   "docPath": "generative-ui/tool-rendering",
+   "reachable": "sidebar",
+   "status": "✅",
+   "findings": [
+    2
+   ],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18",
+   "notes": [
+    "Note: extra tools, SYSTEM_PROMPT and build not shown; weather card works."
+   ],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-09-ToolCallRendering",
+     "loom": "https://www.loom.com/share/e249c52087924e36a109a55d63eba75c",
+     "filmed": "2026-11-23"
+    }
+   ]
+  },
+  {
+   "id": "shared-state",
+   "label": "Shared State",
+   "kind": "guide",
+   "group": "Shared state",
+   "child": false,
+   "docPath": "shared-state",
+   "reachable": "sidebar",
+   "status": "✅",
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18",
+   "notes": [],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-10-SharedState",
+     "loom": "https://www.loom.com/share/eea1ede347544d8483fb65641448bf53",
+     "filmed": "2026-11-23"
+    }
+   ]
+  },
+  {
+   "id": "shared-state-rendering",
+   "label": "Render agent state in your app",
+   "kind": "guide",
+   "group": "Shared state",
+   "child": true,
+   "docPath": "shared-state/rendering-in-app",
+   "reachable": "sidebar",
+   "status": "✅",
+   "findings": [
+    4
+   ],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18",
+   "notes": [],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-11-RenderAgentStateInYourApp",
+     "loom": "https://www.loom.com/share/e3907e6edab04609b85f738c76dd0ae7",
+     "filmed": "2026-11-19"
+    }
+   ]
+  },
+  {
+   "id": "agent-readonly",
+   "label": "Agent Read-Only Context",
+   "kind": "guide",
+   "group": "Shared state",
+   "child": true,
+   "docPath": "shared-state/agent-readonly",
+   "reachable": "sidebar",
+   "status": "✅",
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18",
+   "notes": [],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-12-AgentReadOnlyContext",
+     "loom": "https://www.loom.com/share/00d494af52e745e69f0f1e7300d24911",
+     "filmed": "2026-11-23"
+    }
+   ]
+  },
+  {
+   "id": "hitl",
+   "label": "HITL Overview",
+   "kind": "guide",
+   "group": "Human-in-the-loop",
+   "child": false,
+   "docPath": "human-in-the-loop",
+   "reachable": "sidebar",
+   "status": "❌",
+   "findings": [
+    10
+   ],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18",
+   "notes": [
+    "Issue: tapping a slot does nothing, no resume request, card stays open."
+   ],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-13-HitlOverview",
+     "loom": "https://www.loom.com/share/f8acb01834b949b396c88c5bb4ba6930",
+     "filmed": "2026-11-23"
+    }
+   ]
+  },
+  {
+   "id": "use-interrupt",
+   "label": "Pausing the Agent for Input",
+   "kind": "guide",
+   "group": "Human-in-the-loop",
+   "child": true,
+   "docPath": "human-in-the-loop/useInterrupt",
+   "reachable": "sidebar",
+   "status": "N/A",
+   "findings": [
+    11
+   ],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18",
+   "notes": [
+    "Note: page says not available for Google Antigravity yet."
+   ],
+   "links": []
+  },
+  {
+   "id": "hitl-headless",
+   "label": "Headless Interrupts",
+   "kind": "guide",
+   "group": "Human-in-the-loop",
+   "child": true,
+   "docPath": "human-in-the-loop/headless",
+   "reachable": "sidebar",
+   "status": "✅",
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18",
+   "notes": [
+    "Note: imports ./src/ChatScreen, never shown."
+   ],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-15-HeadlessInterrupts",
+     "loom": "https://www.loom.com/share/9729b85cc72341bb859b9c4df79ffbef",
+     "filmed": "2026-11-23"
+    }
+   ]
+  },
+  {
+   "id": "governed-actions",
+   "label": "Governed Action Approval UI",
+   "kind": "guide",
+   "group": "Human-in-the-loop",
+   "child": true,
+   "docPath": "human-in-the-loop/governed-actions",
+   "reachable": "sidebar",
+   "status": "✅",
+   "findings": [
+    13
+   ],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18",
+   "notes": [
+    "Note: no Antigravity agent shown; quickstart agent naming the tool works."
+   ],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-16-GovernedActionApprovalUi",
+     "loom": "https://www.loom.com/share/ef319784f4464249bca533721c397de4",
+     "filmed": "2026-11-23"
+    }
+   ]
+  },
+  {
+   "id": "webmcp",
+   "label": "WebMCP",
+   "kind": "guide",
+   "group": null,
+   "child": false,
+   "docPath": "webmcp",
+   "reachable": "sidebar",
+   "status": "N/A",
+   "findings": [
+    8
+   ],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18",
+   "notes": [
+    "Note: WebMCP is a no-op on React Native."
+   ]
+  },
+  {
+   "id": "subagents",
+   "label": "Sub-agents",
+   "kind": "guide",
+   "group": null,
+   "child": false,
+   "docPath": "multi-agent/subagents",
+   "reachable": "sidebar",
+   "status": "❌",
+   "findings": [
+    14
+   ],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18",
+   "notes": [
+    "Issue: delegation log is React web code only, httpx install not mentioned."
+   ],
+   "links": [
+    {
+     "text": null,
+     "clip": "ANTIGRAVITY-rn-18-SubAgents",
+     "loom": "https://www.loom.com/share/932531bb76844f53aaa59ee9c854621d",
+     "filmed": "2026-11-23"
+    }
+   ]
+  },
+  {
+   "id": "inspector",
+   "label": "Inspector",
+   "kind": "guide",
+   "group": "Debugging",
+   "child": false,
+   "docPath": "inspector",
+   "reachable": "sidebar",
+   "status": "N/A",
+   "findings": [],
+   "block": null,
+   "review": {
+    "verdict": null,
+    "approvedAt": null,
+    "by": null
+   },
+   "added": "2026-11-18",
+   "notes": [
+    "Note: no React Native build of Inspector."
+   ]
+  }
+ ]
 }
