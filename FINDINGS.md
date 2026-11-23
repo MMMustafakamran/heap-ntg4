@@ -2,7 +2,7 @@
 
 Open doc defects on the React Native section of the Google Antigravity docs (Android emulator; iOS not testable on Windows).
 
-Stack: @copilotkit/react-native 1.89.0, @copilotkit/runtime 1.89.0, react-native 0.88.1, zod 3.25.76, react-native-get-random-values 2.1.0, react-native-streamdown 0.3.0, react-native-worklets 0.13.1, react-native-reanimated 4.7.2, expo-file-system 58.0.14 · ag-ui-antigravity / google-antigravity as in backend/uv.lock · Node 26.7.0, npm 11 · Windows 11 Pro, Android emulator API 36 x86_64 · docs https://docs.copilotkit.ai/react-native/google-antigravity, snapshot 2026-11-18
+Stack: @copilotkit/react-native 1.89.0, @copilotkit/runtime 1.89.0, react-native 0.88.1, zod 3.25.76, react-native-get-random-values 2.1.0, react-native-streamdown 0.3.0, react-native-worklets 0.13.1, react-native-reanimated 4.7.2, expo-file-system 58.0.14 · ag-ui-antigravity 0.2.1, google-antigravity 0.1.24, google-genai 3.6.1 (backend/uv.lock, 2026-11-23) · Node 26.7.0, npm 11 · Windows 11 Pro, Android emulator API 36 x86_64 · docs https://docs.copilotkit.ai/react-native/google-antigravity, snapshot 2026-11-18
 
 ### [React Native (Quickstart)](https://docs.copilotkit.ai/react-native/google-antigravity)
 

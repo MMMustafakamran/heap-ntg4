@@ -8,7 +8,10 @@
     "@copilotkit/react-native": "1.89.0",
     "@copilotkit/runtime": "1.89.0",
     "react-native": "0.88.1",
-    "zod": "3.25.76"
+    "zod": "3.25.76",
+    "ag-ui-antigravity": "0.2.1",
+    "google-antigravity": "0.1.24",
+    "google-genai": "3.6.1"
   },
   "testedContext": {
     "os": "Microsoft Windows 11 Pro",
