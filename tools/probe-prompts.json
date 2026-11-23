@@ -55,7 +55,23 @@
     "tap": "Ask the assistant"
    },
    {
-    "wait": 4
+    "waitfor": "How can I help?",
+    "timeout": 30
+   },
+   {
+    "wait": 3
+   },
+   {
+    "swipe": [
+     540,
+     1890,
+     540,
+     300
+    ]
+   },
+   {
+    "waitfor": "Type a message",
+    "timeout": 15
    },
    {
     "swipe": [
