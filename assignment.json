@@ -615,7 +615,8 @@
    "added": "2026-11-18",
    "notes": [
     "Note: no React Native build of Inspector."
-   ]
+   ],
+   "excluded": "Backend section of the docs sidebar (owner 2026-11-23: Backend pages out of scope)"
   }
  ]
 }
