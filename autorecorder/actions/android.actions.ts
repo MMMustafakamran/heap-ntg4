@@ -187,6 +187,7 @@ export async function runAndroidChat(page: Page, config: PageRecordConfig, root:
 
     // Optional steps before the prompt (tools/probe-prompts.json `before`), e.g. open a bottom sheet.
     for (const step of cfg.before ?? []) await runStep(page, step, ctx);
+    if (cfg.before?.length) logAction('screen', 'after before-steps', 'ok', { texts: texts(dump().nodes).slice(0, 20) });
 
     let screen = dump();
     // The dev build loads its JS bundle from Metro first: wait (up to 60 s) for the page's composer to appear.
@@ -224,6 +225,19 @@ export async function runAndroidChat(page: Page, config: PageRecordConfig, root:
         else { sh('input keyevent 66'); logAction('key', 'enter (no send button)'); }
         sentAt = Date.now();
         await sleep(2000);
+        // HARNESS: if the prompt still sits in the composer, the Send tap didn't land (the doc's composer is at the
+        // very bottom edge, next to the gesture bar on CI's small emulator): tap once more on the button's upper part.
+        if (btn && cfg.hideKeyboardBeforeSend) {
+          const now = dump().nodes;
+          const still = now.some((n) => n.cls.endsWith('EditText') && n.text === cfg.prompt);
+          const b2 = byLabel(now, label);
+          logAction('check', 'prompt left in composer after send', still ? 'yes' : 'no', { texts: texts(now).slice(0, 12) });
+          if (still && b2) {
+            const x = Math.round((b2.bounds[0] + b2.bounds[2]) / 2), y = b2.bounds[1] + Math.max(2, Math.round((b2.bounds[3] - b2.bounds[1]) / 4));
+            mark('click', `send again (${label})`); tapXY(x, y); logAction('tap', `send again (${label})`, 'ok', { x, y });
+            await sleep(2000);
+          }
+        }
       }
     } else if (cfg.tap && cfg.noInput) {
       const btn = byLabel(screen.nodes, cfg.tap);

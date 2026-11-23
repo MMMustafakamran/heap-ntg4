@@ -67,7 +67,8 @@
       {
         "wait": 2
       }
-    ]
+    ],
+    "hideKeyboardBeforeSend": true
   },
   "agent-readonly": {
     "prompt": "What is my name?",
@@ -96,7 +97,7 @@
         "tap": "attach-sample.png"
       },
       {
-        "wait": 5
+        "wait": 8
       }
     ],
     "hideKeyboardBeforeSend": true
