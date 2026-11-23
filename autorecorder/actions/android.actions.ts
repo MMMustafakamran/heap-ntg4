@@ -232,7 +232,8 @@ export async function runAndroidChat(page: Page, config: PageRecordConfig, root:
           const still = now.some((n) => n.cls.endsWith('EditText') && n.text === cfg.prompt);
           const b2 = byLabel(now, label);
           logAction('check', 'prompt left in composer after send', still ? 'yes' : 'no', { texts: texts(now).slice(0, 12) });
-          if (still && b2) {
+          for (let k = 0; k < 3 && still && b2; k++) {
+            if (k) { await sleep(3000); if (!dump().nodes.some((n) => n.cls.endsWith('EditText') && n.text === cfg.prompt)) break; }
             const x = Math.round((b2.bounds[0] + b2.bounds[2]) / 2), y = b2.bounds[1] + Math.max(2, Math.round((b2.bounds[3] - b2.bounds[1]) / 4));
             mark('click', `send again (${label})`); tapXY(x, y); logAction('tap', `send again (${label})`, 'ok', { x, y });
             await sleep(2000);

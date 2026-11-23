@@ -97,7 +97,14 @@
         "tap": "attach-sample.png"
       },
       {
-        "wait": 8
+        "wait": 20
+      },
+      {
+        "tap": "Dismiss",
+        "timeout": 3
+      },
+      {
+        "wait": 3
       }
     ],
     "hideKeyboardBeforeSend": true
