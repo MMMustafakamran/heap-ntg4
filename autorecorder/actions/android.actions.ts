@@ -190,6 +190,15 @@ export async function runAndroidChat(page: Page, config: PageRecordConfig, root:
     if (cfg.before?.length) logAction('screen', 'after before-steps', 'ok', { texts: texts(dump().nodes).slice(0, 20) });
 
     let screen = dump();
+    // HARNESS (recorder): CI's dev build sometimes can't reach Metro on the first load ("Cannot connect to Metro",
+    // "Fast Refresh disconnected" over a blank screen). Wait and reopen the deep link, up to 3 times.
+    for (let r = 0; r < 3 && texts(screen.nodes).some((t) => /cannot connect to metro|disconnected from metro|fast refresh disconnected/i.test(t)); r++) {
+      logAction('check', 'metro not connected, reopening deep link', `retry ${r + 1}`);
+      await sleep(5000);
+      openDeepLink(config.id);
+      await sleep(8000);
+      screen = dump();
+    }
     // The dev build loads its JS bundle from Metro first: wait (up to 60 s) for the page's composer to appear.
     if (cfg.prompt && !cfg.noInput) {
       const until = Date.now() + 60_000;
