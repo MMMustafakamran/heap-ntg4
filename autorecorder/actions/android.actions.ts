@@ -207,6 +207,23 @@ export async function runAndroidChat(page: Page, config: PageRecordConfig, root:
         screen = dump();
       }
     }
+    // HARNESS (recorder): the Metro banner can also show up only after the composer did (bundle load timed out).
+    // Settle a few seconds, then reopen the deep link and wait for the composer again, up to 2 times.
+    if (cfg.prompt && !cfg.noInput) {
+      for (let r = 0; r < 2; r++) {
+        await sleep(4000);
+        screen = dump();
+        if (!texts(screen.nodes).some((t) => /cannot connect to metro|disconnected from metro|fast refresh disconnected/i.test(t))) break;
+        logAction('check', 'metro disconnected after load, reopening deep link', `retry ${r + 1}`);
+        sh('am force-stop com.mycopilotapp');
+        await sleep(3000);
+        openDeepLink(config.id);
+        const until2 = Date.now() + 90_000;
+        await sleep(8000);
+        screen = dump();
+        while (!screen.nodes.some((n) => n.cls.endsWith('EditText')) && Date.now() < until2) { await sleep(2000); screen = dump(); }
+      }
+    }
     const { w, h } = deviceSize(screen.nodes);
     let sentAt = 0;
     let afterSend: string[] = [];
