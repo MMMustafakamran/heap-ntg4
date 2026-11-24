@@ -181,6 +181,8 @@ export async function runAndroidChat(page: Page, config: PageRecordConfig, root:
     const settleMs = (cfg.settle ?? 12) * 1000;
     const t0 = Date.now();
 
+    // HARNESS (recorder): go to the home screen first so the previous page's stale screen isn't on camera while the deep link loads.
+    sh('input keyevent 3'); await sleep(1500);
     openDeepLink(config.id);
     logAction('deeplink', `copilotqa://page/${config.id}`);
     await sleep(6000);
