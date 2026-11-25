@@ -1,14 +1,14 @@
-// HARNESS: the Sub-Agents page shows no frontend code at all ("Rendering a live delegation log" has
+// CHANGED: the Sub-Agents page shows no frontend code at all ("Rendering a live delegation log" has
 // prose only, no snippet). Everything below the provider is a harness fill-in: the quickstart chat
 // plus a plain list of agent.state.delegations, so the probe can see whether the log fills in.
 import { CopilotKitProvider, useAgent } from "@copilotkit/react-native/headless";
 import { ScrollView, Text, View } from "react-native";
 import { ChatScreen } from "../../src/ChatScreen";
 
-// HARNESS: per-page runtime on the harness runtime server (:8153)
+// CHANGED: per-page runtime on the harness runtime server (:8153)
 const runtimeUrl = "http://10.0.2.2:8153/api/subagents/copilotkit";
 
-// HARNESS: not on the page (the reader must write their own delegation log)
+// ADDED: not on the page (the reader must write their own delegation log)
 function DelegationLog() {
   const { agent } = useAgent({ agentId: "default" });
   const delegations: any[] = (agent?.state as any)?.delegations ?? [];
