@@ -9,6 +9,9 @@
 #        NO_EMU=1 bash start-all.sh   servers only
 cd "$(dirname "$0")"
 mkdir -p logs
+# CHANGED: every server runs in a real terminal (.qa/tools/ptyrun.cjs): logs/<name>.log as before,
+# plus logs/<name>.log.pty, the raw terminal the recorder shows on a failed take.
+PTYRUN="node $(pwd)/.qa/tools/ptyrun.cjs"
 SDK="${ANDROID_HOME:-$LOCALAPPDATA/Android/Sdk}"
 ADB="$SDK/platform-tools/adb"
 
@@ -17,20 +20,20 @@ if [ -z "$NO_EMU" ] && ! "$ADB" devices | grep -q "emulator-"; then
     -gpu host > logs/emulator.log 2>&1 &  # HARNESS: swiftshader froze System UI (ANR) on this laptop
 fi
 
-(cd backend && PORT=8159 uv run --with httpx --with starlette python ../tools/gemini_pool.py > ../logs/gemini-pool-8159.log 2>&1) &
-(cd backend && uv run --env-file .env uvicorn main:app --port 8152 > ../logs/backend-8152.log 2>&1) &
+(cd backend && PORT=8159 $PTYRUN ../logs/gemini-pool-8159.log --name "uv run python ../tools/gemini_pool.py" -- uv run --with httpx --with starlette python ../tools/gemini_pool.py) &
+(cd backend && $PTYRUN ../logs/backend-8152.log --name "uv run uvicorn main:app --port 8152" -- uv run --env-file .env uvicorn main:app --port 8152) &
 # HARNESS: page agents, one file per page group, one path per page (/<page-id>)
-(cd backend && uv run --env-file .env uvicorn rn_chat_main:app --port 8154 > ../logs/backend-8154.log 2>&1) &
-(cd backend && uv run --env-file .env uvicorn rn_genui_main:app --port 8155 > ../logs/backend-8155.log 2>&1) &
-(cd backend && uv run --env-file .env uvicorn rn_state_main:app --port 8156 > ../logs/backend-8156.log 2>&1) &
-(cd backend && uv run --env-file .env uvicorn rn_hitl_main:app --port 8157 > ../logs/backend-8157.log 2>&1) &
+(cd backend && $PTYRUN ../logs/backend-8154.log --name "uv run uvicorn rn_chat_main:app --port 8154" -- uv run --env-file .env uvicorn rn_chat_main:app --port 8154) &
+(cd backend && $PTYRUN ../logs/backend-8155.log --name "uv run uvicorn rn_genui_main:app --port 8155" -- uv run --env-file .env uvicorn rn_genui_main:app --port 8155) &
+(cd backend && $PTYRUN ../logs/backend-8156.log --name "uv run uvicorn rn_state_main:app --port 8156" -- uv run --env-file .env uvicorn rn_state_main:app --port 8156) &
+(cd backend && $PTYRUN ../logs/backend-8157.log --name "uv run uvicorn rn_hitl_main:app --port 8157" -- uv run --env-file .env uvicorn rn_hitl_main:app --port 8157) &
 # Sub-agents: the page's agent imports httpx, which its install step never names (rides on --with)
-(cd backend && uv run --env-file .env --with httpx uvicorn rn_misc_main:app --port 8158 > ../logs/backend-8158.log 2>&1) &
+(cd backend && $PTYRUN ../logs/backend-8158.log --name "uv run uvicorn rn_misc_main:app --port 8158" -- uv run --env-file .env --with httpx uvicorn rn_misc_main:app --port 8158) &
 # Doc: `export OPENAI_API_KEY=sk-...` then `npx tsx server.ts`; the key comes from runtime.env (gitignored).
-(cd MyCopilotApp && set -a && . ../runtime.env && set +a && PORT=8151 npx tsx server.ts > ../logs/runtime-8151.log 2>&1) &
+(cd MyCopilotApp && set -a && . ../runtime.env && set +a && PORT=8151 $PTYRUN ../logs/runtime-8151.log --name "npx tsx server.ts" -- npx tsx server.ts) &
 # HARNESS: per-page runtimes (harness-runtime.ts) on :8153, at /api/<page-id>/copilotkit
-(cd MyCopilotApp && set -a && . ../runtime.env && set +a && PORT=8153 npx tsx harness-runtime.ts > ../logs/runtimes-8153.log 2>&1) &
-(cd MyCopilotApp && npx react-native start --port 8150 > ../logs/metro-8150.log 2>&1) &
+(cd MyCopilotApp && set -a && . ../runtime.env && set +a && PORT=8153 $PTYRUN ../logs/runtimes-8153.log --name "npx tsx harness-runtime.ts" -- npx tsx harness-runtime.ts) &
+(cd MyCopilotApp && $PTYRUN ../logs/metro-8150.log --name "npx react-native start --port 8150" -- npx react-native start --port 8150) &
 
 if [ -z "$NO_EMU" ]; then
   "$ADB" wait-for-device
